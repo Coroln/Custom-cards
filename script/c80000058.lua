@@ -1,7 +1,7 @@
 --Unschlagbares Insekt Käfertyrann
 function c80000058.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_INSECT),12,3)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_INSECT),12,3)
 	c:EnableReviveLimit()
 	--pos
 	local e1=Effect.CreateEffect(c)

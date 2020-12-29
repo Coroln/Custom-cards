@@ -1,8 +1,8 @@
 --Unschlagbares Insekt Moskitodrache
 function c80000057.initial_effect(c)
 	--link summon
-	aux.AddLinkProcedure(c,c80000057.mfilter,2)
 	c:EnableReviveLimit()
+	Link.AddProcedure(c,aux.FilterBoolFunction(Card.IsLevelAbove,5,Card.IsRace,RACE_INSECT),3,3)
 	--(1) Special summon 1
   local e1=Effect.CreateEffect(c)
   e1:SetDescription(aux.Stringid(80000057,0))
@@ -48,9 +48,6 @@ function c80000057.initial_effect(c)
   e4:SetTarget(c80000057.sptg2)
   e4:SetOperation(c80000057.spop2)
   c:RegisterEffect(e4)
-end
-function c80000057.mfilter(c,lc,sumtype,tp)
-	return c:IsLevelAbove(5) and c:IsRace(RACE_INSECT,lc,sumtype,tp)
 end
 --(2) Special Summon
 function c80000057.spcon1(e,tp,eg,ep,ev,re,r,rp)

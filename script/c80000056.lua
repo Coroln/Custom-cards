@@ -1,7 +1,7 @@
 --Unschlagbares Insekt Master Beetle: Goldene Form
 function c80000056.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x2328),12,2,c80000056.ovfilter,aux.Stringid(80000056,0))
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x2328),12,2,c80000056.ovfilter,aux.Stringid(80000056,0),2,c80000056.xyzop)
 	c:EnableReviveLimit()
 	--remove
 	local e1=Effect.CreateEffect(c)
@@ -29,6 +29,11 @@ end
 function c80000056.ovfilter(c,tp,xyzc)
 	local rk=c:GetRank()
 	return c:IsFaceup() and c:IsType(TYPE_XYZ,xyzc,SUMMON_TYPE_XYZ,tp) and (rk==9 or rk==10 or rk==11)
+end
+function c80000056.xyzop(e,tp,chk)
+	if chk==0 then return true end
+	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD+RESET_PHASE+PHASE_END,0,1)
+	return true
 end
 function c80000056.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ)
