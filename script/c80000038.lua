@@ -1,7 +1,7 @@
 --Mirria, Ober-Ozeanherrscherin der Alten Ruinen
 function c80000038.initial_effect(c)
 --xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x1864),4,2)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x1864),4,2)
 	c:EnableReviveLimit()
 	--defense attack
 	local e1=Effect.CreateEffect(c)

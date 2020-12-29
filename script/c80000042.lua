@@ -2,23 +2,8 @@
 function c80000042.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcFunRep(c,c80000042.ffilter,4,false)
-	--spsummon condition
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e1:SetValue(c80000042.splimit)
-	c:RegisterEffect(e1)
-	--special summon rule
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_SPSUMMON_PROC)
-	e2:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-	e2:SetRange(LOCATION_EXTRA)
-	e2:SetCondition(c80000042.sspcon)
-	e2:SetOperation(c80000042.sspop)
-	c:RegisterEffect(e2)
+	Fusion.AddProcMixN(c,true,true,c80000042.ffilter,4)
+	Fusion.AddContactProc(c,c80000042.contactfil,c80000042.contactop,c80000042.splimit)		
 	--destroy all
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(80000042,1))
@@ -57,32 +42,17 @@ function c80000042.initial_effect(c)
 	e8:SetValue(1)
 	c:RegisterEffect(e8)
 end
-function c80000042.ffilter(c)
-	return c:IsSetCard(0x1864)
+function c80000042.ffilter(c,fc,sumtype,tp)
+	return c:IsSetCard(0x1864,fc,sumtype,tp)
 end
 function c80000042.splimit(e,se,sp,st)
-	return bit.band(st,SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
+	return (st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
 end
-function c80000042.sspfilter(c,fc)
-	return c80000042.ffilter(c) and c:IsCanBeFusionMaterial(fc)
+function c80000042.contactfil(tp)
+	return Duel.GetReleaseGroup(tp)
 end
-function c80000042.sspcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	local ct=-ft+3
-	local g=Duel.GetReleaseGroup(tp):Filter(c80000042.sspfilter,nil,c)
-	return g:GetCount()>3 and ft>-4
-end
-function c80000042.sspop(e,tp,eg,ep,ev,re,r,rp,c)
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	local ct=-ft+3
-	local g=Duel.GetReleaseGroup(tp):Filter(c80000042.sspfilter,nil,c)
-	local sg=nil
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-	sg=g:Select(tp,4,4,nil)
-	c:SetMaterial(sg)
-	Duel.Release(sg,REASON_COST+REASON_FUSION+REASON_MATERIAL)
+function c80000042.contactop(g)
+	Duel.Release(g,REASON_COST+REASON_MATERIAL)
 end
 function c80000042.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

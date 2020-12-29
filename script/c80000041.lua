@@ -1,7 +1,7 @@
 --Serrina, Ober-Ozeanherrscherin der Kraken
 function c80000041.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsRace,RACE_SEASERPENT),4,4)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_SEASERPENT),4,4)
 	c:EnableReviveLimit()
 	--defense attack
 	local e1=Effect.CreateEffect(c)

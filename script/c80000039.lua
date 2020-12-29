@@ -1,7 +1,7 @@
 --Daedalus, Ober-Ozeanherrscherin der Meere
 function c80000039.initial_effect(c)
 --xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x1864),4,3)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x1864),4,3)
 	c:EnableReviveLimit()
 --defense attack
 	local e1=Effect.CreateEffect(c)

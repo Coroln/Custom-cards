@@ -1,7 +1,7 @@
 --Possaidon, Ozeanherrscher der Weltmeere
 function c80000045.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsRace,RACE_SEASERPENT),8,2)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_SEASERPENT),8,2)
 	c:EnableReviveLimit()
 	--defense attack
 	local e1=Effect.CreateEffect(c)
