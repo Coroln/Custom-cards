@@ -1,7 +1,7 @@
 --Inu Inuyasha Demon Mode
 function c53790713.initial_effect(c)
   --Xyz Summon
-  aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x5EB),4,2)
+  Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x5EB),4,2)
   c:EnableReviveLimit()
   --(1) To Hand
   local e1=Effect.CreateEffect(c)

@@ -1,7 +1,7 @@
 --Kagura of the Wind
 function c53790709.initial_effect(c)
 	--synchro summon
-	aux.AddSynchroProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x5EB),aux.NonTuner(Card.IsSetCard,0x5EB),1)
+	Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x5EB),1,1,Synchro.NonTunerEx(Card.IsSetCard,0x5EB),1,99)
 	c:EnableReviveLimit()
 	--draw
 	local e1=Effect.CreateEffect(c)

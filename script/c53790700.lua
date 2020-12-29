@@ -9,15 +9,6 @@ function c53790700.initial_effect(c)
 	e1:SetCondition(c53790700.spcon)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
-	--spsummon
-	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetDescription(aux.Stringid(53790700,0))
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetCondition(c53790700.condition)
-	e2:SetOperation(c53790700.operation)
-	c:RegisterEffect(e2)
 	--(3) Gain ATK/DEF
     local e3=Effect.CreateEffect(c)
     e3:SetDescription(aux.Stringid(53790700,1))
@@ -33,9 +24,6 @@ end
 function c53790700.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
-end
-function c53790700.condition(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():GetSummonType()==SUMMON_TYPE_SPECIAL+1
 end
 --(3) Gain ATK/DEF
 function c53790700.atkcon(e,tp,eg,ep,ev,re,r,rp)

@@ -1,7 +1,7 @@
 --Inu Wolf demon Ayame
 function c53790714.initial_effect(c)
 	--xyz summon
-    aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x5EB),2,2)
+    Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x5EB),2,2)
     c:EnableReviveLimit()
 	--special summon
 	local e1=Effect.CreateEffect(c)
