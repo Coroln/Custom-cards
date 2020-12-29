@@ -1,7 +1,7 @@
 --サイバー・ドラゴン・インフィニティ
 function c45314788.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,c45314788.mfilter,5,3,c45314788.ovfilter,aux.Stringid(45314788,0),3,c45314788.xyzop)
+	Xyz.AddProcedure(c,c45314788.mfilter,5,3,c45314788.ovfilter,aux.Stringid(45314788,0),3,c45314788.xyzop)
 	c:EnableReviveLimit()
 	--atk
 	local e1=Effect.CreateEffect(c)
@@ -34,15 +34,17 @@ function c45314788.initial_effect(c)
 	e3:SetOperation(c45314788.disop)
 	c:RegisterEffect(e3)
 end
-function c45314788.mfilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_EARTH)
+c45314788.listed_names={45314787}
+function c45314788.mfilter(c,xyz,sumtype,tp)
+	return c:IsRace(RACE_WARRIOR,xyz,sumtype,tp) and c:IsAttribute(ATTRIBUTE_EARTH,xyz,sumtype,tp)
 end
-function c45314788.ovfilter(c)
-	return c:IsFaceup() and c:IsCode(45314787)
+function c45314788.ovfilter(c,tp,lc)
+	return c:IsFaceup() and c:IsSummonCode(lc,SUMMON_TYPE_XYZ,tp,45314787)
 end
 function c45314788.xyzop(e,tp,chk)
 	if chk==0 then return Duel.GetFlagEffect(tp,45314788)==0 end
 	Duel.RegisterFlagEffect(tp,45314788,RESET_PHASE+PHASE_END,0,1)
+	return true
 end
 function c45314788.atkval(e,c)
 	return c:GetOverlayCount()*300

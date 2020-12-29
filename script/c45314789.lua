@@ -1,8 +1,8 @@
---Dark Magician the Dragon Knight
+--
 function c45314789.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,91152256,aux.FilterBoolFunction(Card.IsRace,RACE_WARRIOR),1,false,false)
+	Fusion.AddProcMix(c,true,true,91152256,aux.FilterBoolFunctionEx(Card.IsRace,RACE_WARRIOR))
 	--cannot be target
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
