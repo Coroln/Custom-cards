@@ -1,7 +1,7 @@
 --Phantom Beast Suprem-Chimera
 function c53790724.initial_effect(c)
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,5818798,aux.FilterBoolFunction(Card.IsFusionSetCard,0x1B),1,true,true)
+	Fusion.AddProcMix(c,true,true,5818798,aux.FilterBoolFunctionEx(Card.IsSetCard,0x1B))
 	--special summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(53790724,0))

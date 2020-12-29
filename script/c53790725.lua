@@ -1,7 +1,7 @@
 --Dark Chimera Lord of the Phantom Beasts
 function c53790725.initial_effect(c)
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,5818798,aux.FilterBoolFunction(Card.IsFusionSetCard,0x1B),1,true,true)
+	Fusion.AddProcMix(c,true,true,5818798,aux.FilterBoolFunctionEx(Card.IsSetCard,0x1B))
 	--splimit
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)

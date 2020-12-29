@@ -1,7 +1,7 @@
 --Phantom Beast Chimera of the Forest
 function c53790727.initial_effect(c)
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,77207191,aux.FilterBoolFunction(Card.IsFusionSetCard,0x1B),1,true,true)
+	Fusion.AddProcMix(c,true,true,77207191,aux.FilterBoolFunctionEx(Card.IsSetCard,0x1B))
 	--cannot spsummon
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)

@@ -1,14 +1,10 @@
 --Phantom Beast Fusion Shrine
 function c53790720.initial_effect(c)
 	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(53790720,0))
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetTarget(c53790720.sptg)
-	e1:SetOperation(c53790720.spop)
+	local e1=Fusion.CreateSummonEff(c,nil,c53790720.matfilter,c53790720.fextra,c53790720.extraop)
 	c:RegisterEffect(e1)
+	if not GhostBelleTable then GhostBelleTable={} end
+	table.insert(GhostBelleTable,e1)
 	--to deck
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(53790720,1))
@@ -21,102 +17,27 @@ function c53790720.initial_effect(c)
 	e2:SetOperation(c53790720.tdop)
 	c:RegisterEffect(e2)
 end
-function c53790720.mfilter0(c)
-	return c:IsOnField() and c:IsAbleToRemove()
+function c53790720.matfilter(c)
+	return (c:IsLocation(LOCATION_HAND) and c:IsAbleToGrave()) or (c:IsOnField() and c:IsAbleToRemove())
 end
-function c53790720.mfilter1(c,e)
-	return c:IsLocation(LOCATION_HAND) and not c:IsImmuneToEffect(e)
+function c53790720.checkmat(tp,sg,fc)
+	return fc:IsSetCard(0x1B) or not sg:IsExists(Card.IsLocation,1,nil,LOCATION_GRAVE+LOCATION_ONFIELD)
 end
-function c53790720.mfilter2(c,e)
-	return c:IsOnField() and c:IsAbleToRemove() and not c:IsImmuneToEffect(e)
-end
-function c53790720.mfilter3(c)
-	return c:IsType(TYPE_MONSTER) and c:IsCanBeFusionMaterial() and c:IsAbleToRemove()
-end
-function c53790720.spfilter1(c,e,tp,m,f,chkf)
-	return c:IsType(TYPE_FUSION) and (not f or f(c))
-		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) and c:CheckFusionMaterial(m,nil,chkf)
-end
-function c53790720.spfilter2(c,e,tp,m,f,chkf)
-	return c:IsType(TYPE_FUSION) and c:IsSetCard(0x1B) and (not f or f(c))
-		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) and c:CheckFusionMaterial(m,nil,chkf)
-end
-function c53790720.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then
-		local chkf=Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and PLAYER_NONE or tp
-		local mg=Duel.GetFusionMaterial(tp)
-		local mg1=mg:Filter(Card.IsLocation,nil,LOCATION_HAND)
-		local res=Duel.IsExistingMatchingCard(c53790720.spfilter1,tp,LOCATION_EXTRA,0,1,nil,e,tp,mg1,nil,chkf)
-		if res then return true end
-		local mg2=mg:Filter(c53790720.mfilter0,nil)
-		local mg3=Duel.GetMatchingGroup(c53790720.mfilter3,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
-		mg2:Merge(mg1)
-		mg2:Merge(mg3)
-		res=Duel.IsExistingMatchingCard(c53790720.spfilter2,tp,LOCATION_EXTRA,0,1,nil,e,tp,mg2,nil,chkf)
-		if not res then
-			local ce=Duel.GetChainMaterial(tp)
-			if ce~=nil then
-				local fgroup=ce:GetTarget()
-				local mg4=fgroup(ce,e,tp)
-				local mf=ce:GetValue()
-				res=Duel.IsExistingMatchingCard(c53790720.spfilter1,tp,LOCATION_EXTRA,0,1,nil,e,tp,mg4,mf,chkf)
-			end
-		end
-		return res
+function c53790720.fextra(e,tp,mg)
+	if not Duel.IsPlayerAffectedByEffect(tp,69832741) then
+		return Duel.GetMatchingGroup(Fusion.IsMonsterFilter(Card.IsAbleToRemove),tp,LOCATION_GRAVE,LOCATION_GRAVE,nil),c53790720.checkmat
 	end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
+	return nil,c53790720.checkmat
 end
-function c53790720.spop(e,tp,eg,ep,ev,re,r,rp)
-	local chkf=Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and PLAYER_NONE or tp
-	local mg=Duel.GetFusionMaterial(tp)
-	local mg1=mg:Filter(c53790720.mfilter1,nil,e)
-	local sg1=Duel.GetMatchingGroup(c53790720.spfilter1,tp,LOCATION_EXTRA,0,nil,e,tp,mg1,nil,chkf)
-	local mg2=mg:Filter(c53790720.mfilter2,nil,e)
-	local mg3=Duel.GetMatchingGroup(c53790720.mfilter3,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
-	mg2:Merge(mg1)
-	mg2:Merge(mg3)
-	local sg2=Duel.GetMatchingGroup(c53790720.spfilter2,tp,LOCATION_EXTRA,0,nil,e,tp,mg2,nil,chkf)
-	sg1:Merge(sg2)
-	local mg4=nil
-	local sg3=nil
-	local ce=Duel.GetChainMaterial(tp)
-	if ce~=nil then
-		local fgroup=ce:GetTarget()
-		mg4=fgroup(ce,e,tp)
-		local mf=ce:GetValue()
-		sg3=Duel.GetMatchingGroup(c53790720.spfilter1,tp,LOCATION_EXTRA,0,nil,e,tp,mg4,mf,chkf)
-	end
-	if sg1:GetCount()>0 or (sg3~=nil and sg3:GetCount()>0) then
-		local sg=sg1:Clone()
-		if sg3 then sg:Merge(sg3) end
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tg=sg:Select(tp,1,1,nil)
-		local tc=tg:GetFirst()
-		if sg1:IsContains(tc) and (sg3==nil or not sg3:IsContains(tc) or not Duel.SelectYesNo(tp,ce:GetDescription())) then
-			if tc:IsSetCard(0x1B) then
-				local mat1=Duel.SelectFusionMaterial(tp,tc,mg2,nil,chkf)
-				tc:SetMaterial(mat1)
-				local mat2=mat1:Filter(Card.IsLocation,nil,LOCATION_ONFIELD+LOCATION_GRAVE)
-				mat1:Sub(mat2)
-				Duel.SendtoGrave(mat1,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
-				Duel.Remove(mat2,POS_FACEUP,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
-			else
-				local mat2=Duel.SelectFusionMaterial(tp,tc,mg1,nil,chkf)
-				tc:SetMaterial(mat2)
-				Duel.SendtoGrave(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
-			end
-			Duel.BreakEffect()
-			Duel.SpecialSummon(tc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
-		else
-			local mat=Duel.SelectFusionMaterial(tp,tc,mg4,nil,chkf)
-			local fop=ce:GetOperation()
-			fop(ce,e,tp,tc,mat)
-		end
-		tc:CompleteProcedure()
+function c53790720.extraop(e,tc,tp,sg)
+	local rg=sg:Filter(Card.IsLocation,nil,LOCATION_GRAVE+LOCATION_ONFIELD)
+	if #rg>0 then
+		Duel.Remove(rg,POS_FACEUP,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
+		sg:Sub(rg)
 	end
 end
 function c53790720.thfilter(c)
-	return c:IsFaceup() and c:IsCode(5818798) and c:IsAbleToHand()
+	return c:IsFaceup() and c:IsCode(5818798) and c:IsAbleToDeck()
 end
 function c53790720.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and c53790720.thfilter(chkc) end
