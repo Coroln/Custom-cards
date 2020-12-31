@@ -1,7 +1,7 @@
 --SW - Jedi Luke Skywalker
 function c88000009.initial_effect(c)
  --Xyz Summon
-  aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x7bc),4,2)
+  Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x7bc),4,2)
   c:EnableReviveLimit()
   --negate activate
 	local e1=Effect.CreateEffect(c)

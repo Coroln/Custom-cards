@@ -1,7 +1,7 @@
 --SW - Jedi Ahsoka
 function c88000008.initial_effect(c)
  --Xyz Summon
-  aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x7bc),4,2)
+  Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x7bc),4,2)
   c:EnableReviveLimit()
   --(1) Destroy
   local e1=Effect.CreateEffect(c)

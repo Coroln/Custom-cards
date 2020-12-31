@@ -1,7 +1,7 @@
 --SW - Sith Darth Vader
 function c88000010.initial_effect(c)
  --Xyz Summon
-  aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x7bc),4,3)
+  Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x7bc),4,3)
   c:EnableReviveLimit()
    --(1) Cannot activate 
   local e1=Effect.CreateEffect(c)

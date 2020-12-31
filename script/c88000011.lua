@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
     c:EnableReviveLimit()
-    aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_EFFECT),2,nil,s.matcheck)
+    Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_EFFECT),2,nil,s.matcheck)
     --indes
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_SINGLE)
@@ -37,7 +37,7 @@ function s.initial_effect(c)
     c:RegisterEffect(e3)
 end
 function s.matcheck(g,lc,tp)
-    return g:IsExists(Card.IsLinkSetCard,1,nil,0x7bc)
+    return g:IsExists(Card.IsSetCard,1,nil,0x7bc,lc,SUMMON_TYPE_LINK,tp)
 end
 function s.incon(e)
     return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
