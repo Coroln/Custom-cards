@@ -17,7 +17,6 @@ function c53790733.initial_effect(c)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e2:SetCountLimit(1,53790733)
-	e2:SetCondition(c53790733.thcon)
 	e2:SetTarget(c53790733.thtg)
 	e2:SetOperation(c53790733.thop)
 	c:RegisterEffect(e2)
@@ -40,9 +39,6 @@ function c53790733.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 		and Duel.GetFieldGroupCount(c:GetControler(),LOCATION_MZONE,0,nil)==0
-end
-function c53790733.thcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousLocation(LOCATION_HAND)
 end
 function c53790733.thfilter(c)
 	return c:IsCode(24094653) and c:IsAbleToHand()
