@@ -2,7 +2,7 @@
 function c53790735.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcFun2(c,aux.FilterBoolFunction(Card.IsFusionSetCard,0xbd),c53790735.mfilter1,true)
+	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0xbd),aux.FilterBoolFunctionEx(Card.IsLevelBelow,7))
 	--change name
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -31,9 +31,6 @@ function c53790735.initial_effect(c)
 	e3:SetTarget(c53790735.sptg)
 	e3:SetOperation(c53790735.spop)
 	c:RegisterEffect(e3)
-end
-function c53790735.mfilter1(c)
-	return c:IsLevelBelow(7)
 end
 function c53790735.thfilter(c)
 	return c:IsCode(49328340) and c:IsAbleToHand()
