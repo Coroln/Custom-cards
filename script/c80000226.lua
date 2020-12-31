@@ -26,7 +26,7 @@ function s.initial_effect(c)
 end
 --special summon from hand
 function s.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x19DD94E)
+	return c:IsFaceup() and c:IsSetCard(0x1E6)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -44,7 +44,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 --spsummon
 function s.spfilter(c,e,tp)
-	return c:IsFaceup() and c:IsSetCard(0x19DD94E) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsFaceup() and c:IsSetCard(0x1E6) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) and chkc~=e:GetHandler() end

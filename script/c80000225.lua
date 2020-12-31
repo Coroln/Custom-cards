@@ -31,10 +31,10 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 --tohand
-s.listed_series={0x19DD94E}
+s.listed_series={0x1E6}
 s.listed_names={id}
 function s.filter(c)
-	return c:IsSetCard(0x19DD94E) and c:IsType(TYPE_MONSTER) and not c:IsCode(id) and c:IsAbleToHand()
+	return c:IsSetCard(0x1E6) and c:IsType(TYPE_MONSTER) and not c:IsCode(id) and c:IsAbleToHand()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

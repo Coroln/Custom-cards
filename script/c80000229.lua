@@ -20,9 +20,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={id}
-s.listed_series={0x19DD94E}
+s.listed_series={0x1E6}
 function s.filter(c,e,tp)
-	return c:IsSetCard(0x19DD94E) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+	return c:IsSetCard(0x1E6) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter(chkc,e,tp) end
@@ -47,5 +47,5 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	aux.RegisterClientHint(e:GetHandler(),nil,1,0,aux.Stringid(id,1),nil)
 end
 function s.atktg(e,c)
-	return not c:IsSetCard(0x19DD94E)
+	return not c:IsSetCard(0x1E6)
 end

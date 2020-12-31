@@ -50,7 +50,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 --tograve
 function s.filter(c)
-	return c:IsSetCard(0x19DD94E) and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
+	return c:IsSetCard(0x1E6) and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
 end
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

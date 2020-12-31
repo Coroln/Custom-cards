@@ -50,7 +50,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 --Spsummon Hand or Deck
 function s.spfilter1(c,e,tp)
-	return c:IsSetCard(0x19DD94E) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x1E6) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
