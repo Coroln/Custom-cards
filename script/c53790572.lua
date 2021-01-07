@@ -26,6 +26,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 end
+s.listed_names={53790570}
 function s.costfilter(c)
 	return c:IsSetCard(0x12BE) and c:IsType(TYPE_FUSION) and c:IsAbleToGraveAsCost()
 end
