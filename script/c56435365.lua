@@ -12,7 +12,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_UPDATE_LEVEL)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,LOCATION_HAND+LOCATION_MZONE)
-	e2:SetTarget(aux.TargetBoolFunction(Card.IsAttribute,ATTRIBUTE_DEVINE))
+	e2:SetTarget(aux.TargetBoolFunction(Card.IsAttribute,ATTRIBUTE_DIVINE))
 	e2:SetValue(-1)
 	c:RegisterEffect(e2)
 	--Atk
