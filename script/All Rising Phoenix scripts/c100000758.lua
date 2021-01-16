@@ -68,7 +68,7 @@ end
 function s.rdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(ep,ev/2)
 end
-function s.spfilter(c)
+function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x75A) and c:IsCanBeFusionMaterial() and c:IsAbleToGraveAsCost()
 end
 function s.sprcon(e,c)
