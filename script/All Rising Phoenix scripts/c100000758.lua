@@ -68,7 +68,7 @@ end
 function s.rdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(ep,ev/2)
 end
-function s.spfilter(c,e,tp)
+function s.spfilter(c)
 	return c:IsSetCard(0x75A) and c:IsCanBeFusionMaterial() and c:IsAbleToGraveAsCost()
 end
 function s.sprcon(e,c)
@@ -85,7 +85,7 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 		if not tc:IsFaceup() then Duel.ConfirmCards(1-tp,tc) end
 		tc=g:GetNext()
 	end
-	Duel.SendtoGrave(g,nil,2,REASON_COST)
+	Duel.SendtoGrave(g,REASON_COST,2,nil)
 end
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
 	return not eg:IsContains(e:GetHandler()) and eg:IsExists(s.cfilter,1,nil,tp)
