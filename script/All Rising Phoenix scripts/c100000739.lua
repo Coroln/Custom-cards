@@ -63,5 +63,5 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 		if not tc:IsFaceup() then Duel.ConfirmCards(1-tp,tc) end
 		tc=g:GetNext()
 	end
-	Duel.SendtoGrave(g,nil,2,REASON_COST)
+	Duel.SendtoGrave(g,REASON_COST,2,nil)
 end
