@@ -4,22 +4,7 @@ function s.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
 	Fusion.AddProcMix(c,80000003,aux.FilterBoolFunction(Card.IsFusionSetCard,0x19ba),1,true,true)
-	--spsummon condition
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e1:SetValue(s.splimit)
-	c:RegisterEffect(e1)
-	--special summon rule
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_SPSUMMON_PROC)
-	e2:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-	e2:SetRange(LOCATION_EXTRA)
-	e2:SetCondition(s.sprcon)
-	e2:SetOperation(s.sprop)
-	c:RegisterEffect(e2)
+	Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit)
 	--destroy
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
@@ -31,34 +16,15 @@ function s.initial_effect(c)
 	e3:SetOperation(s.desop)
 	c:RegisterEffect(e3)
 end
+function s.contactfil(tp)
+	return Duel.GetMatchingGroup(function(c) return c:IsType(TYPE_MONSTER) and c:IsAbleToDeckOrExtraAsCost() end,tp,LOCATION_ONFIELD,0,nil)
+end
+function s.contactop(g,tp)
+	Duel.ConfirmCards(1-tp,g)
+	Duel.SendtoDeck(g,nil,2,REASON_COST+REASON_MATERIAL)
+end
 function s.splimit(e,se,sp,st)
 	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
-end
-function s.spfilter1(c,tp)
-	return c:IsFusionCode(80000003) and c:IsAbleToDeckOrExtraAsCost() and c:IsCanBeFusionMaterial()
-		and Duel.IsExistingMatchingCard(s.spfilter2,tp,LOCATION_MZONE,0,1,c)
-end
-function s.spfilter2(c)
-	return c:IsFusionSetCard(0x19ba) and c:IsCanBeFusionMaterial() and c:IsAbleToDeckOrExtraAsCost()
-end
-function s.sprcon(e,c)
-	if c==nil then return true end 
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>-2
-		and Duel.IsExistingMatchingCard(s.spfilter1,tp,LOCATION_ONFIELD,0,1,nil,tp)
-end
-function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,2))
-	local g1=Duel.SelectMatchingCard(tp,s.spfilter1,tp,LOCATION_ONFIELD,0,1,1,nil,tp)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,3))
-	local g2=Duel.SelectMatchingCard(tp,s.spfilter2,tp,LOCATION_MZONE,0,1,1,g1:GetFirst())
-	g1:Merge(g2)
-	local tc=g1:GetFirst()
-	while tc do
-		if not tc:IsFaceup() then Duel.ConfirmCards(1-tp,tc) end
-		tc=g1:GetNext()
-	end
-	Duel.SendtoDeck(g1,nil,2,REASON_COST)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() end

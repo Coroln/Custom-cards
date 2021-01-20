@@ -4,6 +4,7 @@ function s.initial_effect(c)
 --fusion material
 	c:EnableReviveLimit()
 	Fusion.AddProcMix(c,80000005,80000002,aux.FilterBoolFunction(Card.IsFusionSetCard,0x19ba),1,true,true)
+	Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit)
 --pendulum summon
 	Pendulum.AddProcedure(c)
 --special summon
@@ -16,23 +17,6 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-	--spsummon condition
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e2:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e2:SetValue(s.splimit)
-	c:RegisterEffect(e2)
-	--special summon rule
-	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,0))
-	e3:SetType(EFFECT_TYPE_FIELD)
-	e3:SetCode(EFFECT_SPSUMMON_PROC)
-	e3:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-	e3:SetRange(LOCATION_EXTRA)
-	e3:SetCondition(s.sprcon)
-	e3:SetOperation(s.sprop)
-	c:RegisterEffect(e3)
 	--cannot be fusion material
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_SINGLE)
@@ -61,6 +45,16 @@ function s.initial_effect(c)
 	e6:SetOperation(s.penop)
 	c:RegisterEffect(e6)
 end
+function s.contactfil(tp)
+	return Duel.GetMatchingGroup(function(c) return c:IsType(TYPE_MONSTER) and c:IsAbleToDeckOrExtraAsCost() end,tp,LOCATION_ONFIELD,0,nil)
+end
+function s.contactop(g,tp)
+	Duel.ConfirmCards(1-tp,g)
+	Duel.SendtoDeck(g,nil,2,REASON_COST+REASON_MATERIAL)
+end
+function s.splimit(e,se,sp,st)
+	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
+end
 function s.filter(c,e,sp)
 	return c:IsSetCard(0x19ba) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)
 end
@@ -77,41 +71,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
-end
-function s.splimit(e,se,sp,st)
-	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
-end
-function s.spfilter1(c,tp)
-	return c:IsFusionCode(80000005) and c:IsAbleToDeckOrExtraAsCost() and c:IsCanBeFusionMaterial()
-		and Duel.IsExistingMatchingCard(s.spfilter2,tp,LOCATION_MZONE,0,1,c)
-end
-function s.spfilter2(c,tp)
-	return c:IsFusionCode(80000002) and c:IsAbleToDeckOrExtraAsCost() and c:IsCanBeFusionMaterial()
-		and Duel.IsExistingMatchingCard(s.spfilter3,tp,LOCATION_MZONE,0,1,c)
-end
-function s.spfilter3(c)
-	return c:IsFusionSetCard(0x19ba) and c:IsAbleToDeckOrExtraAsCost() and c:IsCanBeFusionMaterial()
-end
-function s.sprcon(e,c)
-	if c==nil then return true end 
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>-3
-		and Duel.IsExistingMatchingCard(s.spfilter1,tp,LOCATION_ONFIELD,0,1,nil,tp)
-end
-function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,1))
-	local g1=Duel.SelectMatchingCard(tp,s.spfilter1,tp,LOCATION_ONFIELD,0,1,1,nil,tp)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,2))
-	local g2=Duel.SelectMatchingCard(tp,s.spfilter2,tp,LOCATION_ONFIELD,0,1,1,nil,tp)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,3))
-	local g3=Duel.SelectMatchingCard(tp,s.spfilter3,tp,LOCATION_MZONE,0,1,1,g1:GetFirst())
-	g1:Merge(g2)
-	local tc=g1:GetFirst()
-	while tc do
-		if not tc:IsFaceup() then Duel.ConfirmCards(1-tp,tc) end
-		tc=g1:GetNext()
-	end
-	Duel.SendtoDeck(g1,nil,nil,3,REASON_COST)
 end
 function s.espfilter(c,e,tp)
 	return c:IsSetCard(0x19ba) and c:IsType(TYPE_FUSION) and not c:IsCode(id)
