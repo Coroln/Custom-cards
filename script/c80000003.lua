@@ -1,37 +1,38 @@
 --Silberio,Bestie der Alchemie
-function c80000003.initial_effect(c)
+local s,id=GetID()
+function s.initial_effect(c)
 --Activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(80000003,0))
+	e1:SetDescription(aux.Stringid(id,1))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
-	e1:SetOperation(c80000003.attop)
+	e1:SetOperation(s.attop)
 	c:RegisterEffect(e1)
 	--spsummon
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(80000003,0))
+	e2:SetDescription(aux.Stringid(id,2))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
-	e2:SetCost(c80000003.cost)
-	e2:SetTarget(c80000003.target)
-	e2:SetOperation(c80000003.operation)
+	e2:SetCost(s.cost)
+	e2:SetTarget(s.target)
+	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 	--destroy
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(80000003,0))
+	e3:SetDescription(aux.Stringid(id,3))
 	e3:SetCategory(CATEGORY_DESTROY)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e3:SetCondition(c80000003.regcon)
-	e3:SetTarget(c80000003.destg)
-	e3:SetOperation(c80000003.desop)
+	e3:SetCondition(s.regcon)
+	e3:SetTarget(s.destg)
+	e3:SetOperation(s.desop)
 	c:RegisterEffect(e3)
 end
-function c80000003.attop(e,tp,eg,ep,ev,re,r,rp)
+function s.attop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		Duel.Hint(HINT_SELECTMSG,tp,562)
@@ -46,46 +47,46 @@ function c80000003.attop(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 	end
 end
-function c80000003.costfilter2(c)
+function s.costfilter2(c)
 	return c:IsFaceup() and c:IsType(TYPE_MONSTER)
 end
-function c80000003.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroup(tp,c80000003.costfilter2,1,nil) end
-	local g=Duel.SelectReleaseGroup(tp,c80000003.costfilter2,1,1,nil)
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.CheckReleaseGroup(tp,s.costfilter2,1,nil) end
+	local g=Duel.SelectReleaseGroup(tp,s.costfilter2,1,1,nil)
 	Duel.Release(g,REASON_COST)
 end
-function c80000003.filter(c,e,tp)
-	return c:IsSetCard(0x19ba) and not c:IsCode(80000003) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+function s.filter(c,e,tp)
+	return c:IsSetCard(0x19ba) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function c80000003.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>-1
-		and Duel.IsExistingMatchingCard(c80000003.filter,tp,LOCATION_DECK,0,1,nil,e,tp) end
+		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,0,LOCATION_DECK)
 end
-function c80000003.operation(e,tp,eg,ep,ev,re,r,rp)
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,c80000003.filter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	if g:GetCount()>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
-function c80000003.regcon(e,tp,eg,ep,ev,re,r,rp)
+function s.regcon(e,tp,eg,ep,ev,re,r,rp)
 	if not re then return false end
 	local rc=re:GetHandler()
 	return re and rc:IsSetCard(0x19ba)
 end
-function c80000003.desfilter(c)
+function s.desfilter(c)
 	return c:IsFaceup() 
 end
-function c80000003.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:GetLocation()==LOCATION_MZONE and c80000003.desfilter(chkc) end
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:GetLocation()==LOCATION_MZONE and s.desfilter(chkc) end
 	if chk==0 then return true end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,c80000003.desfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+	local g=Duel.SelectTarget(tp,s.desfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
 end
-function c80000003.desop(e,tp,eg,ep,ev,re,r,rp)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
 		Duel.Destroy(tc,REASON_EFFECT)
