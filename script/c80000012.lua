@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 --fusion material
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,80000005,80000002,aux.FilterBoolFunctionEx(Card.IsSetCard,0x19ba),1)
+	Fusion.AddProcMix(c,true,true,80000005,80000002,aux.FilterBoolFunctionEx(Card.IsSetCard,0x19ba))
 	Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit)
 --pendulum summon
 	Pendulum.AddProcedure(c)
