@@ -1,7 +1,7 @@
 --Chain of Enkidu
 local s,id=GetID()
 function s.initial_effect(c)
-	aux.AddEquipProcedure(c,nil,s.filter))
+	aux.AddEquipProcedure(c,nil,s.filter)
 	--atk
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_EQUIP)
