@@ -48,8 +48,8 @@ function s.hspcon(e,c)
 		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_ONFIELD,0,1,nil)
 end
 --destroy spell&trap
-function s.bfilter
-	return (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP) and aux.True)
+function s.bfilter(c)
+	return c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP) and aux.True
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
