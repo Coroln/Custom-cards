@@ -24,7 +24,7 @@ function s.filter(c,att)
 	return c:IsFaceup() and c:IsCode(80000315)
 end
 function s.atkcon(e)
-	return Duel.IsExistingMatchingCard(s.filter,0,nil,LOCATION_ONFIELD,1,nil)
+	return Duel.IsExistingMatchingCard(s.filter,0,0,LOCATION_ONFIELD,1,nil)
 end
 function s.ffilter(c,e,tp)
 	return c:IsSetCard(0xBDF) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -39,6 +39,6 @@ function s.sumop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.ffilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
 	if #g>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummon(g,tp,0,tp,false,false,POS_FACEUP)
 	end
 end
