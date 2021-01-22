@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.pmfilter(c,sc)
-	return c:IsCode(80000305) and c:IsType(TYPE_MONSTER,sc,SUMMON_TYPE_SYNCHRO)
+	return c:IsCode(80000305) and c:IsType(sc,SUMMON_TYPE_SYNCHRO)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
