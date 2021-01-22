@@ -21,7 +21,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
-	e2:SetCondition(s.hspcon)
+	e2:SetCondition(s.dircon)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
@@ -55,14 +55,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Destroy(sg,REASON_EFFECT)
 end
 --spsummon
-function s.dfilter(c)
-	return c:IsCode(80000315)
-end
-function s.hspcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_ONFIELD,0,1,nil)
+function s.dircon(e)
+	return Duel.IsEnvironment(80000315)
 end
 function s.filter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false)
