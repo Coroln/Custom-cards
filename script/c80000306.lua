@@ -30,10 +30,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.pmfilter(c,sc)
-	return c:IsCode(80000305)
+	return c:IsCode(80000305) and c:IsType(TYPE_MONSTER,sc,SUMMON_TYPE_SYNCHRO)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsSummonType(SUMMON_TYPE_SYNCHRO) and c:GetMaterial():IsExists(s.pmfilter,1,nil,c)
+	local c=e:GetHandler()
+	return c:IsSummonType(SUMMON_TYPE_SYNCHRO) and c:GetMaterial():IsExists(s.pmfilter,1,nil,c)
 end
 function s.dircon(e)
 	return Duel.IsEnvironment(80000315)
