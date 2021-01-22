@@ -39,7 +39,7 @@ function s.initial_effect(c)
 	e5:SetCategory(CATEGORY_DESTROY)
 	e5:SetType(EFFECT_TYPE_IGNITION)
 	e5:SetRange(LOCATION_MZONE)
-	e5:SetCondition(s.hspcon)
+	e5:SetCondition(s.dircon)
 	e5:SetCost(s.cost)
 	e5:SetTarget(s.target)
 	e5:SetOperation(s.operation)
@@ -130,14 +130,8 @@ function s.aclimit2(e,re,tp)
 	return rc and rc:IsLocation(LOCATION_HAND+LOCATION_GRAVE)
 end
 --destroy
-function s.dfilter(c)
-	return c:IsCode(80000315)
-end
-function s.hspcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_ONFIELD,0,1,nil)
+function s.dircon(e)
+	return Duel.IsEnvironment(80000315)
 end
 function s.ccfilter(c)
 	return c:IsFaceup() and c:IsCode(id) and c:IsAbleToGraveAsCost()
