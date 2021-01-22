@@ -27,5 +27,5 @@ function s.atkval(e,c)
 	return c:GetOverlayCount()*500
 end	
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler()c:GetOverlayGroup():IsExists(Card.IsCode,1,nil,80000304)
+	return e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,80000304)
 end
