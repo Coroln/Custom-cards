@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_PIERCE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
-	e2:SetCondition(s.hspcon)
+	e2:SetCondition(s.dircon)
 	e2:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0xBDF))
 	c:RegisterEffect(e2)
 end
@@ -36,12 +36,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 	end
 end
-function s.filter(c)
-	return c:IsCode(80000315)
-end
-function s.hspcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_ONFIELD,0,1,nil)
+function s.dircon(e)
+	return Duel.IsEnvironment(80000315)
 end
