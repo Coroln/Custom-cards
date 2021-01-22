@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_COUNT)
-	e2:SetCondition(s.hspcon)
+	e2:SetCondition(s.dircon)
 	e2:SetCountLimit(1)
 	e2:SetValue(s.valcon)
 	c:RegisterEffect(e2)
@@ -29,15 +29,10 @@ function s.spcon(e,c)
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 		and	Duel.IsExistingMatchingCard(s.spfilter,c:GetControler(),LOCATION_MZONE,0,2,nil)
 end
-function s.filter(c)
-	return c:IsCode(80000315)
+function s.dircon(e)
+	return Duel.IsEnvironment(80000315)
 end
-function s.hspcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_ONFIELD,0,1,nil)
-end
+
 function s.valcon(e,re,r,rp)
 	return (r&REASON_BATTLE)~=0
 end
