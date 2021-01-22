@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.acop)
 	c:RegisterEffect(e2)
 end
-function s.filter(e)
+function s.filter(c)
 	return c:IsCode(80000310) or c:IsCode(80000308)
 end
 function s.accon(e,tp,eg,ep,ev,re,r,rp)
