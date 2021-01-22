@@ -9,7 +9,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
-	e1:SetCondition(s.hspcon)
+	e1:SetCondition(s.dircon)
 	e1:SetTarget(s.destg)
 	e1:SetOperation(s.desop)
 	c:RegisterEffect(e1)
@@ -23,14 +23,8 @@ function s.initial_effect(c)
 	e2:SetValue(s.val)
 	c:RegisterEffect(e2)
 end
-function s.dfilter(c)
-	return c:IsCode(80000315)
-end
-function s.hspcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_ONFIELD,0,1,nil)
+function s.dircon(e)
+	return Duel.IsEnvironment(80000315)
 end
 function s.filter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP)
