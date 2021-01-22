@@ -36,7 +36,7 @@ function s.initial_effect(c)
     e6:SetValue(s.damlimit)
     c:RegisterEffect(e6)
 end
-ffunction s.dircon(e)
+function s.dircon(e)
 	return Duel.IsEnvironment(80000315)
 end
 function s.hsptg(e,tp,eg,ep,ev,re,r,rp,c)
