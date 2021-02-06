@@ -3,7 +3,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
   --Synchro Summon
-  aux.AddSynchroProcedure(c,nil,1,1,aux.NonTuner(Card.IsSetCard,0x999),1,1)
+  Synchro.AddProcedure(c,nil,1,1,Synchro.NonTunerEx(Card.IsSetCard,0x999),1,99)
   c:EnableReviveLimit()
   --(1) Gain LP
   local e1=Effect.CreateEffect(c)
