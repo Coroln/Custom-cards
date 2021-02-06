@@ -3,7 +3,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
   --Link Summon
-  aux.AddLinkProcedure(c,s.linkmatfilter,2,2)
+  Link.AddProcedure(c,s.linkmatfilter,2,2)
   c:EnableReviveLimit()
   --(1) Gain effect this turn
   local e1=Effect.CreateEffect(c)
