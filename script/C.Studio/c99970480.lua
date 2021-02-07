@@ -1,7 +1,7 @@
 --DAL Arusu Marina
 --Scripted by Raivost
 function c99970480.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum effects
   --(1) Search 1
   local e1=Effect.CreateEffect(c)
