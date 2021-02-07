@@ -4,7 +4,7 @@ local s,id=GetID()
 function s.initial_effect(c)
   c:EnableReviveLimit()
   --Xyz Summon
-  aux.AddXyzProcedure(c,s.xyzfilter,nil,99,s.ovfilter,aux.Stringid(id,0))
+  Xyz.AddProcedure(c,s.xyzfilter,nil,99,s.ovfilter,aux.Stringid(id,0))
   Pendulum.AddProcedure(c,false)
   --Special Summon condition
   local e0=Effect.CreateEffect(c)
