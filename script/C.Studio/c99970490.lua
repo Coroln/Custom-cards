@@ -1,7 +1,7 @@
 --DAL Irregular Spirit - Viris
 --Scripted by Raivost
 function c99970490.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum effects
   --(1) Inflict damage
   local e1=Effect.CreateEffect(c)
