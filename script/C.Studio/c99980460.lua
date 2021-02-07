@@ -2,7 +2,7 @@
 --Scripted by Raivost
 function c99980460.initial_effect(c)
   --Xyz Summon
-  aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x998),5,3)
+  Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x998),5,3)
   c:EnableReviveLimit()
   --(1) Gain additional effect
   local e0=Effect.CreateEffect(c)
