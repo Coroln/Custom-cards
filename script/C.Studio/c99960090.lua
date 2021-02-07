@@ -3,9 +3,9 @@
 function c99960090.initial_effect(c)
   c:EnableReviveLimit()
   --Fusion material
-  aux.AddFusionProcMix(c,true,true,99960010,99960060)
+  Fusion.AddProcMix(c,true,true,99960010,99960060)
   --Contact fusion
-  aux.AddContactFusion(c,c99960090.contactfil,c99960090.contactop,c99960090.splimit,aux.TRUE,1)
+  Fusion.AddContactProc(c,c99960090.contactfil,c99960090.contactop,c99960090.splimit)
   --(1) Gain ATK
   local e2=Effect.CreateEffect(c)
   e2:SetDescription(aux.Stringid(99960090,0))
