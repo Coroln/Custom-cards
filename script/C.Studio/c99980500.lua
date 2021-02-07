@@ -1,7 +1,7 @@
 --HN MAGES.
 --Scripted by Raivost
 function c99980500.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum Effcts
   --(1) Destroy replace
   local e1=Effect.CreateEffect(c)
