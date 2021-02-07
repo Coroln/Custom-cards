@@ -1,7 +1,7 @@
 --HN Broccoli
 --Scripted by Raivost
 function c99980590.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum Effects
   --(1) Gain LP
   local e1=Effect.CreateEffect(c)
