@@ -2,7 +2,7 @@
 --Scripted by Raivost
 function c99960030.initial_effect(c)
   --Xyz Summon
-  aux.AddXyzProcedure(c,nil,4,2)
+  Xyz.AddProcedure(c,nil,4,2)
   c:EnableReviveLimit()
  --(1) Attach
   local e1=Effect.CreateEffect(c)
