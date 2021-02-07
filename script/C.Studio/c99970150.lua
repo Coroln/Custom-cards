@@ -2,7 +2,7 @@
 --Scripted by Raivost
 function c99970150.initial_effect(c)
   --Xyz Summon
-  aux.AddXyzProcedure(c,c99970150.mfilter,3,3,c99970150.ovfilter,aux.Stringid(99970150,0))
+  Xyz.AddProcedure(c,c99970150.mfilter,3,3,c99970150.ovfilter,aux.Stringid(99970150,0))
   c:EnableReviveLimit()
   --(1) Destroy
   local e1=Effect.CreateEffect(c)
