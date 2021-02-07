@@ -3,7 +3,7 @@
 function c99960060.initial_effect(c)
   c:EnableReviveLimit()
   --Xyz Summon
-  aux.AddXyzProcedure(c,c99960060.xyzfilter,nil,99,c99960060.ovfilter,aux.Stringid(99960060,0),nil,c99960060.xyzop)
+  Xyz.AddProcedure(c,c99960060.xyzfilter,nil,99,c99960060.ovfilter,aux.Stringid(99960060,0),nil,c99960060.xyzop)
   --Special Summon condition
   local e0=Effect.CreateEffect(c)
   e0:SetType(EFFECT_TYPE_SINGLE)
