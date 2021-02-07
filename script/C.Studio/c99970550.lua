@@ -2,7 +2,7 @@
 --Scripted by Raivost
 function c99970550.initial_effect(c)
   --Link Summon
-  aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x997),2)
+  Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x997),2)
   c:EnableReviveLimit()
   --(1) To hand
   local e1=Effect.CreateEffect(c)
