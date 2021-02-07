@@ -5,7 +5,7 @@ function s.initial_effect(c)
   c:EnableReviveLimit()
   --Xyz Summon
   aux.AddXyzProcedure(c,s.xyzfilter,nil,99,s.ovfilter,aux.Stringid(id,0))
-  aux.EnablePendulumAttribute(c,false)
+  Pendulum.AddProcedure(c,false)
   --Special Summon condition
   local e0=Effect.CreateEffect(c)
   e0:SetType(EFFECT_TYPE_SINGLE)
