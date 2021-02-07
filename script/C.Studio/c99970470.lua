@@ -1,7 +1,7 @@
 --DAL Irregular Spirit - AI
 --Scripted by Raivost
 function c99970470.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum effects
   --(1) Gain LP
   local e1=Effect.CreateEffect(c)
