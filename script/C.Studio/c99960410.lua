@@ -3,7 +3,7 @@
 function c99960410.initial_effect(c)
   c:EnableReviveLimit()
   --Link Summon
-  aux.AddLinkProcedure(c,nil,2,nil,c99960410.matcheck)
+  Link.AddProcedure(c,nil,2,nil,c99960410.lcheck)
   --(1) Search
   local e1=Effect.CreateEffect(c)
   e1:SetDescription(aux.Stringid(99960410,0))
@@ -44,8 +44,8 @@ function c99960410.initial_effect(c)
   c:RegisterEffect(e4)
 end
 --Link Summon
-function c99960410.matcheck(g,lc,tp)
-  return g:IsExists(Card.IsLinkSetCard,1,nil,0x996)
+function c99960410.lcheck(g,lc,sumtype,tp)
+	return g:IsExists(Card.IsSetCard,1,nil,0x996,lc,sumtype,tp)
 end
 --(1) Search
 function c99960410.thfilter(c)
