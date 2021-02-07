@@ -2,7 +2,7 @@
 --Scripted by Raivost
 local s,id=GetID()
 function s.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum Effects
   --(1) Destroy 1
   local e1=Effect.CreateEffect(c)
