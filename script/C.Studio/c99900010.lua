@@ -3,7 +3,7 @@
 function c99900010.initial_effect(c)
   c:EnableReviveLimit()
   --Link Summon 
-  aux.AddLinkProcedure(c,c99900010.matfilter,3,3)
+  Link.AddProcedure(c,c99900010.matfilter,3,3)
   --(1) Return to Extra Deck
   local e1=Effect.CreateEffect(c)
   e1:SetDescription(aux.Stringid(99900010,0))
