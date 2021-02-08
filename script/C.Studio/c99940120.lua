@@ -1,7 +1,7 @@
 --NGNL Hatsuse Izuna
 --Scripted by Raivost
 function c99940120.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum Effects
   --(1) Scale change
   local e1=Effect.CreateEffect(c)
