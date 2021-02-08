@@ -1,7 +1,7 @@
 --NGNL Shiro
 --Scripted by Raivost
 function c99940020.initial_effect(c)
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum Effects
   --(1) Scale Change
   local e1=Effect.CreateEffect(c)
