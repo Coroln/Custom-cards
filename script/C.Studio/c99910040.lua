@@ -2,7 +2,7 @@
 --Scripted by Raivost
 function c99910040.initial_effect(c)
   c:EnableReviveLimit()
-  aux.EnablePendulumAttribute(c)
+  Pendulum.AddProcedure(c)
   --Pendulum Effects
   --(1) Destroy
   local e1=Effect.CreateEffect(c)
