@@ -3,7 +3,7 @@
 function c99930020.initial_effect(c)
   c:EnableReviveLimit()
   --Xyz Summon
-  aux.AddXyzProcedure(c,c99930020.xyzfilter,nil,2,nil,nil,99,nil,false,c99930020.xyzcheck)
+  Xyz.AddProcedure(c,c99930020.xyzfilter,nil,2,nil,nil,99,nil,false,c99930020.xyzcheck)
   --(1) Gain Rank
   local e1=Effect.CreateEffect(c)
   e1:SetDescription(aux.Stringid(99930020,0))
