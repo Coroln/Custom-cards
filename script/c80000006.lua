@@ -21,13 +21,13 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 	--summon success
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetCondition(s.regcon)
-	e2:SetOperation(s.regop)
-	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e3:SetCondition(s.regcon)
+	e3:SetOperation(s.regop)
+	c:RegisterEffect(e3)
 end
 function s.attop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -69,9 +69,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
-	if not re then return false end
-	local rc=re:GetHandler()
-	return re and rc:IsSetCard(0x19ba) and rc:IsType(TYPE_MONSTER+TYPE_SPELL+TYPE_TRAP)
+	return re and re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsSetCard(0x19ba)
 end
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -81,17 +79,19 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetValue(s.efilter)
-	e1:SetReset(RESET_EVENT+0x1fe0000)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_BATTLED)
 	e2:SetOperation(s.caop1)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_DAMAGE_STEP_END)
 	e3:SetOperation(s.caop2)
+	e3:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e3:SetLabelObject(e2)
 	c:RegisterEffect(e3)
 end
@@ -106,7 +106,7 @@ function s.caop1(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.caop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if e:GetLabelObject():GetLabel()==1 and c:IsRelateToBattle() and c:IsChainAttackable() then
+	if e:GetLabelObject():GetLabel()==1 and c:IsRelateToBattle() and c:CanChainAttack() then
 		Duel.ChainAttack()
 	end
 end
