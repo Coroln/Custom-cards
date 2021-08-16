@@ -35,7 +35,7 @@ end
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetSummonType()==SUMMON_TYPE_XYZ
 end
-function s.filter(c)
+function s.filter(c,tp)
 	return c:IsCode(22702055) and c:GetActivateEffect()
 		and c:GetActivateEffect():IsActivatable(tp,true,true)
 end
