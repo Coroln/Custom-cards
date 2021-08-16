@@ -35,7 +35,7 @@ function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetSummonType()==SUMMON_TYPE_XYZ
 end
 function s.filter(c)
-	return c:IsCode(22702055) and c:GetActivateEffect():IsActivatable(tp)
+	return c:IsCode(22702055) and c:GetActivateEffect() and c:IsActivatable(tp)
 end
 function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
