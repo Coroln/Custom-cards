@@ -30,7 +30,7 @@ end
 --Xyz limit
 function s.xyzlimit(e,c)
 	if not c then return false end
-	return not c:IsAttribute(ATTRIBUTE_WATER) or not c:IsRace(RACE_PYRO)
+	return not (c:IsAttribute(ATTRIBUTE_WATER) or c:IsRace(RACE_PYRO))
 end
 --special summon
 function s.cfilter(c,rc)
