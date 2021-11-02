@@ -1,4 +1,5 @@
 --Noble Hero Muramasa
+local s,id=GetID()
 function s.initial_effect(c)
 	--synchro summon
 	Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0xBDF),1,1,Synchro.NonTuner(nil),1,99)
