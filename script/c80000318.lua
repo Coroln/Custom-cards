@@ -72,6 +72,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-function s.filter(c)
+function s.filter2(c)
 	return c:IsAttribute(ATTRIBUTE_DIVINE) or c:IsRace(RACE_DIVINEBEAST)
 end
