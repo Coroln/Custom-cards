@@ -16,7 +16,7 @@ function s.descon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLP(tp)<=5000
 end
 --1
-function s.filter(c)
+function s.filter(c,e,tp)
 	return c:IsSetCard(0x758) and c:IsCanBeEffectTarget(e) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.xyzfilter(c,mg,tp,chk)
