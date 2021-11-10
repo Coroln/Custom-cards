@@ -49,7 +49,7 @@ function s.filter2(c)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_GRAVE)>0
 		and Duel.IsExistingTarget(s.filter,tp,LOCATION_EXTRA,0,1,nil,e,tp) 
 		and Duel.IsExistingTarget(s.filter2,tp,LOCATION_GRAVE,0,2,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
