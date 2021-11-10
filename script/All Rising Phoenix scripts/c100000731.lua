@@ -154,7 +154,7 @@ local e1=Effect.CreateEffect(e:GetHandler())
 	local sg=g:Filter(Card.IsRelateToEffect,nil,e)
 	local tc=e:GetLabelObject()
 	sg:RemoveCard(tc)
-	if tc:IsRelateToEffect(e) and Duel.SpecialSummontc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)>0 then
+	if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)>0 then
 		Duel.BreakEffect()
 		if sg:GetCount()>0 then 
 			Duel.Overlay(tc,sg)
