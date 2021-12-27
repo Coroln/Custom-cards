@@ -45,7 +45,7 @@ end
 function c80000202.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
 	if not g then return end
-	Duel.Remove(g,POS_FACEUP,REASON_COST)
+	Duel.Remove(g,POS_FACEDOWN,REASON_COST)
 	g:DeleteGroup()
 end
 function c80000202.rmtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -58,6 +58,6 @@ end
 function c80000202.rmop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
-		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+		Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)
 	end
 end
