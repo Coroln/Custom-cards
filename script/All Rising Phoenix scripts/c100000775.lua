@@ -45,7 +45,7 @@ function s.coffilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x75F) and c:IsType(TYPE_MONSTER) 
 end
 function s.descon2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c100000775.coffilter,tp,LOCATION_MZONE,0,1,e:GetHandler()) and Duel.GetLP(tp)<=5000 and Duel.GetCurrentChain(true)==0
+	return Duel.IsExistingMatchingCard(s.coffilter,tp,LOCATION_MZONE,0,1,e:GetHandler()) and Duel.GetLP(tp)<=5000 and Duel.GetCurrentChain(true)==0
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return true end
