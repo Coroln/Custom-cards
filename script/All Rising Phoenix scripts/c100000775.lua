@@ -37,7 +37,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.activate3)
 	e3:SetCondition(s.descon3)
 	c:RegisterEffect(e3)
-		local e4=e3:Clone()
+	local e4=e3:Clone()
 	e4:SetCode(EVENT_FLIP_SUMMON)
 	c:RegisterEffect(e4)
 end
@@ -78,7 +78,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.NegateActivation(ev) and re:GetHandler():IsRelateToEffect(re) then
+	Duel.NegateActivation(ev)
+	if re:GetHandler():IsRelateToEffect(re) then end
 		Duel.Destroy(eg,REASON_EFFECT)
 	end
-end
