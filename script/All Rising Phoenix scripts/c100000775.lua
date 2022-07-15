@@ -15,15 +15,14 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 		--Activate
 	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetCategory(CATEGORY_DISABLE_SUMMON+CATEGORY_DESTROY)
 	e2:SetType(EFFECT_TYPE_ACTIVATE)
 	e2:SetCode(EVENT_SPSUMMON)
 	e2:SetCountLimit(1,id)
 	e2:SetDescription(aux.Stringid(id,3))
+	e2:SetCondition(s.descon2)
 	e2:SetTarget(s.target2)
 	e2:SetOperation(s.activate2)
-	e2:SetCondition(s.descon2)
 	c:RegisterEffect(e2)
 		--Activate
 	local e3=Effect.CreateEffect(c)
@@ -45,7 +44,7 @@ function s.coffilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x75F) and c:IsType(TYPE_MONSTER) 
 end
 function s.descon2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.coffilter,tp,LOCATION_MZONE,0,1,e:GetHandler()) and Duel.GetLP(tp)<=5000 and Duel.GetCurrentChain(true)==0
+	return Duel.GetCurrentChain(true)==0 and Duel.GetLP(tp)<=5000 and Duel.IsExistingMatchingCard(s.coffilter,tp,LOCATION_MZONE,0,1,e:GetHandler()) 
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return true end
