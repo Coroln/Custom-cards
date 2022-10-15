@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	--pendulum summon
 	Pendulum.AddProcedure(c,false)
 	c:EnableReviveLimit()
-	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_FIEND),3,nil,s.matcheck)
+	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_FIEND),2,3,s.matcheck)
 	--splimit
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
