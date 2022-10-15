@@ -114,14 +114,9 @@ function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local g=Duel.SelectTarget(tp,s.spfilter2,tp,LOCATION_GRAVE+LOCATION_EXTRA,0,1,1,nil,e,tp)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 end
-function s.cfilter2(c)
-	return c:IsCode(94585852)
-end
-function s.thcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.cfilter2,tp,LOCATION_ONFIELD,0,1,nil)
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+	return (Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,94585852),tp,0,LOCATION_ONFIELD,1,nil)
+	or Duel.IsEnvironment(94585852))
 end
 function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
