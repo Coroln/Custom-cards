@@ -34,7 +34,7 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
 end
 function s.thfilter(c,ft,e,tp)
-	return c:IsSetCard(0x586)
+	return c:IsSetCard(0x586) and not c:IsCode(id)
 		and (c:IsAbleToHand() or (ft>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)))
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
