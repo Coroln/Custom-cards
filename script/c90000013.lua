@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.filter(c)
-	return c:IsSetCard(0xF008) or c:IsCode(90000010,id,90000011)
+	return c:IsSetCard(0xD008) or c:IsCode(90000010,id,90000011)
 end
 function s.val(e,c)
 	return Duel.GetMatchingGroupCount(s.filter,e:GetHandler():GetControler(),LOCATION_REMOVED,0,nil)*200
