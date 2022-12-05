@@ -41,7 +41,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 function s.cfilter(c,tp)
-	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0xD008)
+	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x9008)
 end
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil,tp) end

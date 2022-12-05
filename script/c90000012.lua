@@ -32,7 +32,7 @@ function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.spfilter(c,e,tp,chk)
-	return c:IsSetCard(0xD008) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
+	return c:IsSetCard(0x9008) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
 		and (not chk or Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,c))
 end
 function s.thfilter(c)

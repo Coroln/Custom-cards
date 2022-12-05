@@ -53,7 +53,7 @@ function s.discon(e,tp,eg,ep,ev,re,r,rp)
 		and (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE)) and Duel.IsChainNegatable(ev)
 end
 function s.disfilter(c)
-	return c:IsSetCard(0xD008) and c:IsAbleToDeck()
+	return c:IsSetCard(0x9008) and c:IsAbleToDeck()
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.disfilter,tp,LOCATION_REMOVED,0,1,nil) end
