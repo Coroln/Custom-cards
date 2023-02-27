@@ -89,7 +89,7 @@ function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
 end
 function s.eqcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:GetPreviousLocation()==LOCATION_FZONE
+	return c:GetPreviousLocation()==LOCATION_ONFIELD
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x9F1) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
