@@ -88,11 +88,11 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.atkcon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,94585852),0,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,94585852),0,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
 		or Duel.IsEnvironment(94585852)
 end
 function s.atkcon1(e)
-	return not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,94585852),0,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+	return not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,94585852),0,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
 		or not Duel.IsEnvironment(94585852)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)

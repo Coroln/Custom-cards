@@ -115,7 +115,7 @@ function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	return (Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,94585852),tp,0,LOCATION_ONFIELD,1,nil)
+	return (Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,94585852),tp,0,LOCATION_ONFIELD,1,nil)
 	or Duel.IsEnvironment(94585852))
 end
 function s.spop2(e,tp,eg,ep,ev,re,r,rp)
