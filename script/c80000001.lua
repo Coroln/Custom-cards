@@ -68,7 +68,19 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	if g:GetCount()>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummonStep(g,0,tp,tp,false,false,POS_FACEUP)
+		--Cannot be tributed
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetDescription(3303)
+			e1:SetProperty(EFFECT_FLAG_CLIENT_HINT)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_UNRELEASABLE_SUM)
+			e1:SetValue(1)
+			e1:SetReset(RESET_PHASE+PHASE_END)
+			e:RegisterEffect(e1,true)
+			local e2=e1:Clone()
+			e2:SetCode(EFFECT_UNRELEASABLE_NONSUM)
+			e:RegisterEffect(e2,true)
 	end
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
