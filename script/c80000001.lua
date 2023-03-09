@@ -67,26 +67,23 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
-			if tc then
-				Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
-				--Cannot be tributed
-				local e1=Effect.CreateEffect(c)
-				e1:SetDescription(3303)
-				e1:SetProperty(EFFECT_FLAG_CLIENT_HINT)
-				e1:SetType(EFFECT_TYPE_SINGLE)
-				e1:SetCode(EFFECT_UNRELEASABLE_SUM)
-				e1:SetValue(1)
-				e1:SetReset(RESET_PHASE+PHASE_END)
-				tc:RegisterEffect(e1)
-				local e2=Effect.CreateEffect(c)
-				e2:SetType(EFFECT_TYPE_SINGLE)
-				e2:SetCode(EFFECT_UNRELEASABLE_NONSUM)
-				e2:SetValue(1)
-				e2:SetReset(RESET_PHASE+PHASE_END)
-				tc:RegisterEffect(e2)
+			if #g1>0 then
+				Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_UNRELEASABLE_SUM)
+			e1:SetReset(RESET_PHASE+PHASE_END)
+			e1:SetValue(1)
+			tc:RegisterEffect(e1,true)
+			local e2=Effect.CreateEffect(c)
+			e2:SetType(EFFECT_TYPE_SINGLE)
+			e2:SetCode(EFFECT_UNRELEASABLE_NONSUM)
+			e2:SetValue(1)
+			e2:SetReset(RESET_PHASE+PHASE_END)
+			tc:RegisterEffect(e2,true)
+		end
+		Duel.SpecialSummonComplete()
 	end
-	Duel.SpecialSummonComplete()
-end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
 	if not re then return false end
 	local rc=re:GetHandler()
