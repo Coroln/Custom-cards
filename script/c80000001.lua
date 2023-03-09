@@ -67,7 +67,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
-	if Duel.SpecialSummonStep(c,0,tp,tp,false,false,POS_FACEUP) then
+	if Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
 		--Cannot be tributed
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetDescription(3303)
@@ -76,10 +76,10 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetCode(EFFECT_UNRELEASABLE_SUM)
 			e1:SetValue(1)
 			e1:SetReset(RESET_PHASE+PHASE_END)
-			e:RegisterEffect(e1,true)
+			tc:RegisterEffect(e1,true)
 			local e2=e1:Clone()
 			e2:SetCode(EFFECT_UNRELEASABLE_NONSUM)
-			e:RegisterEffect(e2,true)
+			tc:RegisterEffect(e2,true)
 	end
 	Duel.SpecialSummonComplete()
 end
