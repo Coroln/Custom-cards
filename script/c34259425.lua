@@ -58,7 +58,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 --remove
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and (r&REASON_TRICK)==REASON_TRICK
+	local c=e:GetHandler()
+	return (r&REASON_TRICK)==REASON_TRICK and c:IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and c:IsFaceup()
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
