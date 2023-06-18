@@ -36,7 +36,7 @@ function s.initial_effect(c)
 end
 --search
 function s.thfilter(c)
-	return c:IsSetCard(0x14a) and c:IsAbleToHand()
+	return c:IsSetCard(0x6C) and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
