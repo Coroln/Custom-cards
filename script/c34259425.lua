@@ -2,6 +2,14 @@
 --Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
+	--alias
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e0:SetRange(LOCATION_MZONE)
+	e0:SetCode(EFFECT_CHANGE_CODE)
+	e0:SetValue(30241314)
+	c:RegisterEffect(e0)
 	--Activate (search)
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
@@ -48,7 +56,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,sg)
 	end
 end
---
+--remove
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and (r&REASON_TRICK)==REASON_TRICK
 end
@@ -73,7 +81,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 	end
 end
---
+--atkup
 function s.atkval(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,LOCATION_REMOVED)*100
 end
