@@ -76,7 +76,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return g:FilterCount(Card.IsAbleToRemoveAsCost,nil,POS_FACEUP)==5
 		and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=12 end
 	Duel.DisableShuffleCheck()
-	Duel.Remove(g,POS_FACEDOWN,REASON_COST)
+	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
