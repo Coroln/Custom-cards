@@ -55,17 +55,11 @@ function s.selfspop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --Return to hand
-function s.cfilter(c)
-	return c:IsFaceup() and c:IsTrick()
-end
-function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsTrick),tp,LOCATION_ONFIELD,0,1,nil)
 end
 function s.thfilter(c)
-	return c:IsTrap() and c:IsAbleToHand()
+	return c:IsTrap() and c:IsSetCard(0x204) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
