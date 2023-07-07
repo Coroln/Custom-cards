@@ -48,7 +48,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 --to hand
 function s.filter(c)
-	return c:IsSetCard(0x20cd) and c:IsAbleToHand()
+	return c:IsSetCard(0x207a) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
