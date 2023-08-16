@@ -68,7 +68,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetCountLimit(1)
 	e3:SetReset(RESET_PHASE+PHASE_END)
 	e3:SetOperation(s.tgop)
-	Duel.RegisterEffect(e3,0)
+	Duel.RegisterEffect(e3,tp)
 	end
 --end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
