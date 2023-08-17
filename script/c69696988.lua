@@ -49,7 +49,7 @@ function s.initial_effect(c)
 	e5:SetTargetRange(0,1)
 	e5:SetValue(DOUBLE_DAMAGE)
 	e5:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e5,tp)
+	c:RegisterEffect(e5)
 end
 s.listed_series={0x69AB}
 s.listed_names={id}
