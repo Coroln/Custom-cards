@@ -36,7 +36,7 @@ function s.filter(c)
 end
 --Trap filter
 function s.filter2(c)
-	return c:IsCode(69696967)
+	return c:IsSetCard(0x69AA)
 end
 function s.spfilter(c,e,tp)
 	return c:IsFaceup()	and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
