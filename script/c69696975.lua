@@ -16,12 +16,12 @@ function s.initial_effect(c)
 	e1:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x69AA))
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetDescription(3207)
-	e2:SetProperty(EFFECT_FLAG_CLIENT_HINT)
-	e2:SetType(EFFECT_TYPE_SINGLE)
+	--cannot direct attack
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetCode(EFFECT_CANNOT_DIRECT_ATTACK)
-	e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetTargetRange(LOCATION_MZONE,0)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x69AA}
