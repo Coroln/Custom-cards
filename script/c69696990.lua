@@ -16,7 +16,6 @@ function s.initial_effect(c)
 	--sp
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetCode(EFFECT_SPSUMMON)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCondition(s.spcon)
 	e2:SetTarget(s.sptg)
