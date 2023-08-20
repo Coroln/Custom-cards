@@ -5,18 +5,18 @@ function s.initial_effect(c)
     -- Activate
     local e1 = Effect.CreateEffect(c)
     e1:SetCategory(CATEGORY_TOHAND + CATEGORY_SEARCH)
-    e1:SetType(EFFECT_TYPE_IGNITION)
+    e1:SetType(EFFECT_TYPE_ACTIVATE)
     e1:SetCode(EVENT_FREE_CHAIN)
     e1:SetRange(LOCATION_FZONE)
     e1:SetTarget(s.target)
     e1:SetOperation(s.activate)
     c:RegisterEffect(e1)
-
+    
     -- Todeck
     local e2 = Effect.CreateEffect(c)
     e2:SetDescription(aux.Stringid(id, 2))
     e2:SetCategory(CATEGORY_TOHAND + CATEGORY_SEARCH)
-    e2:SetType(EFFECT_TYPE_IGNITION)
+    e2:SetType(EFFECT_TYPE_ACTIVATE)
     e2:SetCode(EVENT_FREE_CHAIN)
     e2:SetRange(LOCATION_FZONE)
     e2:SetCondition(aux.bdocon)
@@ -25,7 +25,7 @@ function s.initial_effect(c)
     e2:SetOperation(s.op)
     e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
     c:RegisterEffect(e2)
-
+    
     -- Send to Deck when banished
     local e3 = Effect.CreateEffect(c)
     e3:SetType(EFFECT_TYPE_SINGLE)
