@@ -9,7 +9,7 @@ function s.initial_effect(c)
     e1:SetRange(LOCATION_MZONE)
     e1:SetCountLimit(1,id)
     e1:SetTarget(s.target)
-    e1:SetValue(s.atkval)
+    e1:SetOperation(s.atkactivate)
     e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
     c:RegisterEffect(e1)
     local e2=Effect.CreateEffect(c)
@@ -19,7 +19,7 @@ function s.initial_effect(c)
     e2:SetRange(LOCATION_MZONE)
     e2:SetCountLimit(1,id)
     e2:SetTarget(s.target)
-    e2:SetValue(s.defval)
+    e2:SetOperation(s.defactivate)
     e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
     c:RegisterEffect(e2)
 end
@@ -50,4 +50,26 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
+end
+function s.atkactivate(e,tp,eg,ep,ev,re,r,rp)
+    local tc=Duel.GetFirstTarget()
+    if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
+        local e1=Effect.CreateEffect(e:GetHandler())
+        e1:SetType(EFFECT_TYPE_SINGLE)
+        e1:SetCode(EFFECT_UPDATE_ATTACK)
+        e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+        e1:SetValue(s.atkval)
+        tc:RegisterEffect(e1)
+    end
+end
+function s.defactivate(e,tp,eg,ep,ev,re,r,rp)
+    local tc=Duel.GetFirstTarget()
+    if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
+        local e1=Effect.CreateEffect(e:GetHandler())
+        e1:SetType(EFFECT_TYPE_SINGLE)
+        e1:SetCode(EFFECT_UPDATE_ATTACK)
+        e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+        e1:SetValue(s.defval)
+        tc:RegisterEffect(e1)
+    end
 end
