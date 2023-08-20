@@ -31,6 +31,7 @@ function s.atkval(e,c,tp,eg,ep,ev,re,r,rp)
         return -250
     else
         return -500
+    end
 end
 function s.defval(e,c,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
@@ -38,6 +39,7 @@ function s.defval(e,c,tp,eg,ep,ev,re,r,rp)
         return 400
     else
         return 800
+    end
 end
 function s.filter(c)
     return c:IsFaceup()
