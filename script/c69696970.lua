@@ -1,10 +1,10 @@
---Kaiserwaffe Cross Tail
+E--Kaiserwaffe Cross Tail
 local s, id = GetID()
 function s.initial_effect(c)
     --Make 1 of the opponent's monsters lose 200 ATK/DEF
     local e1=Effect.CreateEffect(c)
     e1:SetCategory(CATEGORY_ATKCHANGE)
-    e1:SetType(EFFECT_TYPE_QUICK_O)
+    e1:SetType(EFFECT_TYPE_IGNITION+EFFECT_TYPE_QUICK_O)
     e1:SetCode(EFFECT_UPDATE_ATTACK)
     e1:SetRange(LOCATION_MZONE)
     e1:SetCountLimit(1,id)
@@ -14,7 +14,7 @@ function s.initial_effect(c)
     c:RegisterEffect(e1)
     local e2=Effect.CreateEffect(c)
     e2:SetCategory(CATEGORY_ATKCHANGE)
-    e2:SetType(EFFECT_TYPE_QUICK_O)
+    e2:SetType(EFFECT_TYPE_IGNITION+EFFECT_TYPE_QUICK_O)
     e2:SetCode(EFFECT_UPDATE_ATTACK)
     e2:SetRange(LOCATION_MZONE)
     e2:SetCountLimit(1,id)
