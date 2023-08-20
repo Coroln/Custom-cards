@@ -1,5 +1,5 @@
-E--Kaiserwaffe Cross Tail
-local s, id = GetID()
+--Kaiserwaffe Cross Tail
+local s,id=GetID()
 function s.initial_effect(c)
     --Make 1 of the opponent's monsters lose 200 ATK/DEF
     local e1=Effect.CreateEffect(c)
