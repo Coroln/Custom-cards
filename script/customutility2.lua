@@ -280,3 +280,14 @@ end
 function Auxiliary.tricklimit(e,se,sp,st)
 	return aux.sumlimit(SUMMON_TYPE_TRICK)(e,se,sp,st)
 end
+
+--Filter for unique on field "Ancient Treasure" Traps
+function Auxiliary.AncientUniqueFilter(cc)
+	local mt=cc:GetMetatable()
+	local t= mt.has_ancient_unique or {}
+	t[cc]=true
+	mt.has_ancient_unique=t
+	return 	function(c)
+				return not Duel.IsPlayerAffectedByEffect(c:GetControler(),70000111) and c:IsSetCard(0xADFF)
+			end
+end
