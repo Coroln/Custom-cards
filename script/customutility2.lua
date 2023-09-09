@@ -288,6 +288,6 @@ function Auxiliary.AncientUniqueFilter(cc)
 	t[cc]=true
 	mt.has_ancient_unique=t
 	return 	function(c)
-				return not Duel.IsPlayerAffectedByEffect(c:GetControler(),70000111) and c:IsSetCard(0xADFF)
+				return not Duel.IsPlayerAffectedByEffect(c:GetControler(),70000111) and c:IsSetCard(0xADFF) and c:IsTrap() and c:IsType(TYPE_CONTINUOUS)
 			end
 end
