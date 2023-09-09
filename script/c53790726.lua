@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.eqtg)
 	e1:SetOperation(s.eqop)
 	c:RegisterEffect(e1)
-	aux.AddEREquipLimit(c,nil,aux.NOT(aux.FilterBoolFunction(Card.IsRace,RACE_BEAST_WARRIOR)),s.equipop,e1)
+	aux.AddEREquipLimit(c,nil,aux.NOT(aux.FilterBoolFunction(Card.IsRace,RACE_BEASTWARRIOR)),s.equipop,e1)
 	--attack all
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
@@ -31,7 +31,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.eqfilter(c,tp)
-	return c:IsFaceup() and not c:IsRace(RACE_BEAST_WARRIOR) and (c:IsControler(tp) or c:IsAbleToChangeControler())
+	return c:IsFaceup() and not c:IsRace(RACE_BEASTWARRIOR) and (c:IsControler(tp) or c:IsAbleToChangeControler())
 end
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.eqfilter(chkc,tp) end
@@ -53,7 +53,7 @@ end
 function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc and tc:IsFaceup() and tc:IsMonster() and not tc:IsRace(RACE_BEAST_WARRIOR) and tc:IsRelateToEffect(e) then
+	if tc and tc:IsFaceup() and tc:IsMonster() and not tc:IsRace(RACE_BEASTWARRIOR) and tc:IsRelateToEffect(e) then
 		if c:IsFaceup() and c:IsRelateToEffect(e) then
 			s.equipop(c,e,tp,tc)
 		else Duel.SendtoGrave(tc,REASON_EFFECT) end
