@@ -1,0 +1,109 @@
+--Ancient Treasure
+--Script by Coroln
+Duel.LoadScript("customutility2.lua")
+local s,id=GetID()
+function s.initial_effect(c)
+	c:SetUniqueOnField(1,1,aux.AncientUniqueFilter(c),LOCATION_SZONE)
+	--Draw
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetRange(LOCATION_SZONE)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.lpop)
+	c:RegisterEffect(e1)
+	--to S/T Zone
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetCode(EVENT_BE_MATERIAL)
+	e2:SetCondition(s.condition2)
+	e2:SetTarget(s.tftg)
+	e2:SetOperation(s.tfop)
+	c:RegisterEffect(e2)
+	--destroy
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetCode(EFFECT_SELF_DESTROY)
+	e3:SetCondition(s.descon)
+	c:RegisterEffect(e3)
+	--Effect Draw
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD)
+	e4:SetCode(EFFECT_DRAW_COUNT)
+	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e4:SetRange(LOCATION_SZONE)
+	e4:SetTargetRange(1,0)
+	local function get_draw(e) return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_HAND,0) end
+	e4:SetCondition(function(e)return get_draw(e)<4 end)
+	e4:SetValue(function(e)return 4-get_draw(e) end)
+	c:RegisterEffect(e4)
+	--draw opponent
+	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,2))
+	e5:SetCategory(CATEGORY_DRAW)
+	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e5:SetCode(EVENT_DESTROYED)
+	e5:SetCondition(s.thcon)
+	e5:SetTarget(s.target2)
+	e5:SetOperation(s.operation2)
+	c:RegisterEffect(e5)
+end
+--Draw
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
+end
+function s.lpop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) and Duel.SendtoGrave(c,REASON_EFFECT)~=0 and c:IsLocation(LOCATION_GRAVE) then
+		Duel.Draw(tp,1,REASON_EFFECT)
+	end
+end
+----to S/T Zone
+function s.condition2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return (r&REASON_TRICK) and not c:IsSummonType(SUMMON_TYPE_MAXIMUM) and e:GetHandler():IsPreviousPosition(POS_FACEDOWN) and c:GetReasonCard():IsSetCard(0xADFE)
+end
+function s.tftg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
+	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,e:GetHandler(),1,tp,0)
+end
+function s.tfop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return end
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+		Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	end
+end
+--destroy
+function s.cfilter(c)
+	return c:IsFaceup() and c:IsMonster()
+end
+function s.descon(e)
+	local tp=e:GetHandlerPlayer()
+	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_STANDBY
+		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+end
+--draw opponent
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:GetReasonPlayer()~=tp and c:IsReason(REASON_EFFECT)
+		and c:IsPreviousPosition(POS_FACEUP)
+end
+function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(1-tp)
+	Duel.SetTargetParam(3)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,1-tp,3)
+end
+function s.operation2(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Draw(p,d,REASON_EFFECT)
+end
