@@ -42,6 +42,7 @@ s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
 function s.filter(c)
+	local g1,lv=g:GetMaxGroup(Card.GetLevel)
     return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(lv)
 end
 function s.filter1(c)
