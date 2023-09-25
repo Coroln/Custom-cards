@@ -45,7 +45,7 @@ function s.filter(c,lv)
     return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(lv)
 end
 function s.filter1(c)
-    -- Define a lambda function to get the level of the targeted monster (c)
+    --Define a lambda function to get the level of the targeted monster (c)
     local getTargetLevel = function(tc) return tc:GetLevel() end
     return getTargetLevel
 end
