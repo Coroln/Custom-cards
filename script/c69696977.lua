@@ -42,7 +42,7 @@ s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
 function s.filter(c,lv)
-    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:GetLevel() and c:IsLevelBelow(function(tc) return tc:GetLevel() end)
+    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(lv)
 end
 function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
@@ -50,15 +50,21 @@ function s.filter1(c)
     return getTargetLevel
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return chkc:IsLocation(LOCATION_DECK) end
     if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
+    local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
-    if #g>0 then
-        Duel.SendtoHand(g,nil,REASON_EFFECT)
-        Duel.ConfirmCards(1-tp,g)
+	local tc=Duel.GetFirstTarget()
+	if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tc:GetLevel()) then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tc:GetLevel())
+    	if #g>0 then
+    		Duel.BreakEffect()
+        	Duel.SendtoHand(g,nil,REASON_EFFECT)
+        	Duel.ConfirmCards(1-tp,g)
+        end
     end
 end
 --Todeck
