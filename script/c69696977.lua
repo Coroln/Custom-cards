@@ -12,18 +12,11 @@ function s.initial_effect(c)
     local e1=Effect.CreateEffect(c)
     e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
     e1:SetType(EFFECT_TYPE_IGNITION)
-    e1:SetCode(EVENT_CUSTOM+id)
     e1:SetRange(LOCATION_FZONE)
     e1:SetCountLimit(1,id)
     e1:SetTarget(s.target)
     e1:SetOperation(s.activate)
     c:RegisterEffect(e1)
-    	aux.GlobalCheck(s,function()
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetOperation(s.check)
-		Duel.RegisterEffect(ge1,0)
-	end)
     --Todeck
     local e2=Effect.CreateEffect(c)
     e2:SetDescription(aux.Stringid(id,2))
@@ -48,32 +41,29 @@ end
 s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
-function s.filter(c,lv)
-    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:GetLevel()==lv
+function s.filter(c)
+    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(s.filter1)
 end
-function s.check(e,tp,eg,ep,ev,re,r,rp)
-	for tc in aux.Next(eg) do
-		if tc:GetLevel()~=0 and tc:IsPosition(POS_FACEUP) then
-			Duel.RaiseEvent(tc,EVENT_CUSTOM+id,re,r,rp,tc:GetControler(),tc:GetLevel())
-		end
-	end
-end
---[[function s.filter1(c)
+function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
     local getTargetLevel = function(tc) return tc:GetLevel() end
     return getTargetLevel
-end]]
+end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,ev) end
+    if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,ev)
-    if #g>0 then
-        Duel.SendtoHand(g,nil,REASON_EFFECT)
-        Duel.ConfirmCards(1-tp,g)
+    local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
+    if #g==0 then return end
+    local sg=g:GetMaxGroup(Card.GetLevel)
+    if #sg>1 then
+    	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+    	sg=sg:Select(tp,1,1,nil)
     end
+    local tc=sg:GetFirst()
+    Duel.SendtoHand(tc,nil,REASON_EFFECT)
+    Duel.ConfirmCards(1-tp,tc)
 end
 --Todeck
 function s.cfilter(c)
