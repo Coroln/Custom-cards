@@ -42,13 +42,16 @@ s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
 function s.filter(c)
-    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(s.filter1)
+    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(lv)
 end
 function s.filter1(c)
+	local g1,lv=g:GetMaxGroup(Card.GetLevel)
+	return c:GetLevel()~=lv
+--[[function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
     local getTargetLevel = function(tc) return tc:GetLevel() end
     return getTargetLevel
-end
+end]]
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
