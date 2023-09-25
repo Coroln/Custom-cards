@@ -42,7 +42,7 @@ s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
 function s.filter(c,lv)
-    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:GetLevel()
+    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:GetLevel() and c:IsLevelBelow(getTargetLevel)
 end
 function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
