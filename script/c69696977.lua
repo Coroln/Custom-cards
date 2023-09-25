@@ -42,6 +42,7 @@ s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
 function s.filter(c,lv)
+	local getTargetLevel = function(tc) return tc:GetLevel() end
     return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:GetLevel() and c:IsLevelBelow(getTargetLevel)
 end
 function s.filter1(c)
