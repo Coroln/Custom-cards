@@ -51,7 +51,6 @@ function s.filter1(c)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local getTargetLevel = function(tc) return tc:GetLevel() end
-    then return getTargetLevel end
     if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
