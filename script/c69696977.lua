@@ -47,6 +47,7 @@ end
 function s.filter1(c)
 	local g1,lv=g:GetMaxGroup(Card.GetLevel)
 	return c:GetLevel()~=lv
+end
 --[[function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
     local getTargetLevel = function(tc) return tc:GetLevel() end
