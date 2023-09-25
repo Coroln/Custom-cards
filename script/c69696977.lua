@@ -23,6 +23,7 @@ function s.initial_effect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		ge1:SetOperation(s.check)
 		Duel.RegisterEffect(ge1,0)
+	end)
     --Todeck
     local e2=Effect.CreateEffect(c)
     e2:SetDescription(aux.Stringid(id,2))
@@ -56,7 +57,6 @@ function s.check(e,tp,eg,ep,ev,re,r,rp)
 			Duel.RaiseEvent(tc,EVENT_CUSTOM+id,re,r,rp,tc:GetControler(),tc:GetLevel())
 		end
 	end
-end
 end
 --[[function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
