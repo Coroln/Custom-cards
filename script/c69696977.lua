@@ -50,12 +50,12 @@ function s.filter1(c)
     return getTargetLevel
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetLevel()< s.filter1()) end
+    if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,c:GetLevel())
+    local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,c:GetLevel()< s.filter1())
     if #g>0 then
         Duel.SendtoHand(g,nil,REASON_EFFECT)
         Duel.ConfirmCards(1-tp,g)
