@@ -41,8 +41,8 @@ end
 s.listed_series={0x69AA}
 s.listed_names={id}
 --Search
-function s.filter(c)
-    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(tc)
+function s.filter(c,lv)
+    return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:GetLevel()<lv
 end
 function s.filter1(c)
     -- Define a lambda function to get the level of the targeted monster (c)
@@ -54,16 +54,12 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
     local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
-    if #g==0 then return end
-    local sg=g:GetMaxGroup(Card.GetLevel)
-    if #sg>1 then
-    	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    	sg=sg:Select(tp,1,1,nil)
+    if #g>0 then
+        Duel.SendtoHand(g,nil,REASON_EFFECT)
+        Duel.ConfirmCards(1-tp,g)
     end
-    local tc=sg:GetFirst()
-    Duel.SendtoHand(tc,nil,REASON_EFFECT)
-    Duel.ConfirmCards(1-tp,tc)
 end
 --Todeck
 function s.cfilter(c)
