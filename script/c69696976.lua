@@ -12,6 +12,12 @@ function s.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 end
+function s.mgfilter(c,e,tp,fusc,mg)
+	return c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE)
+		and (c:GetReason()&0x40008)==0x40008 and c:GetReasonCard()==fusc
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and fusc:CheckFusionMaterial(mg,c,PLAYER_NONE|FUSPROC_NOTFUSION)
+end
 function s.spfilter(c,e,tp)
 	if c:IsFaceup() and c:GetFlagEffect(id)~=0 and c:GetFlagEffectLabel(id)==e:GetHandler():GetCardID() then
 		local mg=c:GetMaterial()
