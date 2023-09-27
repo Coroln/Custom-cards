@@ -48,22 +48,21 @@ function s.cfilter1(c,lv)
 	return c:IsFaceup() and c:GetLevel()>lv
 end
 function s.filter1(c,e,tp)
-	local lv=c:GetLevel()
-	return lv>0 and c:IsFaceup() and not Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,lv)
+    --Define a lambda function to get the level of the targeted monster (c)
+    local getTargetLevel = function(tc) return tc:GetLevel() end
+    return getTargetLevel and lv>0 and c:IsFaceup() and not Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,lv)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_DECK) and (chkc:IsLocation(LOCATION_MZONE) and s.filter1(chkc,e,tp)) end
-    if chk==0 then return Duel.IsExistingTarget(s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,e,tp) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return chkc:IsLocation(LOCATION_DECK) end
+    if chk==0 then return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
     local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,lv) then
+	if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tc:GetLevel()) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,lv)
-		local lv=tc:GetLevel()
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tc:GetLevel())
     	if #g>0 then
     		Duel.BreakEffect()
         	Duel.SendtoHand(g,nil,REASON_EFFECT)
