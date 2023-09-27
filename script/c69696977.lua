@@ -60,9 +60,9 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,lv) then
+	if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,lv) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tc:GetLevel())
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,lv)
 		local lv=tc:GetLevel()
     	if #g>0 then
     		Duel.BreakEffect()
