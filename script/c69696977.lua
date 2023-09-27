@@ -48,6 +48,7 @@ function s.cfilter1(c,lv)
 	return c:IsFaceup() and c:GetLevel()>lv
 end
 function s.filter1(c,e,tp)
+	local lv=c:GetLevel()
     --Define a lambda function to get the level of the targeted monster (c)
     local getTargetLevel = function(tc) return tc:GetLevel() end
     return getTargetLevel and lv>0 and c:IsFaceup() and not Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,lv)
