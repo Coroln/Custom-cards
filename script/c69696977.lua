@@ -46,13 +46,13 @@ function s.filter(c,lv)
 end
 function s.filter1(c,e,tp)
     --Define a lambda function to get the level of the targeted monster (c)
-    local getTargetLevel = function(tc) return tc:GetLevel()>lv end
+    local getTargetLevel = function(tc) return tc:GetLevel() end
     return getTargetLevel 
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_DECK) end
-    if chk==0 then return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-    local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+    if chk==0 then return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,tc:GetLevel()>lv) end
+    local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,tc:GetLevel()>lv)
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
