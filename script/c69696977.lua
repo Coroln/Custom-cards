@@ -44,26 +44,45 @@ s.listed_names={id}
 function s.filter(c,lv)
     return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(lv)
 end
+function s.cfilter(c,lv)
+	return c:IsFaceup() and c:GetLevel()>lv
+end
 function s.filter1(c,e,tp)
+	local lv=c:GetLevel()
+	return lv>0 and c:IsFaceup() and not Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,lv)
+end
+--[[function s.filter1(c,e,tp)
     --Define a lambda function to get the level of the targeted monster (c)
     local getTargetLevel = function(tc) return tc:GetLevel() end
     return getTargetLevel 
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_DECK) end
-    if chk==0 then return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,c:GetLevel()>lv) end
-    local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,c:GetLevel()>lv)
+    if chk==0 then return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+    local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
+end]]
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and s.filter1(chkc,e,tp) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter1,tp,LOCATION_MZONE,0,1,nil,e,tp) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+	Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,0,1,1,nil,e,tp)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tc:GetLevel()) then
+		if tc:IsRelateToEffect(e) then
+		local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
+	--if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tc:GetLevel()) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tc:GetLevel())
-    	if #g>0 then
+		local lc=g:GetFirst()
+		local lv=tc:GetLevel()
+    	--if #g>0 then
+    	while lc do
     		Duel.BreakEffect()
         	Duel.SendtoHand(g,nil,REASON_EFFECT)
         	Duel.ConfirmCards(1-tp,g)
+        	lc=g:GetNext()
         end
     end
 end
