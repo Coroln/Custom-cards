@@ -45,12 +45,12 @@ s.listed_names={id}
 function s.filter(c,lv)
     return c:IsSetCard(0x69AA) and c:IsMonster() and c:IsAbleToHand() and c:IsLevelBelow(lv)
 end
-function s.cfilter(c,lv)
+function s.cfilter1(c,lv)
 	return c:IsFaceup() and c:GetLevel()>lv
 end
 function s.filter1(c,e,tp)
 	local lv=c:GetLevel()
-	return lv>0 and c:IsFaceup() and not Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,lv)
+	return lv>0 and c:IsFaceup() and not Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,lv)
 end
 --[[function s.filter1(c)
     --Define a lambda function to get the level of the targeted monster (c)
