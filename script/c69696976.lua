@@ -1,6 +1,6 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	Fusion.RegisterSummonEff(c)
+	Fusion.RegisterSummonEff(c,s.stage2)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,1))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -11,6 +11,11 @@ function s.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
+end
+function s.stage2(e,tc,tp,sg,chk)
+	if chk==1 then
+		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,e:GetHandler():GetCardID())
+	end
 end
 function s.mgfilter(c,e,tp,fusc,mg)
 	return c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE)
