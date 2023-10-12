@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,69696986,1,s.ffilter,2)
+	Fusion.AddProcMixRep(c,true,true,s.ffilter,2,2,69696986)
 	Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit)
 	--cannot be fusion material
 	local e1=Effect.CreateEffect(c)
