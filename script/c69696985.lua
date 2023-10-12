@@ -3,7 +3,8 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	Fusion.AddProcMixN(c,false,false,aux.FilterBoolFunction(Card.IsLevel,6),2)
+	Fusion.AddProcMix(c,true,true,69696986,s.ffilter,2)
+	Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit)
 	--cannot be fusion material
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -32,18 +33,17 @@ function s.initial_effect(c)
 end
 s.listed_series={0x69AC}
 s.listed_names={id}
-
-function s.matfilter(c,fc,sumtype,tp)
-	return c:GetSequence()>4 and c:IsLocation(LOCATION_MZONE) and (c:IsControler(tp) or c:IsFaceup())
+function s.ffilter(c,fc,sumtype,tp)
+	return c:GetLevel()=6
 end
 function s.splimit(e,se,sp,st)
-	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
-end
-function s.cfilter(c,tp)
-	return c:IsAbleToGraveAsCost() and (c:IsControler(tp) or c:IsFaceup()) and c:IsCard(69696986)
+	return (st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
 end
 function s.contactfil(tp)
-	return Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil,tp)
+	return Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil,tp)
+end
+function s.cfilter(c,tp)
+	return c:IsAbleToGraveAsCost() and (c:IsControler(tp) or c:IsFaceup())
 end
 function s.contactop(g,tp,c)
 	Duel.SendtoGrave(g,REASON_COST+REASON_MATERIAL)
