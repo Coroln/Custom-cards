@@ -45,9 +45,8 @@ function s.initial_effect(c)
 end
 s.listed_series={0x69AA}
 s.listed_names={id}
-s.synchro_nt_required=1
 function s.atkval(e,c)
-	return Duel.GetMatchingGroupCount(Card.IsType,LOCATION_GRAVE,0,nil,TYPE_TUNER)*500
+	return Duel.GetMatchingGroupCount(Card.IsType,LOCATION_GRAVE,LOCATION_GRAVE,0,TYPE_TUNER)*500
 end
 function s.nacon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttacker():IsControler(1-tp)
