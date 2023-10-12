@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,69696986,s.ffilter,2)
+	Fusion.AddProcMix(c,true,true,69696986,1,s.ffilter,2)
 	Fusion.AddContactProc(c,s.contactfil,s.contactop,s.splimit)
 	--cannot be fusion material
 	local e1=Effect.CreateEffect(c)
@@ -34,7 +34,7 @@ end
 s.listed_series={0x69AC}
 s.listed_names={id}
 function s.ffilter(c,fc,sumtype,tp)
-	return c:IsLevel(6)
+	return c:IsLevel(6,scard,sumtype,tp)
 end
 function s.splimit(e,se,sp,st)
 	return (st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
