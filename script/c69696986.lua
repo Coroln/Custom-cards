@@ -1,10 +1,9 @@
 -- 69696986 Incursio (Monster)
-local s, id = GetID()
-
+local s,id=GetID()
 function s.initial_effect(c)
-    Fusion.AddProcMixN(c, true, true, aux.FilterBoolFunctionEx(Card.IsSetCard, 0x69AC), 2)
-    c:EnableReviveLimit()
-
+	--fusion material
+	c:EnableReviveLimit()
+	Fusion.AddProcMixN(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0x69AA),2)
     -- 1. Effect to change battle target and protect itself
     local e1 = Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id, 0))
