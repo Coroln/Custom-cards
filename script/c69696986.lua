@@ -63,11 +63,11 @@ end
 
 -- 2. Effect to Special Summon this card from the GY
 function s.cfilter(c, tp)
-    return c:IsCode(96969685) and c:IsControler(tp)
+    return c:IsCode(96969685)
 end
 
-function s.spcon(e, tp, eg, ep, ev, re, r, rp)
-    return not eg:IsContains(e:GetHandler()) and eg:IsExists(s.cfilter, 1, nil, tp)
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 
 function s.sptg(e, tp, eg, ep, ev, re, r, rp, chk)
