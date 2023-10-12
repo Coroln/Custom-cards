@@ -34,7 +34,7 @@ end
 s.listed_series={0x69AC}
 s.listed_names={id}
 function s.ffilter(c,fc,sumtype,tp)
-	return if contact then sumtype=0 end
+	if contact then sumtype=0 end
 	return c:IsLevel(6) and (not contact or c:IsType(TYPE_MONSTER,fc,sumtype,tp))
 end
 function s.splimit(e,se,sp,st)
