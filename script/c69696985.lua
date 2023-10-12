@@ -34,7 +34,7 @@ end
 s.listed_series={0x69AC}
 s.listed_names={id}
 function s.ffilter(c,fc,sumtype,tp)
-	return c:GetLevel()=6
+	return c:IsLevel(6)
 end
 function s.splimit(e,se,sp,st)
 	return (st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
