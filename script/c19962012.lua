@@ -90,7 +90,7 @@ function c19962012.desop2(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCountLimit(1)
 	e1:SetRange(LOCATION_SZONE)
 	e1:SetCondition(c19962012.descon)
-	e1:SetOperation(c19962012.desop)
+	e1:SetOperation(c19962012.desop3)
 	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END+RESET_OPPO_TURN,3)
 	e:GetHandler():RegisterEffect(e1)
 	e:GetHandler():RegisterFlagEffect(1082946,RESET_PHASE+PHASE_END+RESET_OPPO_TURN,0,3)
@@ -99,7 +99,8 @@ function c19962012.desop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 function c19962012.descon(e,tp,eg,ep,ev,re,r,rp) 
 	return tp~=Duel.GetTurnPlayer() 
-function c19962012.desop(e,tp,eg,ep,ev,re,r,rp)
+end
+function c19962012.desop3(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ct=c:GetTurnCounter()
 	ct=ct+1
@@ -107,3 +108,4 @@ function c19962012.desop(e,tp,eg,ep,ev,re,r,rp)
 	if ct==3 then
 		Duel.Destroy(c,REASON_RULE)
 		c:ResetFlagEffect(19962012) end
+	end
