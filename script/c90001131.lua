@@ -41,7 +41,7 @@ function s.tfilter2(c)
 end
 --search
 function s.thfilter(c)
-	return c:IsSetCard(0x204) and c:IsTrap() and c:IsAbleToHand()
+	return c:IsSetCard(0xADDE) and c:IsTrap() and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,3,nil) end
@@ -68,7 +68,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.splimit(e,c)
-	return not c:IsSetCard(0x204)
+	return not c:IsSetCard(0xADDE)
 end
 --destroy
 function s.costfilter(c)
