@@ -34,13 +34,13 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local sg=eg:Filter(s.filter,nil,e,1-tp)
 	if #sg==0 then
 	elseif #sg==1 then
-		Duel.Remove(sg,REASON_EFFECT)
+		Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
         Duel.Damage(1-tp,200,REASON_EFFECT)
         Duel.Damage(tp,200,REASON_EFFECT)
 	else
 		Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_REMOVE)
 		local dg=sg:Select(1-tp,1,1,nil)
-		Duel.Remove(dg,REASON_EFFECT)
+		Duel.Remove(dg,POS_FACEUP,REASON_EFFECT)
         Duel.Damage(1-tp,200,REASON_EFFECT)
         Duel.Damage(tp,200,REASON_EFFECT)
 	end
