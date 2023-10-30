@@ -60,3 +60,9 @@ end
 function s.aclimit(e,re,tp)
 	return not re:GetHandler():IsDD()
 end
+function s.combined_costs(cost1,cost2)
+	return	function(...)
+			local b1,b2=cost1(...),cost2(...)
+			return b1 and b2
+		end
+end
