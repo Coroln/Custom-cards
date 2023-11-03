@@ -67,7 +67,7 @@ function s.negop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.damcon1(e,tp,eg,ep,ev,re,r,rp)
-	return ep==1-tp and eg:GetFirst():IsDD() and e:GetHandler():GetCode()~=id and Duel.GetLP(1-tp)>0
+	return ep==1-tp and eg:GetFirst():IsDD() and re:GetHandler():GetCode()~=id and Duel.GetLP(1-tp)>0
 end
 function s.damcon2(e,tp,eg,ep,ev,re,r,rp)
 	return ep==1-tp and r&REASON_BATTLE==0 and re and re:IsMonsterEffect()
