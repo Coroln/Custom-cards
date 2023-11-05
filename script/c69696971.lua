@@ -32,5 +32,5 @@ function s.econ(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
 end
 function s.tpcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp and Duel.GetCurrentPhase()<PHASE_MAIN2
+	return Duel.GetTurnPlayer()~=tp
 end
