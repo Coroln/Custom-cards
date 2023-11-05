@@ -1,19 +1,21 @@
 --Kaiserwaffe Pumpkin
 local s, id = GetID()
 function s.initial_effect(c)
-	-- Gain 1000
+	--Increase ATK
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetCondition(s.econ)
+	e1:SetCondition(s.cond)
 	e1:SetValue(1000)
 	c:RegisterEffect(e1)
 	-- Loose 500
 	local e2=e1:Clone()
-	-- halve battledamage
 	e2:SetCondition(s.tpcon)
 	e2:SetValue(-500)
 	c:RegisterEffect(e2)
+	-- halve battledamage
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCondition(s.tpcon)
