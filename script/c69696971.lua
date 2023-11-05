@@ -25,10 +25,12 @@ function s.initial_effect(c)
 end
 s.listed_series={0x69AA}
 s.listed_names={id}
+function s.cond(e)
+	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
+end
 function s.econ(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
 end
-
 function s.tpcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp and Duel.GetCurrentPhase()<PHASE_MAIN2
 end
