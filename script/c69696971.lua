@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetCondition(s.cond)
+	e1:SetCondition(s.con)
 	e1:SetValue(1000)
 	c:RegisterEffect(e1)
 	-- Loose 500
@@ -25,10 +25,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x69AA}
 s.listed_names={id}
-function s.cond(e)
-	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
-end
-function s.econ(e,tp,eg,ep,ev,re,r,rp)
+function s.con(e)
 	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
 end
 function s.tpcon(e,tp,eg,ep,ev,re,r,rp)
