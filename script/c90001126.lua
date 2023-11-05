@@ -37,11 +37,11 @@ end
 --Trick Summon
 --Monster filter
 function s.filter(c)
-	return c:IsSetCard(0x204)
+	return c:IsSetCard(0xADDE)
 end
 --Trap filter
 function s.filter2(c)
-	return c:IsSetCard(0x204)
+	return c:IsSetCard(0xADDE)
 end
 --destroy
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)

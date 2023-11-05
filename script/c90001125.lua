@@ -36,7 +36,7 @@ function s.tfilter(c)
 end
 --Trap filter
 function s.tfilter2(c)
-	return c:IsSetCard(0x204)
+	return c:IsSetCard(0xADDE)
 end
 --damage
 function s.cstfilter(c)

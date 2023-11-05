@@ -1,10 +1,9 @@
 -- 69696986 Incursio (Monster)
-local s, id = GetID()
-
+local s,id=GetID()
 function s.initial_effect(c)
-    Fusion.AddProcMixN(c, true, true, aux.FilterBoolFunctionEx(Card.IsSetCard, 0x69AC), 2)
-    c:EnableReviveLimit()
-
+	--fusion material
+	c:EnableReviveLimit()
+	Fusion.AddProcMixN(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0x69AA),2)
     -- 1. Effect to change battle target and protect itself
     local e1 = Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id, 0))
@@ -64,11 +63,11 @@ end
 
 -- 2. Effect to Special Summon this card from the GY
 function s.cfilter(c, tp)
-    return c:IsCode(96969685) and c:IsControler(tp)
+    return c:IsCode(96969685)
 end
 
-function s.spcon(e, tp, eg, ep, ev, re, r, rp)
-    return not eg:IsContains(e:GetHandler()) and eg:IsExists(s.cfilter, 1, nil, tp)
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 
 function s.sptg(e, tp, eg, ep, ev, re, r, rp, chk)
