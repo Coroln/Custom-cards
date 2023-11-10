@@ -28,13 +28,13 @@ function s.initial_effect(c)
 	e2:SetTarget(function(_,c) return c:IsFaceup() end)
 	e2:SetValue(s.indval)
 	c:RegisterEffect(e2)
-	--skip draw
+	--damage & recover
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetCategory(CATEGORY_DAMAGE)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e3:SetCode(EVENT_BATTLE_DESTROYING)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetTarget(s.damcon)
+	e3:SetCode(EVENT_DAMAGE_STEP_END)
+	e3:SetTarget(s.damtg)
 	e3:SetOperation(s.damop)
 	c:RegisterEffect(e3)
 end
@@ -59,12 +59,15 @@ function s.indval(e,re,r,rp)
 		return 1
 	else return 0 end
 end
-function s.damcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsLocation(LOCATION_MZONE)
+function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetAttackTarget()~=nil end
+	local c=e:GetHandler()
+	local d=Duel.GetAttackTarget()
+	if d==c then d=Duel.GetAttacker() end
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,d:GetAttack())
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	local bc=Duel.GetFirstTarget()
-	if bc and bc:IsRelateToEffect(e) and Duel.Remove(bc,POS_FACEUP,REASON_EFFECT)>0 then
-		Duel.Damage(1-tp,bc:GetBaseAttack(),REASON_EFFECT)
-	end
+	local ex1,a1,b1,p1,d1=Duel.GetOperationInfo(0,CATEGORY_DAMAGE)
+	Duel.Damage(1-tp,d1,REASON_EFFECT,true)
+	Duel.RDComplete()
 end
