@@ -84,13 +84,13 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,0,1-tp,LOCATION_HAND)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-		local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
+	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	local g=Duel.GetFieldGroup(p,0,LOCATION_HAND)
-	if g:GetCount()>0 then end
+	if #g>0 then end
 		Duel.ConfirmCards(p,g)
 		Duel.Hint(HINT_SELECTMSG,p,HINTMSG_REMOVE)
 		local sg=g:Select(p,1,1,nil)
-		Duel.Remove(sg,POS_FACEUP,2,REASON_EFFECT)
+		Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
 		Duel.ShuffleHand(1-p)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
@@ -121,8 +121,8 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,e:GetHandler(),1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-		if e:GetHandler():IsRelateToEffect(e) then end
-		Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_EFFECT)
+	if e:GetHandler():IsRelateToEffect(e) then end
+	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_EFFECT)
 end
 function s.remcon(e,tp,eg,ep,ev,re,r,rp)
 local c=e:GetHandler()
@@ -136,9 +136,9 @@ function s.filter(c)
 	return c:IsSetCard(0x753) and c:IsAbleToGrave()
 end
 function s.remop(e,tp,eg,ep,ev,re,r,rp)
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
-		Duel.SendtoGrave(g,nil,REASON_EFFECT)
+	if #g>0 then
+		Duel.SendtoGrave(g,REASON_EFFECT)
 	end
 end

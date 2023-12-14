@@ -41,15 +41,15 @@ c:SetUniqueOnField(1,0,id)
 	e3:SetOperation(s.regop)
 	c:RegisterEffect(e3)
 	--remove
-	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(id,2))
-	e5:SetCategory(CATEGORY_REMOVE)
-	e5:SetType(EFFECT_TYPE_IGNITION)
-	e5:SetCountLimit(1,id)
-	e5:SetRange(LOCATION_MZONE)
-	e5:SetTarget(s.rmtgr)
-	e5:SetOperation(s.rmopr)
-	c:RegisterEffect(e5)
+	local e10=Effect.CreateEffect(c)
+	e10:SetDescription(aux.Stringid(id,2))
+	e10:SetCategory(CATEGORY_REMOVE)
+	e10:SetType(EFFECT_TYPE_IGNITION)
+	e10:SetCountLimit(1,id)
+	e10:SetRange(LOCATION_MZONE)
+	e10:SetTarget(s.rmtgr)
+	e10:SetOperation(s.rmopr)
+	c:RegisterEffect(e10)
 	--spsummon condition
 	local e6=Effect.CreateEffect(c)
 	e6:SetType(EFFECT_TYPE_SINGLE)
@@ -130,11 +130,10 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 		if not tc:IsFaceup() then Duel.ConfirmCards(1-tp,tc) end
 		tc=g:GetNext()
 	end
-	Duel.SendtoGrave(g,nil,2,REASON_COST)
+	Duel.SendtoGrave(g,REASON_COST)
 end
-
 function s.filterrgr(c)
-	return  c:IsSetCard(0x753) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemove()
+	return c:IsSetCard(0x753) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemove()
 end
 function s.rmtgr(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filterrgr,tp,LOCATION_GRAVE,0,1,nil) end
@@ -143,7 +142,7 @@ end
 function s.rmopr(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local g=Duel.SelectMatchingCard(tp,s.filterrgr,tp,LOCATION_GRAVE,0,1,1,nil)
-	if g:GetCount()>0 then  end
+	if #g>0 then end
 		Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
@@ -157,7 +156,7 @@ function s.rmopr(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetCode(EFFECT_NO_EFFECT_DAMAGE)
 	e2:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e2,tp)
-	end
+end
 function s.coffilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x753) and c:IsType(TYPE_MONSTER)
 end
@@ -172,7 +171,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		if e:GetHandler():IsRelateToEffect(e) then end
-		Duel.Remove(e:GetHandler(),nil,nil,REASON_EFFECT)
+		Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_EFFECT)
 end
 function s.remcon(e,tp,eg,ep,ev,re,r,rp)
 local c=e:GetHandler()
@@ -188,8 +187,8 @@ end
 function s.remop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_REMOVED,0,1,1,nil)
-	if g:GetCount()>0 then
-		Duel.SendtoGrave(g,nil,REASON_EFFECT)
+	if #g>0 then
+		Duel.SendtoGrave(g,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end

@@ -1,5 +1,6 @@
+local s,id=GetID()
 --マジック・キャンセラー
-function c100000856.initial_effect(c)
+function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--spsummon limit
 	local e1=Effect.CreateEffect(c)
@@ -15,7 +16,7 @@ function c100000856.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(0xa,0xa)
-	e2:SetValue(c100000856.aclimit)
+	e2:SetValue(s.aclimit)
 	c:RegisterEffect(e2)
 	--disable
 	local e3=Effect.CreateEffect(c)
@@ -23,14 +24,14 @@ function c100000856.initial_effect(c)
 	e3:SetCode(EFFECT_DISABLE)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetTargetRange(LOCATION_SZONE,LOCATION_SZONE)
-	e3:SetTarget(c100000856.distg)
+	e3:SetTarget(s.distg)
 	c:RegisterEffect(e3)
 	--disable effect
 	local e16=Effect.CreateEffect(c)
 	e16:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e16:SetCode(EVENT_CHAIN_SOLVING)
 	e16:SetRange(LOCATION_MZONE)
-	e16:SetOperation(c100000856.disop)
+	e16:SetOperation(s.disop)
 	c:RegisterEffect(e16)
 	--disable trap monster
 	local e4=Effect.CreateEffect(c)
@@ -38,83 +39,83 @@ function c100000856.initial_effect(c)
 	e4:SetCode(EFFECT_DISABLE_TRAPMONSTER)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e4:SetTarget(c100000856.distg)
+	e4:SetTarget(s.distg)
 	c:RegisterEffect(e4)
 			--return
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(100000856,0))
+	e5:SetDescription(aux.Stringid(id,0))
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e5:SetCategory(CATEGORY_TOHAND)
 	e5:SetCode(EVENT_PHASE+PHASE_END)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCountLimit(1)
-	e5:SetTarget(c100000856.rettg)
-	e5:SetOperation(c100000856.retop)
+	e5:SetTarget(s.rettg)
+	e5:SetOperation(s.retop)
 	c:RegisterEffect(e5)
 		--destroy
 	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(100000856,0))
+	e6:SetDescription(aux.Stringid(id,0))
 	e6:SetCategory(CATEGORY_DESTROY)
 	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e6:SetCode(EVENT_BATTLE_CONFIRM)
-	e6:SetTarget(c100000856.destg)
-	e6:SetOperation(c100000856.desop)
-	e6:SetCondition(c100000856.descon)
+	e6:SetTarget(s.destg)
+	e6:SetOperation(s.desop)
+	e6:SetCondition(s.descon)
 	c:RegisterEffect(e6)
 	--spsummon success
 	local e8=Effect.CreateEffect(c)
 	e8:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e8:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e8:SetOperation(c100000856.sop)
+	e8:SetOperation(s.sop)
 	c:RegisterEffect(e8)
 end
-function c100000856.descon(e,tp,eg,ep,ev,re,r,rp)
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	local t=Duel.GetAttackTarget()
 	if ev==1 then t=Duel.GetAttacker() end
 	e:SetLabelObject(t)
 	return t 
 end
-function c100000856.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetLabelObject():IsDestructable() end
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetLabelObject(),1,0,0)
 end
-function c100000856.desop(e,tp,eg,ep,ev,re,r,rp)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	if tc:IsRelateToBattle() then
 		Duel.Destroy(tc,REASON_EFFECT)
 	end
 end
-function c100000856.aclimit(e,re,tp)
+function s.aclimit(e,re,tp)
 	local rc=re:GetHandler()
 	return re:IsActiveType(TYPE_TRAP) and not rc:IsSetCard(0x759) and not rc:IsImmuneToEffect(e)
 end
-function c100000856.distg(e,c)
+function s.distg(e,c)
 	return c:IsType(TYPE_TRAP) and not c:IsSetCard(0x759) and not c:IsImmuneToEffect(e)
 end
-function c100000856.disop(e,tp,eg,ep,ev,re,r,rp)
+function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local tl=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
 	local rc=re:GetHandler()
 	if tl==LOCATION_SZONE and re:IsActiveType(TYPE_TRAP) and not rc:IsSetCard(0x759) and not rc:IsImmuneToEffect(e) then
 		Duel.NegateEffect(ev)
 	end
 end
-function c100000856.rettg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.rettg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetHandler(),1,0,0)
 end
-function c100000856.retop(e,tp,eg,ep,ev,re,r,rp)
+function s.retop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then
-		Duel.SendtoHand(c,nil,REASON_EFFECT)
+		Duel.SendtoHand(c,tp,REASON_EFFECT)
 	end
 end
-function c100000856.retop(e,tp,eg,ep,ev,re,r,rp)
+function s.retop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then
-		Duel.SendtoHand(c,nil,REASON_EFFECT)
+		Duel.SendtoHand(c,tp,REASON_EFFECT)
 	end
 end
-function c100000856.sop(e,tp,eg,ep,ev,re,r,rp)
+function s.sop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_ONFIELD,0,e:GetHandler())
 	Duel.SendtoGrave(g,REASON_EFFECT)
 end
