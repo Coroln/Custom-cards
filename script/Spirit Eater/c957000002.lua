@@ -168,7 +168,7 @@ function s.bthcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Release(e:GetHandler(),REASON_COST)
 end
 function s.bthfilter(c)
-	return c:IsSetCard(0xAAA) and c:IsAbleToHand()
+	return c:IsSetCard(0xAAA) and c:IsFaceup() and c:IsAbleToHand()
 end
 function s.bthtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.bthfilter,tp,LOCATION_REMOVED,0,1,nil) end
