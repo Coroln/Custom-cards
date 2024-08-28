@@ -302,7 +302,7 @@ function Auxiliary.EnableSpiritReturn(c,extracat,extrainfo,extraop,returneff)
 	if not extracat then extracat=0 end
 	--return
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_TODECK | extracat)
+	e1:SetCategory(CATEGORY_TOHAND | extracat)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_PHASE+PHASE_END)
 	e1:SetRange(LOCATION_MZONE)
@@ -330,7 +330,7 @@ end
 function Auxiliary.SpiritReturnTarget(c,extrainfo)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
 		if chk==0 then return true end
-		Duel.SetOperationInfo(0,CATEGORY_TODECK,e:GetHandler(),1,0,0)
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetHandler(),1,0,0)
 		if extrainfo then extrainfo(e,tp,eg,ep,ev,re,r,rp,chk) end
 	end
 end

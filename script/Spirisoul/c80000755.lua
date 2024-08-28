@@ -1,9 +1,11 @@
 --Spirisoul Vampire, Defender
 --Script by Coroln
+Duel.LoadScript("customutility2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --spirit return
-	Spirit.AddProcedure(c,EVENT_SUMMON_SUCCESS,EVENT_FLIP,EVENT_SPSUMMON_SUCCESS)
+	aux.EnableSpiritReturn(c)
+	--Spirit.AddProcedure(c,EVENT_SUMMON_SUCCESS,EVENT_FLIP,EVENT_SPSUMMON_SUCCESS)
 	--Change position
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,4))
