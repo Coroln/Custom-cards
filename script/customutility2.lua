@@ -297,3 +297,40 @@ function Card.IsDD(c)
 	return (c:IsCode(86498013,15574615,80208158,56790702,82112775,95291684,48092532,9870789,70074904,7572887,52702748,37043180,44792253,89015998,48148828,504700079,75991479,3773196,51701885,24508238,16638212,33423043,60912752,9622164,1127737,511247019,5606466,8628798,76552147) 
 	or c:IsSetCard(0xADDD))
 end
+--Spirisoul return
+function Auxiliary.EnableSpiritReturn(c,extracat,extrainfo,extraop,returneff)
+	if not extracat then extracat=0 end
+	--return
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_TODECK | extracat)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCode(EVENT_PHASE+PHASE_END)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1)
+	e1:SetCondition(Auxiliary.SpiritReturnCondition1)
+	e1:SetTarget(Auxiliary.SpiritReturnTarget(c,extrainfo))
+	e1:SetOperation(Auxiliary.SpiritReturnOperation(c,extraop))
+	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(0)
+	e2:SetCondition(Auxiliary.SpiritReturnCondition2)
+	c:RegisterEffect(e2)
+	if returneff then
+		e1:SetLabelObject(returneff)
+		e2:SetLabelObject(returneff)
+	end
+end
+function Auxiliary.SpiritReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
+	return not e:GetHandler():IsHasEffect(80000753)
+end
+function Auxiliary.SpiritReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsHasEffect(80000753)
+end
+function Auxiliary.SpiritReturnTarget(c,extrainfo)
+	return function(e,tp,eg,ep,ev,re,r,rp,chk)
+		if chk==0 then return true end
+		Duel.SetOperationInfo(0,CATEGORY_TODECK,e:GetHandler(),1,0,0)
+		if extrainfo then extrainfo(e,tp,eg,ep,ev,re,r,rp,chk) end
+	end
+end
