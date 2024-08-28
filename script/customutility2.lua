@@ -317,7 +317,7 @@ function Auxiliary.EnableSpirisoulReturn(c,extracat,extrainfo,extraop,returneff)
 	e2:SetCondition(Auxiliary.SpirisoulReturnCondition2)
 	c:RegisterEffect(e2)
 	-- Register flag on Special Summon
-	aux.GlobalCheck(s,function()
+	aux.GlobalCheck(Auxiliary,function()
 		local ge1=Effect.CreateEffect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
