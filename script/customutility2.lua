@@ -298,7 +298,7 @@ function Card.IsDD(c)
 	or c:IsSetCard(0xADDD))
 end
 --Spirisoul return
-function Auxiliary.EnableSpiritReturn(c,extracat,extrainfo,extraop,returneff)
+function Auxiliary.EnableSpirisoulReturn(c,extracat,extrainfo,extraop,returneff)
 	if not extracat then extracat=0 end
 	--return
 	local e1=Effect.CreateEffect(c)
@@ -307,27 +307,27 @@ function Auxiliary.EnableSpiritReturn(c,extracat,extrainfo,extraop,returneff)
 	e1:SetCode(EVENT_PHASE+PHASE_END)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
-	e1:SetCondition(Auxiliary.SpiritReturnCondition1)
-	e1:SetTarget(Auxiliary.SpiritReturnTarget(c,extrainfo))
-	e1:SetOperation(Auxiliary.SpiritReturnOperation(c,extraop))
+	e1:SetCondition(Auxiliary.SpirisoulReturnCondition1)
+	e1:SetTarget(Auxiliary.SpirisoulReturnTarget(c,extrainfo))
+	e1:SetOperation(Auxiliary.SpirisoulReturnOperation(c,extraop))
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(0)
-	e2:SetCondition(Auxiliary.SpiritReturnCondition2)
+	e2:SetCondition(Auxiliary.SpirisoulReturnCondition2)
 	c:RegisterEffect(e2)
 	if returneff then
 		e1:SetLabelObject(returneff)
 		e2:SetLabelObject(returneff)
 	end
 end
-function Auxiliary.SpiritReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
+function Auxiliary.SpirisoulReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsHasEffect(80000753)
 end
-function Auxiliary.SpiritReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
+function Auxiliary.SpirisoulReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsHasEffect(80000753)
 end
-function Auxiliary.SpiritReturnTarget(c,extrainfo)
+function Auxiliary.SpirisoulReturnTarget(c,extrainfo)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
 		if chk==0 then return true end
 		Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetHandler(),1,0,0)

@@ -4,7 +4,7 @@ Duel.LoadScript("customutility2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --spirit return
-	aux.EnableSpiritReturn(c)
+	aux.EnableSpirisoulReturn(c)
 	--Spirit.AddProcedure(c,EVENT_SUMMON_SUCCESS,EVENT_FLIP,EVENT_SPSUMMON_SUCCESS)
 	--Change position
 	local e1=Effect.CreateEffect(c)
