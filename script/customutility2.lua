@@ -334,9 +334,9 @@ function Auxiliary.SpirisoulReturnTarget(c,extrainfo)
 		if extrainfo then extrainfo(e,tp,eg,ep,ev,re,r,rp,chk) end
 	end
 end
-function Auxiliary.SpirisoulReturnSubstituteFilter(c)
+--[[function Auxiliary.SpirisoulReturnSubstituteFilter(c)
 	return c:IsCode(14088859) and c:IsAbleToRemoveAsCost()
-end
+end]]
 function Auxiliary.SpirisoulReturnOperation(c,extraop)
 	return function(e,tp,eg,ep,ev,re,r,rp)
 		local c=e:GetHandler()

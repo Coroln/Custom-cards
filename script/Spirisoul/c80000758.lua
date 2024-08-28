@@ -1,9 +1,11 @@
 --Spirisoul Vampire, Alucard
 --Script by Coroln
+Duel.LoadScript("customutility2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --spirit return
-	Spirit.AddProcedure(c,EVENT_SPSUMMON_SUCCESS)
+	aux.EnableSpirisoulReturn(c)
+	--Spirit.AddProcedure(c,EVENT_SPSUMMON_SUCCESS)
 	--xyz summon
 	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsAttribute,ATTRIBUTE_EARTH),5,2,s.ovfilter,aux.Stringid(id,0))
 	c:EnableReviveLimit()
