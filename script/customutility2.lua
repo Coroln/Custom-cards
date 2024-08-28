@@ -322,10 +322,10 @@ function Auxiliary.EnableSpirisoulReturn(c,extracat,extrainfo,extraop,returneff)
 	end
 end
 function Auxiliary.SpirisoulReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
-	return not e:GetHandler():IsHasEffect(80000753) and e:IsStatus({STATUS_SUMMON_TURN,STATUS_SPSUMMON_TURN,STATUS_FLIP_SUMMON_TURN})
+	return not e:GetHandler():IsHasEffect(80000753) and e:GetHandler():IsStatus({STATUS_SUMMON_TURN,STATUS_SPSUMMON_TURN,STATUS_FLIP_SUMMON_TURN})
 end
 function Auxiliary.SpirisoulReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsHasEffect(80000753) and e:IsStatus({STATUS_SUMMON_TURN,STATUS_SPSUMMON_TURN,STATUS_FLIP_SUMMON_TURN})
+	return e:GetHandler():IsHasEffect(80000753) and e:GetHandler():IsStatus({STATUS_SUMMON_TURN,STATUS_SPSUMMON_TURN,STATUS_FLIP_SUMMON_TURN})
 end
 function Auxiliary.SpirisoulReturnTarget(c,extrainfo)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
