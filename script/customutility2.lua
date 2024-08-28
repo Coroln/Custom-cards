@@ -316,16 +316,26 @@ function Auxiliary.EnableSpirisoulReturn(c,extracat,extrainfo,extraop,returneff)
 	e2:SetProperty(0)
 	e2:SetCondition(Auxiliary.SpirisoulReturnCondition2)
 	c:RegisterEffect(e2)
+	-- Register flag on Special Summon
+	aux.GlobalCheck(s,function()
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		ge1:SetCode(EVENT_SPSUMMON_SUCCESS)
+		ge1:SetLabel(id)
+		ge1:SetOperation(aux.sumreg)
+		Duel.RegisterEffect(ge1,0)
+	end)
 	if returneff then
 		e1:SetLabelObject(returneff)
 		e2:SetLabelObject(returneff)
 	end
 end
 function Auxiliary.SpirisoulReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
-	return not e:GetHandler():IsHasEffect(80000753)
+	return not e:GetHandler():IsHasEffect(80000753) and e:GetHandler():HasFlagEffect(id)
 end
 function Auxiliary.SpirisoulReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsHasEffect(80000753)
+	return e:GetHandler():IsHasEffect(80000753) and e:GetHandler():HasFlagEffect(id)
 end
 function Auxiliary.SpirisoulReturnTarget(c,extrainfo)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
