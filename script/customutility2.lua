@@ -334,3 +334,25 @@ function Auxiliary.SpirisoulReturnTarget(c,extrainfo)
 		if extrainfo then extrainfo(e,tp,eg,ep,ev,re,r,rp,chk) end
 	end
 end
+function Auxiliary.SpirisoulReturnSubstituteFilter(c)
+	return c:IsCode(14088859) and c:IsAbleToRemoveAsCost()
+end
+function Auxiliary.SpirisoulReturnOperation(c,extraop)
+	return function(e,tp,eg,ep,ev,re,r,rp)
+		local c=e:GetHandler()
+		if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
+		--local sc=Duel.GetFirstMatchingCard(Auxiliary.NecroValleyFilter(Auxiliary.SpirisoulReturnSubstituteFilter),tp,LOCATION_GRAVE,0,nil)
+		--if sc and Duel.SelectYesNo(tp,aux.Stringid(14088859,0)) then
+			--Duel.Remove(sc,POS_FACEUP,REASON_COST)
+		if c:IsType(TYPE_EXTRA) then
+			Duel.SendtoDeck(c,nil,2,REASON_EFFECT)
+		else
+			Duel.SendtoHand(c,nil,2,REASON_EFFECT)
+		end
+		if c:IsLocation(LOCATION_EXTRA) then
+			if extraop then
+				extraop(e,tp,eg,ep,ev,re,r,rp)
+			end
+		end
+	end
+end
