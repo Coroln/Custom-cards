@@ -29,22 +29,16 @@ function s.initial_effect(c)
 end
 s.listed_names={0x356}
 --gain LP
-function s.cfilter(e,tp,eg,ep,ev,re,r,rp)
-	local tc=eg:GetFirst()
-	return #eg==1 and tc:IsPreviousControler(tp) and tc:IsPreviousLocation(LOCATION_MZONE)
-		and (tc:GetType())~=TYPE_SPIRIT
-		and tc:IsPreviousPosition(POS_FACEUP) and tc:GetOriginalAttack()>0
-end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local ec=eg:GetFirst()
-	return #eg==1 and ec:IsPreviousLocation(LOCATION_ONFIELD) and ec:GetOriginalAttack()>0 and ec:IsMonster() and ec:IsType(TYPE_SPIRIT)
+	return #eg==1 and ec:IsPreviousLocation(LOCATION_ONFIELD) and ec:GetBaseAttack()>0 and ec:IsMonster() and ec:IsType(TYPE_SPIRIT)
 end
 function s.sum(c)
 	local ec=eg:GetFirst()
 	if chk==0 then return true end
 	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(ec:GetOriginalAttack())
-	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,ec:GetOriginalAttack())
+	Duel.SetTargetParam(ec:GetBaseAttack())
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,ec:GetBaseAttack())
 end
 function s.recop1(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
