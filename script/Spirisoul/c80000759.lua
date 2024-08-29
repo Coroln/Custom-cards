@@ -38,7 +38,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
 end
 function s.sum(c)
-	if c:IsLocation(LOCATION_MZONE) then
+	if c:IsLocation(LOCATION_HAND) then
 		return c:GetAttack()
 	else
 		return c:GetTextAttack()
