@@ -38,11 +38,12 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
 end
 function s.sum(c)
-	if c:IsLocation(LOCATION_HAND) then
-		return c:GetAttack()
-	else
-		return c:GetTextAttack()
-	end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
+	local atk=g:GetFirst():GetTextAttack()
+	if atk<0 then atk=0 end
+	Duel.SetTargetParam(atk)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,atk)
 end
 function s.recop1(e,tp,eg,ep,ev,re,r,rp)
 	local g=eg:Filter(s.cfilter,nil,1-tp)
