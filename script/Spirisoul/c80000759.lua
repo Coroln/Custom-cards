@@ -35,7 +35,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local ec=eg:GetFirst()
 	return #eg==1 and ec:IsPreviousLocation(LOCATION_ONFIELD) and ec:GetBaseAttack()>0 and ec:IsMonster() and ec:IsType(TYPE_SPIRIT)
 end
-function s.sum(c)
+function s.sum(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ec=eg:GetFirst()
 	if chk==0 then return true end
 	Duel.SetTargetPlayer(tp)
@@ -43,7 +43,6 @@ function s.sum(c)
 	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,ec:GetBaseAttack())
 end
 function s.recop1(e,tp,eg,ep,ev,re,r,rp)
-	--if not e:GetHandler():IsRelateToEffect(e) then return end
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Recover(p,d,REASON_EFFECT)
 end
