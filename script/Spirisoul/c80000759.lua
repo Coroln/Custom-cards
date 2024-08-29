@@ -36,15 +36,15 @@ function s.cfilter(e,tp,eg,ep,ev,re,r,rp)
 		and tc:IsPreviousPosition(POS_FACEUP) and tc:GetOriginalAttack()>0
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,nil,tp)
+	local ec=eg:GetFirst()
+	return #eg==1 and ec:IsPreviousLocation(LOCATION_ONFIELD) and ec:GetOriginalAttack()>0 and ec:IsMonster() and ec:IsType(TYPE_SPIRIT)
 end
 function s.sum(c)
-	local g=eg:Filter(s.cfilter,nil,tp)
-	local tc=g:GetFirst()
-	if chk==0 then return tc and tc:GetOriginalAttack()>0 end
-	Duel.SetTargetPlayer(1-tp)
-	Duel.SetTargetParam(tc:GetOriginalAttack())
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,tc:GetOriginalAttack())
+	local ec=eg:GetFirst()
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(ec:GetOriginalAttack())
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,ec:GetOriginalAttack())
 end
 function s.recop1(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
