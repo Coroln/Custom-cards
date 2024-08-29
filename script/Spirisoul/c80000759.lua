@@ -38,20 +38,15 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
 end
 function s.sum(c)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
-	local atk=g:GetFirst():GetTextAttack()
-	if atk<0 then atk=0 end
-	Duel.SetTargetParam(atk)
-	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,atk)
+	local g=eg:Filter(s.cfilter,nil,tp)
+	local tc=g:GetFirst()
+	if chk==0 then return tc and tc:GetOriginalAttack()>0 end
+	Duel.SetTargetPlayer(1-tp)
+	Duel.SetTargetParam(tc:GetOriginalAttack())
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,tc:GetOriginalAttack())
 end
 function s.recop1(e,tp,eg,ep,ev,re,r,rp)
-	local g=eg:Filter(s.cfilter,nil,1-tp)
-	if #g>0 then
-		local sum=g:GetSum(s.sum)
-		Duel.Hint(HINT_CARD,0,id)
-		if Duel.Recover(tp,sum,REASON_EFFECT)~=0 then 
-			Duel.RegisterFlagEffect(tp,id+1,RESET_PHASE+PHASE_END,0,1)
-		end
-	end
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
 end
