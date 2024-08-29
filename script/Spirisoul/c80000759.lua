@@ -29,10 +29,11 @@ function s.initial_effect(c)
 end
 s.listed_names={0x356}
 --gain LP
-function s.cfilter(c,tp)
+function s.cfilter(e,tp,eg,ep,ev,re,r,rp)
+	local tc=eg:GetFirst()
 	return c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_MZONE)
 		and (c:GetType())~=TYPE_SPIRIT
-		and c:IsPreviousPosition(POS_FACEUP)
+		and c:IsPreviousPosition(POS_FACEUP) and tc:GetOriginalAttack()>0
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
