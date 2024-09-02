@@ -38,11 +38,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={0x356}
-function s.cfilter(c)
+function s.cfilter1(c)
 	return c:IsFaceup() and c:IsRace(RACE_ZOMBIE) and c:IsSetCard(0x356)
 end
 function s.con(e)
-	return Duel.IsExistingMatchingCard(s.cfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.cfilter1,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 function s.atlimit(e,c)
 	return c:IsFacedown() or (c:GetRace()~=RACE_ZOMBIE and c:GetSetCard()~=0x356)
