@@ -63,8 +63,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 --special summon
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
 end
 function s.filter2(c,e,tp)
 	return c:IsSetCard(0x356) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)

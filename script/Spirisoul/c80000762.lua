@@ -64,8 +64,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 --Send 1 "Spirisoul" monster to the GY
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
 end
 function s.filter(c)
 	return c:IsSetCard(0x356) and c:IsMonster() and c:IsAbleToGrave()

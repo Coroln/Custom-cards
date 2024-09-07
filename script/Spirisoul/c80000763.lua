@@ -62,6 +62,9 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --Search 1 "Spirisoul" spell/trap
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
+end
 function s.thfilter(c)
 	return c:IsSetCard(0x356) and c:IsSpellTrap() and c:IsAbleToHand()
 end
