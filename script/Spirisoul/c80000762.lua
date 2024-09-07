@@ -34,6 +34,7 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_TO_HAND)
 	e4:SetProperty(EFFECT_FLAG_DELAY)
 	e4:SetCountLimit(2,{id,1})
+	e4:SetCondition(s.descon)
 	e4:SetTarget(s.target)
 	e4:SetOperation(s.operation)
 	c:RegisterEffect(e4)
@@ -62,6 +63,10 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --Send 1 "Spirisoul" monster to the GY
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
+end
 function s.filter(c)
 	return c:IsSetCard(0x356) and c:IsMonster() and c:IsAbleToGrave()
 end

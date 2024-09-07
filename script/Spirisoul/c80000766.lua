@@ -34,6 +34,7 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e4:SetCode(EVENT_TO_HAND)
     e4:SetCountLimit(1,id)
+    e4:SetCondition(s.descon)
 	e4:SetTarget(s.sptg)
 	e4:SetOperation(s.spop)
 	c:RegisterEffect(e4)
@@ -61,6 +62,10 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --special summon
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
+end
 function s.filter2(c,e,tp)
 	return c:IsSetCard(0x356) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
