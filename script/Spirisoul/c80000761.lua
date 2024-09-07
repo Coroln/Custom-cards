@@ -57,7 +57,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SendtoHand(e:GetHandler(),nil,REASON_COST)
 end
 function s.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x356)
+	return c:IsFaceup() and c:IsSetCard(0x356) and not c:IsCode(id)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil)
