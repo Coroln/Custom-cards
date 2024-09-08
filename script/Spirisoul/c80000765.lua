@@ -65,9 +65,16 @@ function s.tgfilter(c,ft,e,tp)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
+		local th=g:GetFirst():IsAbleToGrave()
+		local sp=ft>0 and g:GetFirst():IsCanBeSpecialSummoned(e,0,tp,false,false)
+		local op=0
+		if th and sp then op=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
+		elseif th then op=0
+		else op=1 end
 		local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 		return (Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_DECK,0,1,nil,ft,e,tp) 
 		or Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_GRAVE,0,1,nil,ft,e,tp))
+		
     end
 	Duel.SetPossibleOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
 	Duel.SetPossibleOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
@@ -77,12 +84,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,0)
 	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK|LOCATION_GRAVE,0,1,1,nil,ft,e,tp)
 	if #g>0 then
-		local th=g:GetFirst():IsAbleToGrave()
-		local sp=ft>0 and g:GetFirst():IsCanBeSpecialSummoned(e,0,tp,false,false)
-		local op=0
-		if th and sp then op=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
-		elseif th then op=0
-		else op=1 end
 		if op==0 then
 			Duel.SendtoGrave(g,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
