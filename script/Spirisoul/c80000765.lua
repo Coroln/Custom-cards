@@ -65,6 +65,7 @@ function s.tgfilter(c,ft,e,tp)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
+		local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK|LOCATION_GRAVE,0,1,1,nil,ft,e,tp)
 		local th=g:GetFirst():IsAbleToGrave()
 		local sp=ft>0 and g:GetFirst():IsCanBeSpecialSummoned(e,0,tp,false,false)
 		local op=0
