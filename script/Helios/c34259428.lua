@@ -66,7 +66,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Release(e:GetHandler(),REASON_COST)
 end
 function s.thfilter(c,tp)
-	return c:IsCode(30241314) and c:GetType()==0x20002
+	return c:IsCode(30241314) --and c:GetType()==0x20002
 		and (c:IsAbleToHand() or (c:GetActivateEffect():IsActivatable(tp,true,true) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0))
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
