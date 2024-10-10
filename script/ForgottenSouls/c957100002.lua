@@ -33,10 +33,10 @@ function s.rescon(sg,e,tp,mg)
 	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:IsExists(s.atchk1,1,nil,sg)
 end
 function s.atchk1(c,sg)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and sg:FilterCount(Card.IsAttribute,c,ATTRIBUTE_DARK)==1
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(0x4000) and sg:FilterCount(Card.IsAttribute,c,ATTRIBUTE_DARK)==1
 end
 function s.spfilter1(c,att)
-	return c:IsAttribute(att) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true)
+	return c:IsAttribute(att) and c:IsRace(0x4000) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true)
 end
 function s.spcon1(e,c)
 	if c==nil then return true end
