@@ -45,7 +45,7 @@ function s.subcon(e)
 end
 function s.filter(c,e,tp,m,gc,chkf)
 	return c:IsType(TYPE_FUSION) and c:IsSetCard(0x8) 
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:CheckFusionMaterial(m,gc,chkf)
+		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,true,false) and c:CheckFusionMaterial(m,gc,chkf)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(1)
@@ -95,12 +95,12 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
 function s.filter2(c,e,tp,code)
-	return c:IsCode(code) and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsCode(code) and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0 and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,true,false)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local code=e:GetLabel()
 	local tc=Duel.GetFirstMatchingCard(s.filter2,tp,LOCATION_EXTRA,0,nil,e,tp,code)
 	if tc then
-		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummon(tc,SUMMON_TYPE_FUSION,tp,tp,true,false,POS_FACEUP)
 	end
 end
