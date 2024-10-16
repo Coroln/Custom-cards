@@ -75,14 +75,11 @@ function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
-    if Duel.NegateActivation(ev) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
-        local g=Duel.SelectMatchingCard(tp,Card.IsSetCard,tp,LOCATION_MZONE,0,1,1,nil,0x356)
-        if g:GetCount()>0 then
-            Duel.MoveSequence(g:GetFirst(),Duel.SelectSequence(tp,1))
-        end
-    end
+    if Duel.NegateActivation(ev) and re:GetHandler():IsRelateToEffect(re) then
+		Duel.Destroy(eg,REASON_EFFECT)
+	end
 end
+
 
 function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local at=Group.GetFirst(e:GetHandler():GetLinkedGroup())
