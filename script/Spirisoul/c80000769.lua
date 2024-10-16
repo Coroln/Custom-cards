@@ -1,4 +1,5 @@
 -- Spirisoul Doom Summoner
+--Script by Rika and Coroln
 local s,id=GetID()
 function s.initial_effect(c)
     -- Link Summon
@@ -14,7 +15,6 @@ function s.initial_effect(c)
     e1:SetTarget(s.sptg)
     e1:SetOperation(s.spop)
     c:RegisterEffect(e1)
-    
     -- Negate and move to another zone
     local e2=Effect.CreateEffect(c)
     e2:SetDescription(aux.Stringid(id,1))
@@ -29,20 +29,8 @@ function s.initial_effect(c)
     e2:SetOperation(s.negop)
     e2:SetCost(s.negcost)
     c:RegisterEffect(e2)
-    
-    -- Return to Extra Deck
-    local e3=Effect.CreateEffect(c)
-    e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    e3:SetCode(EVENT_TO_HAND)
-    e3:SetRange(LOCATION_MZONE)
-    e3:SetCondition(s.retdcon)
-    e3:SetOperation(s.retdop)
-    c:RegisterEffect(e3)
 end
-
 s.listed_series={0x356}
-
-
 --e1
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -56,7 +44,6 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
         Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
     end
 end
-
 --e2
 function s.negfilter(c,g)
 	return g:IsContains(c) and c:IsSetCard(0x356)
@@ -79,8 +66,6 @@ function s.negop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(eg,REASON_EFFECT)
 	end
 end
-
-
 function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local at=Group.GetFirst(e:GetHandler():GetLinkedGroup())
 	if chk==0 then return Duel.GetLocationCount(at:GetControler(),LOCATION_MZONE)>0 end
@@ -92,14 +77,4 @@ function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 	local nseq=math.log(s,2)
 	Duel.MoveSequence(at,nseq)
-end
-
---e3
-function s.retdcon(e,tp,eg,ep,ev,re,r,rp)
-    return eg:IsExists(Card.IsControler,1,nil,tp) and eg:IsExists(Card.IsSetCard,1,nil,0x356)
-end
-function s.retdop(e,tp,eg,ep,ev,re,r,rp)
-    if Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
-        Duel.SendtoDeck(e:GetHandler(),nil,SEQ_DECKTOP,REASON_EFFECT)
-    end
 end
