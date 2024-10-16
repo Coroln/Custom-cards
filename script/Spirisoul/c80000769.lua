@@ -68,7 +68,7 @@ function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 	local lg=e:GetHandler():GetLinkedGroup()
 	lg:AddCard(c)
 	local tg=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
-	return tg and lg:IsExists(s.negfilter,1,nil,tg) and Duel.IsChainNegatable(ev)
+	return tg and lg:IsExists(s.negfilter,1,nil,tg) and e:GetHandler():GetLinkedGroupCount()>0 and Duel.IsChainNegatable(ev)
 end
 function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_MZONE,0,1,nil,0x356) end
