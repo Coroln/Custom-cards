@@ -66,7 +66,7 @@ end
 --e2
 -- Cost: Discard 1 "Chaos Soul" monster
 function s.cfilter2(c)
-    return c:IsSetCard(0x20CF) and c:IsDiscardable()
+    return c:IsSetCard(0x20CF) and c:IsMonster() and c:IsDiscardable()
 end
 function s.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter2,tp,LOCATION_HAND,0,1,nil) end
