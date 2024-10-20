@@ -5,9 +5,8 @@ local s,id=GetID()
 function s.initial_effect(c)
     --spirit return
 	aux.EnableSpirisoulReturn(c)
-	--Spirit.AddProcedure(c,EVENT_SPSUMMON_SUCCESS)
 	--xyz summon
-	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsAttribute,ATTRIBUTE_EARTH),5,2,s.ovfilter,aux.Stringid(id,0))
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_ZOMBIE),5,2,s.ovfilter,aux.Stringid(id,0))
 	c:EnableReviveLimit()
     --destroy and sp summon
 	local e1=Effect.CreateEffect(c)
