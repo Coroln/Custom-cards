@@ -68,9 +68,7 @@ function s.filter(c)
 	return c:IsFacedown()
 end
 function s.atlimit(e,c)
-	return  c:IsFaceup() and 
-		(Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
-		Duel.IsExistingMatchingCard(s.filter,c:GetControler(),LOCATION_MZONE,0,1,nil))
+	return  c:IsFaceup() and Duel.IsExistingMatchingCard(s.filter,c:GetControler(),LOCATION_MZONE,0,1,nil)
 end
 
 function s.conditione2(e,c)
