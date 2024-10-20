@@ -360,3 +360,62 @@ function Auxiliary.SpirisoulReturnOperation(c,extraop)
 		end
 	end
 end
+
+--CanCon summon procedures
+function Auxiliary.AddCanConProcedure(c,required,position,filter,value,description)
+	if not required or required < 1 then
+		required = 1
+	end
+	filter = filter or aux.TRUE
+	value = value or 0
+	local e1=Effect.CreateEffect(c)
+	if description then
+		e1:SetDescription(description)
+	end
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_SPSUMMON_PROC)
+	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SPSUM_PARAM)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetTargetRange(position,1)
+	e1:SetValue(value)
+	e1:SetCondition(Auxiliary.CanConCondition(required,filter))
+	e1:SetTarget(Auxiliary.CanConTarget(required,filter))
+	e1:SetOperation(Auxiliary.CanConOperation(required,filter))
+	c:RegisterEffect(e1)
+	return e1
+end
+function Auxiliary.CanConCheck(sg,e,tp,mg)
+	return Duel.GetMZoneCount(1-tp,sg,tp)>0
+end
+function Auxiliary.CanConCondition(required,filter)
+	return function(e,c)
+		if c==nil then return true end
+		local tp=c:GetControler()
+		if not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsRace,RACE_SPELLCASTER),tp,LOCATION_MZONE,0,1,nil)
+        or not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x356),tp,LOCATION_MZONE,0,1,nil) then
+            return false
+        end
+		local mg=Duel.GetMatchingGroup(aux.AND(Card.IsReleasable,filter),tp,0,LOCATION_MZONE,nil)
+		return aux.SelectUnselectGroup(mg,e,tp,required,required,Auxiliary.CanConCheck,0)
+	end
+end
+function Auxiliary.CanConTarget(required,filter)
+	return function(e,tp,eg,ep,ev,re,r,rp,chk,c)
+		local mg=Duel.GetMatchingGroup(aux.AND(Card.IsReleasable,filter),tp,0,LOCATION_MZONE,nil)
+		local g=aux.SelectUnselectGroup(mg,e,tp,required,required,Auxiliary.CanConCheck,1,tp,HINTMSG_RELEASE,nil,nil,true)
+		if #g > 0 then
+			g:KeepAlive()
+			e:SetLabelObject(g)
+			return true
+		else
+			return false
+		end
+	end
+end
+function Auxiliary.CanConOperation(required,filter)
+	return function(e,tp,eg,ep,ev,re,r,rp,c)
+		local g=e:GetLabelObject()
+		Duel.Release(g,REASON_COST)
+		g:DeleteGroup()
+	end
+end

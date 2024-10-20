@@ -6,7 +6,7 @@ function s.initial_effect(c)
     --spirit return
 	aux.EnableSpirisoulReturn(c)
     --special summon
-	aux.AddLavaProcedure(c,1,POS_FACEUP)
+	aux.AddCanConProcedure(c,1,POS_FACEUP)
     --draw
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -33,6 +33,7 @@ function s.initial_effect(c)
 end
 s.listed_names={id}
 s.listed_series={0x356}
+
 --draw
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD) and e:GetHandler():IsPreviousControler(1-tp)

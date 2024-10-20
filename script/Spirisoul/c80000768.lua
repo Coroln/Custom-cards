@@ -6,7 +6,7 @@ function s.initial_effect(c)
     --spirit return
 	aux.EnableSpirisoulReturn(c)
     --special summon
-	aux.AddLavaProcedure(c,1,POS_FACEUP)
+	aux.AddCanConProcedure(c,1,POS_FACEUP)
     --recover
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
