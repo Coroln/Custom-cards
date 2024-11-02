@@ -121,9 +121,9 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
 	local g=Duel.GetMatchingGroup(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,nil,nil,mg)
-	local mg=tg:Select(tp,1,99,s.rescon)
 	if #g>0 then
         local sg=g:Select(tp,1,1,nil)
+		local tg=mg:Select(tp,1,99,s.rescon)
 	    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
         Duel.SpecialSummon(sg,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
     Duel.BreakEffect()
