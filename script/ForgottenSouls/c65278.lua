@@ -121,8 +121,8 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
         Duel.SpecialSummon(sg,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
     Duel.BreakEffect()
     --local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
-    if #sg>0 then
-        Duel.Remove(sg,POS_FACEUP,REASON_SYNCHRO)
+    if #mg>0 then
+        Duel.Remove(mg,POS_FACEUP,REASON_SYNCHRO)
     	end
 	end
 end
