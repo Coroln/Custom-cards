@@ -129,7 +129,7 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
     Duel.BreakEffect()
     --local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
     if #mg>0 then
-		local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+		--local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
         Duel.Remove(tg,POS_FACEUP,REASON_SYNCHRO)
     	end
 	end
