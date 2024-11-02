@@ -39,7 +39,7 @@ function s.initial_effect(c)
 	e4:SetRange(LOCATION_FZONE)
     e4:SetCountLimit(1,{id,3})
 	e4:SetCondition(s.accon)
-	e4:SetCost(s.sccost)
+	--e4:SetCost(s.sccost)
 	e4:SetTarget(s.sctg)
 	e4:SetOperation(s.scop)
 	c:RegisterEffect(e4)
@@ -80,17 +80,12 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --synchro summon
+--[[
 function s.cfilter(c)
 	return (c:GetPreviousPosition()&POS_FACEDOWN)~=0 and (c:GetPosition()&POS_FACEUP)~=0
 end
 function s.accon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,e:GetHandler())
-end
-function s.damfilter(c,tp,e)
-	return c:IsLocation(LOCATION_MZONE) and c:IsMonster()
-end
-function s.damcond(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.damfilter,1,nil,tp,e)
 end
 function s.sccost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
@@ -133,4 +128,58 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
         Duel.Remove(tg,POS_FACEUP,REASON_SYNCHRO)
     	end
 	end
+end]]
+function s.cfilter(c)
+	return (c:GetPreviousPosition()&POS_FACEDOWN)~=0 and (c:GetPosition()&POS_FACEUP)~=0
 end
+function s.accon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.cfilter,1,e:GetHandler())
+end
+function s.filter5(c,e,tp)
+	local lv=c:GetLevel()
+	return (c:IsAttribute(ATTRIBUTE_DARK) or c:IsAttribute(ATTRIBUTE_LIGHT)) and c:IsType(TYPE_SYNCHRO) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_SYNCHRO,tp,false,false)
+		and Duel.IsExistingMatchingCard(s.filter4,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil,tp,c)
+end
+function s.rescon(tuner,scard)
+	return	function(sg,e,tp,mg)
+				sg:AddCard(tuner)
+				local res=Duel.GetLocationCountFromEx(tp,tp,sg,scard)>0 
+					and sg:CheckWithSumEqual(Card.GetLevel,scard:GetLevel(),#sg,#sg)
+				sg:RemoveCard(tuner)
+				return res
+			end
+end
+function s.filter4(c,tp,sc)
+	local rg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_MZONE+LOCATION_GRAVE,0,c)
+	return c:IsType(TYPE_TUNER) and (c:IsAttribute(ATTRIBUTE_DARK) or c:IsAttribute(ATTRIBUTE_LIGHT)) and c:IsAbleToRemove() and aux.SpElimFilter(c,true) 
+		and aux.SelectUnselectGroup(rg,e,tp,nil,99,s.rescon(c,sc),0)
+end
+function s.filter3(c)
+	return c:HasLevel() and (c:IsAttribute(ATTRIBUTE_DARK) or c:IsAttribute(ATTRIBUTE_LIGHT)) and not c:IsType(TYPE_TUNER) and c:IsAbleToRemove() and aux.SpElimFilter(c,true)
+end
+function s.sctg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then
+		local pg=aux.GetMustBeMaterialGroup(tp,Group.CreateGroup(),tp,nil,nil,REASON_SYNCHRO)
+		return #pg<=0 and Duel.IsExistingMatchingCard(s.filter5,tp,LOCATION_EXTRA,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
+end
+function s.scop(e,tp,eg,ep,ev,re,r,rp)
+	local pg=aux.GetMustBeMaterialGroup(tp,Group.CreateGroup(),tp,nil,nil,REASON_SYNCHRO)
+	if #pg>0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g1=Duel.SelectMatchingCard(tp,s.filter5,tp,LOCATION_EXTRA,0,1,1,nil,e,tp)
+	local sc=g1:GetFirst()
+	if sc then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+		local g2=Duel.SelectMatchingCard(tp,s.filter4,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,1,nil,tp,sc)
+		local tuner=g2:GetFirst()
+		local rg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_MZONE+LOCATION_GRAVE,0,tuner)
+		local sg=aux.SelectUnselectGroup(rg,e,tp,1,99,s.rescon(tuner,sc),1,tp,HINTMSG_REMOVE,s.rescon(tuner,sc))
+		sg:AddCard(tuner)
+		Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
+		Duel.SpecialSummonStep(sc,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
+		sc:CompleteProcedure()
+	end
+	Duel.SpecialSummonComplete()
+end
+
