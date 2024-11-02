@@ -109,11 +109,11 @@ function s.sctg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return #g>1 and g:IsExists(Card.IsType,1,nil,TYPE_TUNER) end
 	local sg=aux.SelectUnselectGroup(g,e,tp,2,99,s.rescon,1,tp,aux.Stringid(id,3))
 	Duel.SetTargetCard(sg)
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,sg,#sg,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,sg,#sg,0,0)
 		return Duel.IsExistingMatchingCard(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,1,nil,nil,mg)
 	end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
-    Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,tp,LOCATION_GRAVE)
+	end
 end
 function s.sfilter(c)
     return c:IsSynchroSummonable() and (c:IsAttribute(ATTRIBUTE_DARK) or c:IsAttribute(ATTRIBUTE_LIGHT))
