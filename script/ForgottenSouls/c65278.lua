@@ -34,11 +34,11 @@ function s.initial_effect(c)
 	e4:SetDescription(aux.Stringid(id,2))
 	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e4:SetCode(EVENT_SUMMON_SUCCESS)
+	e4:SetCode(EVENT_CHANGE_POS)
 	e4:SetProperty(EFFECT_FLAG_DELAY)
 	e4:SetRange(LOCATION_FZONE)
     e4:SetCountLimit(1,{id,3})
-	e4:SetCondition(s.sccon)
+	e4:SetCondition(s.accon)
 	e4:SetCost(s.sccost)
 	e4:SetTarget(s.sctg)
 	e4:SetOperation(s.scop)
@@ -80,6 +80,12 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --synchro summon
+function s.cfilter(c)
+	return (c:GetPreviousPosition()&POS_FACEDOWN)~=0 and (c:GetPosition()&POS_FACEUP)~=0
+end
+function s.accon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.cfilter,1,e:GetHandler())
+end
 function s.damfilter(c,tp,e)
 	return c:IsLocation(LOCATION_MZONE) and c:IsMonster()
 end
