@@ -39,7 +39,6 @@ function s.initial_effect(c)
 	e4:SetRange(LOCATION_FZONE)
     e4:SetCountLimit(1,{id,3})
 	e4:SetCondition(s.accon)
-	--e4:SetCost(s.sccost)
 	e4:SetTarget(s.sctg)
 	e4:SetOperation(s.scop)
 	c:RegisterEffect(e4)
@@ -80,55 +79,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --synchro summon
---[[
-function s.cfilter(c)
-	return (c:GetPreviousPosition()&POS_FACEDOWN)~=0 and (c:GetPosition()&POS_FACEUP)~=0
-end
-function s.accon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,e:GetHandler())
-end
-function s.sccost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	if chk==0 then return c:GetFlagEffect(id)==0 end
-	c:RegisterFlagEffect(id,RESET_CHAIN,0,1)
-end
-function s.filter3(c)
-	return c:IsMonster() and (c:IsAttribute(ATTRIBUTE_DARK) or c:IsAttribute(ATTRIBUTE_LIGHT))
-end
-function s.rescon(sg,e,tp,mg)
-	return sg:IsExists(Card.IsType,1,nil,TYPE_TUNER)
-end
-function s.sctg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local g=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil,e)
-	if chkc then return false end
-	if chk==0 then return #g>1 and g:IsExists(Card.IsType,1,nil,TYPE_TUNER) end
-	--local sg=aux.SelectUnselectGroup(g,e,tp,2,99,s.rescon,1,tp,aux.Stringid(id,3))
-	--Duel.SetTargetCard(sg)
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,#g,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
-		return Duel.IsExistingMatchingCard(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,1,nil,nil,mg)
-end
-	
-function s.sfilter(c)
-    return c:IsSynchroSummonable() and (c:IsAttribute(ATTRIBUTE_DARK) or c:IsAttribute(ATTRIBUTE_LIGHT))
-end
-function s.scop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
-	local g=Duel.GetMatchingGroup(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,nil,nil,mg)
-	if #g>0 then
-        local sg=g:Select(tp,1,1,nil)
-		local tg=mg:Select(tp,1,99,s.rescon)
-	    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-        Duel.SpecialSummon(sg,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
-    Duel.BreakEffect()
-    --local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
-    if #mg>0 then
-		--local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
-        Duel.Remove(tg,POS_FACEUP,REASON_SYNCHRO)
-    	end
-	end
-end]]
 function s.cfilter(c)
 	return (c:GetPreviousPosition()&POS_FACEDOWN)~=0 and (c:GetPosition()&POS_FACEUP)~=0
 end
