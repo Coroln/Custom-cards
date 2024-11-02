@@ -119,10 +119,10 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
         local sg=g:Select(tp,1,1,nil)
 	    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
         Duel.SpecialSummon(sg,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
-    end
     Duel.BreakEffect()
-    local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
-    if #mg>0 then
-        Duel.Remove(mg,POS_FACEUP,REASON_SYNCHRO)
-    end
+    --local mg=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil)
+    if #sg>0 then
+        Duel.Remove(sg,POS_FACEUP,REASON_SYNCHRO)
+    	end
+	end
 end
