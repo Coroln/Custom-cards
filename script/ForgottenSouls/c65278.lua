@@ -104,12 +104,12 @@ function s.rescon(sg,e,tp,mg)
 	return sg:IsExists(Card.IsType,1,nil,TYPE_TUNER)
 end
 function s.sctg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local g=Duel.GetMatchingGroup(s.tgfilter,tp,LOCATION_GRAVE,0,nil,e)
+	local g=Duel.GetMatchingGroup(s.filter3,tp,LOCATION_GRAVE,0,nil,e)
 	if chkc then return false end
 	if chk==0 then return #g>1 and g:IsExists(Card.IsType,1,nil,TYPE_TUNER) end
-	local sg=aux.SelectUnselectGroup(g,e,tp,2,99,s.rescon,1,tp,aux.Stringid(id,3))
-	Duel.SetTargetCard(sg)
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,sg,#sg,0,0)
+	--local sg=aux.SelectUnselectGroup(g,e,tp,2,99,s.rescon,1,tp,aux.Stringid(id,3))
+	--Duel.SetTargetCard(sg)
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,#g,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 		return Duel.IsExistingMatchingCard(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,1,nil,nil,mg)
 end
@@ -123,6 +123,7 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,nil,nil,mg)
 	if #g>0 then
         local sg=g:Select(tp,1,1,nil)
+		local mg=tg:Select(tp,1,9,s.rescon)
 	    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
         Duel.SpecialSummon(sg,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
     Duel.BreakEffect()
