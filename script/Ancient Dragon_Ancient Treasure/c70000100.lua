@@ -4,7 +4,7 @@ Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.filter,1,1}},{{s.filter2,1,1}})
+	Trick.AddProcedure(c,nil,nil,{{s.matfilter,1,1}},{{s.matfilter2,1,1}})
 	c:EnableReviveLimit()
 	--pendulum summon
 	Pendulum.AddProcedure(c)
@@ -54,11 +54,11 @@ function s.initial_effect(c)
 end
 --Trick Summon
 --Monster filter
-function s.filter(c)
+function s.matfilter(c)
 	return c:IsRace(RACE_HIGHDRAGON) and c:IsAttribute(ATTRIBUTE_EARTH)
 end
 --Trap filter
-function s.filter2(c)
+function s.matfilter2(c)
 	return c:IsSetCard(0xADFF)
 end
 --special summon
