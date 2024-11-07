@@ -2,6 +2,12 @@
 --Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
+	--Activate send to GY
+	local e0=Effect.CreateEffect(c)
+	e0:SetCategory(CATEGORY_TOGRAVE)
+	e0:SetType(EFFECT_TYPE_ACTIVATE)
+	e0:SetCode(EVENT_FREE_CHAIN)
+	c:RegisterEffect(e0)
     --Destroy 1 card on the field and special summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,1))
