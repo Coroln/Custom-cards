@@ -56,10 +56,15 @@ function s.initial_effect(c)
 	e6:SetCode(EVENT_TO_DECK)
 	c:RegisterEffect(e6)
 end
+--mat
+function s.tfilter(c,scard,sumtype,tp)
+	return c:IsRace(RACE_FISH,scard,sumtype,tp) and c:IsAttribute(ATTRIBUTE_FIRE,scard,sumtype,tp)
+end
+--indes
 function s.indval(e,re,tp)
 	return e:GetHandler():GetControler()~=tp
 end
---
+--multi attack
 function s.mfilter(c)
 	return c:IsRace(RACE_FISH) and not c:IsType(TYPE_TUNER)
 end
@@ -81,6 +86,7 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(ct-1)
 	c:RegisterEffect(e1)
 end
+--negate
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev)
 end
@@ -96,6 +102,7 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(eg,REASON_EFFECT)
 	end
 end
+--special summon
 function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousPosition(POS_FACEUP) and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
 end
