@@ -1,4 +1,5 @@
---Weiser Wyrm mit den Dunklen Augen
+--Dark-Eyes Elder
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
 	--To hand
@@ -9,20 +10,29 @@ function s.initial_effect(c)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
-	--To grave
-	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_TOGRAVE+CATEGORY_SPECIAL_SUMMON)
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e2:SetRange(LOCATION_HAND)
-	e2:SetCountLimit(1,id)
-	e2:SetCost(s.gvcost)
-	e2:SetTarget(s.gvtg)
-	e2:SetOperation(s.gvop)
+	local e2=e1:Clone()
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e2)
+	local e3=e1:Clone()
+	e3:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e3)
+	--special summon
+	local e4=Effect.CreateEffect(c)
+	e4:SetCategory(CATEGORY_TOGRAVE+CATEGORY_SPECIAL_SUMMON)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e4:SetRange(LOCATION_HAND)
+	e4:SetCost(s.gvcost)
+	e4:SetTarget(s.gvtg)
+	e4:SetOperation(s.gvop)
+	c:RegisterEffect(e4)
 end
+s.listed_names={53790570}
+s.listed_series={0x12BE}
+--to hand
 function s.thfilter(c)
-	return c:IsType(TYPE_TUNER) and c:IsAttribute(ATTRIBUTE_DARK) or c:IsRace(RACE_WYRM) and c:GetLevel()==1 and not c:IsCode(53790576) and c:IsAbleToHand()
+	return c:IsType(TYPE_TUNER) and c:IsLevel(1) and (c:IsRace(RACE_WYRM) or c:IsAttribute(ATTRIBUTE_DARK)) 
+		and c:IsMonster() and not c:IsCode(id) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -36,6 +46,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
+--special summon
 function s.gvcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsDiscardable() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
@@ -44,7 +55,7 @@ function s.gvfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and c:IsAbleToGrave()
 end
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(0x12BE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x12BE) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.gvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.gvfilter(chkc) end

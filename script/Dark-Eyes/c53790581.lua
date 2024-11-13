@@ -1,7 +1,8 @@
---Kreis der Feuerdrachen
+--Dark-Eyes Dragon Nest
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
-	--Activate
+	--Add to hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -16,9 +17,9 @@ function s.initial_effect(c)
 	e2:SetCategory(CATEGORY_REMOVE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
-	e2:SetRange(LOCATION_SZONE)
+	e2:SetRange(LOCATION_FZONE)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
-	e2:SetCountLimit(1,id+1)
+	e2:SetCountLimit(1,{id,1})
 	e2:SetCondition(s.rmcon)
 	e2:SetTarget(s.rmtg)
 	e2:SetOperation(s.rmop)
@@ -26,13 +27,19 @@ function s.initial_effect(c)
 	local e3=e2:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
+	local e4=e2:Clone()
+	e4:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e4)
 end
 s.listed_names={53790570}
+s.listed_series={0x12BE}
+--Add to hand
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>2 end
+	Duel.SetPossibleOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.filter(c)
-	return ((aux.IsCodeListed(c,53790570) and c:IsType(TYPE_SPELL+TYPE_TRAP)) or c:IsCode(53790570)) and c:IsAbleToHand()
+	return (c:ListsArchetype(0x12BE) or (c:IsSetCard(0x12BE) and c:IsMonster())) and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
@@ -50,7 +57,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	else Duel.SortDecktop(tp,tp,3) end
 end
 function s.cfilter(c,tp)
-	return c:IsFaceup() and c:IsCode(53790570) and c:IsControler(tp)
+	return c:IsFaceup() and c:IsSetCard(0x12BE) and c:IsMonster() and c:IsControler(tp)
 end
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
