@@ -1,4 +1,4 @@
---機甲部隊の最前線
+
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
@@ -47,13 +47,13 @@ function s.skcon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.cfilter(c,e,tp)
-	return c:IsRace(RACE_ILLUSION) and c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE) and c:IsReason(REASON_EFFECT)
-            and (c:GetPreviousRaceOnField()&RACE_ILLUSION)~=0
+	return c:IsSetCard(0xBBB) and c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE) and c:IsReason(REASON_EFFECT)
+            and (c:Card.GetPreviousSetCard()&0xBBB)~=0
             and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),e,tp)
 end
 function s.filter(c,atk,e,tp)
 	local a=c:GetAttack()
-	return a>=0 and a<atk and c:IsRace(RACE_ILLUSION) --and c:IsAttribute(att)
+	return a>=0 and a<atk and c:IsSetCard(0xBBB) --and c:IsAttribute(att)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 
@@ -64,7 +64,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.cfilter2(c,e,tp)
-	return c:IsRace(RACE_ILLUSION) and c:IsControler(tp) and c:IsRelateToEffect(e)
+	return c:IsSetCard(0xBBB) and c:IsControler(tp) and c:IsRelateToEffect(e)
 		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),e,tp)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
@@ -96,7 +96,7 @@ end
 
 --e3
 function s.reccon(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp and eg:GetFirst():IsControler(tp) and eg:GetFirst():IsSetCard(0x8e)
+	return ep~=tp and eg:GetFirst():IsControler(tp) and eg:GetFirst():IsSetCard(0xBBB)
 end
 function s.rectg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

@@ -72,7 +72,7 @@ function s.indestg(e,c)
 end
 --e3
 function s.filter(c,e,tp)
-	return c:IsLevelBelow(4) and c:IsRace(RACE_ILLUSION)
+	return c:IsLevelBelow(4) and c:IsSetCard(0xBBB) and c:IsMonster()
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptge3(e,tp,eg,ep,ev,re,r,rp,chk)

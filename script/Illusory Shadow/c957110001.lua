@@ -1,5 +1,5 @@
 --岩の精霊 タイタン
---The Rock Spirit
+--Spirit of Illusions
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
