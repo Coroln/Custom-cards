@@ -48,7 +48,7 @@ end
 
 function s.cfilter(c,e,tp)
 	return c:IsSetCard(0xBBB) and c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE) and c:IsReason(REASON_EFFECT)
-            and (c:Card.GetPreviousSetCard()&0xBBB)~=0
+            and (c:GetPreviousSetCard()&0xBBB)~=0
             and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),e,tp)
 end
 function s.filter(c,atk,e,tp)
