@@ -34,38 +34,33 @@ function s.initial_effect(c)
 end
 --e2
 function s.skconfilter(c,tp)
-    Debug.Message("1")
-	--if  not c:IsReason(REASON_EFFECT) then return false end
 	local re=c:GetReasonEffect()
-    Debug.Message("2")
-	return re:IsMonsterEffect()
-		and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
+	return re:IsMonsterEffect() and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
 end
 function s.skcon(e,tp,eg,ep,ev,re,r,rp)
-    Debug.Message("0")
 	return eg:IsExists(s.skconfilter,1,nil,tp)
 end
 
 function s.cfilter(c,e,tp)
-	return c:IsSetCard(0xBBB) and c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE) and c:IsReason(REASON_EFFECT)
-            and (c:GetPreviousSetCard()&0xBBB)~=0
-            and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),e,tp)
+	local vDebug2 = 0
+	return c:IsSetCard(0xBBB) and c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE) and (c:GetPreviousSetCard()&0xBBB)~=0 and
+			Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),c:GetAttribute(),e,tp)
 end
-function s.filter(c,atk,e,tp)
+function s.filter(c,atk,att,e,tp)
 	local a=c:GetAttack()
-	return a>=0 and a<atk and c:IsSetCard(0xBBB) --and c:IsAttribute(att)
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return a>=0 and a<atk and c:IsSetCard(0xBBB) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and eg:IsExists(s.cfilter,1,nil,e,tp) end
+	if chk==0 then
+		return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and eg:IsExists(s.cfilter,1,nil,e,tp)
+	end
 	Duel.SetTargetCard(eg)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.cfilter2(c,e,tp)
 	return c:IsSetCard(0xBBB) and c:IsControler(tp) and c:IsRelateToEffect(e)
-		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),e,tp)
+		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,c:GetAttack(),nil,e,tp)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
@@ -74,7 +69,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if #sg==1 then
 		local tc=sg:GetFirst()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tc:GetAttack(),e,tp)
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tc:GetAttack(),nil,e,tp)
 		if #g>0 then
 			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 		end
@@ -87,7 +82,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 			if tc:GetAttack()>atk then atk=tc:GetAttack() end
 		end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,atk,e,tp)
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,atk,nil,e,tp)
 		if #g>0 then
 			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 		end
