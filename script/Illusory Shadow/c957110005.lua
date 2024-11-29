@@ -33,7 +33,7 @@ function s.initial_effect(c)
 end
 --e2
 function s.skconfilter(c,tp)
-    --if  not c:IsReason(REASON_EFFECT) then return false end
+    if  not c:IsReason(REASON_EFFECT) then return false end
     local re=c:GetReasonEffect()
     return re:IsMonsterEffect() and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
 end
