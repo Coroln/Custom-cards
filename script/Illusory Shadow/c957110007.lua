@@ -61,11 +61,11 @@ function s.filter(c)
 	return c:IsSpellTrap() and c:IsDestructable()
 end
 function s.dessttg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return s.pfilter(chkc) and chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsControler(1-tp) end
-	if chk==0 then return Duel.IsExistingTarget(s.pfilter,tp,0,LOCATION_ONFIELD,1,nil) end
+	if chkc then return s.pfilter(chkc) and chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(s.pfilter,tp,0,LOCATION_SZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local tc=Duel.SelectTarget(tp,s.pfilter,tp,0,LOCATION_ONFIELD,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,tp,LOCATION_ONFIELD)
+	local tc=Duel.SelectTarget(tp,s.pfilter,tp,0,LOCATION_SZONE,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,tp,LOCATION_SZONE)
 end
 function s.desstop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
