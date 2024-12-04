@@ -99,7 +99,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 --e5
 function s.spcostfilter(c,tp)
-	return c:IsSetCard(0xBBB) and c:IsAbleToDeckOrExtraAsCost()
+	return c:IsSetCard(0xBBB) and c:IsMonster() and c:IsAbleToDeckOrExtraAsCost()
 end
 function s.spcoste4(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
