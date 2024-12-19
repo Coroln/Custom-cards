@@ -419,3 +419,5 @@ function Auxiliary.CanConOperation(required,filter)
 		g:DeleteGroup()
 	end
 end
+--Checks for cards with different names (to be used with Aux.SelectUnselectGroup)
+Auxiliary.drcheck=Auxiliary.dpcheck(Card.GetRace)
