@@ -39,17 +39,24 @@ function s.spfilter(c,e,tp)
 	return c:IsCode(38142739) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+	if chkc then return e:GetHandler():IsLocation(LOCATION_MZONE) and e:GetHandler():IsControler(tp) and e:GetHandler():CheckAdjacent() end
+	if chk==0 then return e:GetHandler():CheckAdjacent() end
+	e:SetLabel(e:GetHandler():SelectAdjacent())
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
-	local tc=g:GetFirst()
-	if tc and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0
-		and tc:GetAttack()>0 then
-				Duel.NegateAttack(a) 
+	c = e:GetHandler()
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	--local tc=Duel.GetFirstTarget()
+	local seq=e:GetLabel()
+	if c:IsImmuneToEffect(e) or not c:IsRelateToEffect(e) or c:IsControler(1-tp) or not Duel.CheckLocation(tp,LOCATION_MZONE,seq) then return end
+	if Duel.MoveSequence(c,seq) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) then
+		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+		local tc=g:GetFirst()
+		if tc and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0
+			and tc:GetAttack()>0 then
+					Duel.NegateAttack(a) 
+			end
 	end
 end
