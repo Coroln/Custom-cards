@@ -45,22 +45,14 @@ function s.initial_effect(c)
 	e4:SetTarget(s.target)
 	e4:SetOperation(s.operation)
 	c:RegisterEffect(e4)
-	 -- Effect to check the counter change and win the duel if there are 3 "Ocean Counters"
-	 local e5 = Effect.CreateEffect(c)
-	 e5:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-	 e5:SetCode(EVENT_CUSTOM + id) -- Custom event to check counters
-	 e5:SetCondition(s.check_win_condition)
-	 e5:SetOperation(s.win_duel)
-	 c:RegisterEffect(e5)
- 
-	 -- Register the event that fires when a counter is added
-	 local e6 = Effect.CreateEffect(c)
-	 e6:SetType(EFFECT_TYPE_SINGLE + EFFECT_TYPE_TRIGGER_O)
-	 e6:SetCode(EVENT_ADD_COUNTER)
-	 e6:SetRange(LOCATION_MZONE)
-	 e6:SetCondition(s.trigger_check)
-	 e6:SetOperation(s.trigger_event)
-	 c:RegisterEffect(e6)
+	--win
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e5:SetCode(EVENT_CHAIN_SOLVING)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_DELAY)
+	e5:SetOperation(s.winop)
+	c:RegisterEffect(e5)
 end
 s.counter_place_list={0x45}
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
@@ -125,31 +117,9 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:AddCounter(0x45,1)
 	end
 end
-function s.trigger_check(e, tp, eg, ep, ev, re, r, rp)
-    local c = e:GetHandler()
-    -- Check if "Ocean Counters" were added
-    return c:IsFaceup() and ev > 0 and c:GetCounter(0x45) > 0
-end
-
--- Fire the custom event when counters are added
-function s.trigger_event(e, tp, eg, ep, ev, re, r, rp)
-    local c = e:GetHandler()
-    -- Fire the custom event to check if the duel should be won
-    Duel.RaiseEvent(c, EVENT_CUSTOM + id, re, r, tp, tp, 0)
-end
-
--- Check if there are 3 "Ocean Counters" on the card
-function s.check_win_condition(e, tp, eg, ep, ev, re, r, rp)
-    local c = e:GetHandler()
-    -- If the card has 3 or more "Ocean Counters", win the duel
-    return c:GetCounter(0x45) >= 3
-end
-
--- Win the duel if there are 3 "Ocean Counters"
-function s.win_duel(e, tp, eg, ep, ev, re, r, rp)
-    local c = e:GetHandler()
-    -- If the condition is met, win the duel
-    if c:GetCounter(0x45) >= 3 then
-        Duel.Win(tp, WIN_REASON_CHEAT)  -- You can use WIN_REASON_CHEAT or any other valid reason
-    end
+function s.winop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:GetCounter(0x45)==3 then
+		Duel.Win(tp,WIN_REASON_CREATORGOD)
+	end
 end
