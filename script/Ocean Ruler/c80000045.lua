@@ -54,6 +54,7 @@ function s.initial_effect(c)
 	e5:SetOperation(s.winop)
 	c:RegisterEffect(e5)
 end
+s.counter_place_list={0x45}
 WIN_REASON_POSAIDON = 0x59
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)==LOCATION_SZONE
