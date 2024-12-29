@@ -1,6 +1,7 @@
 --Possaidon, Ozeanherrscher der Weltmeere
 local s,id=GetID()
 function s.initial_effect(c)
+	c:EnableCounterPermit(0x44)
 	--xyz summon
 	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_SEASERPENT),8,2)
 	c:EnableReviveLimit()
