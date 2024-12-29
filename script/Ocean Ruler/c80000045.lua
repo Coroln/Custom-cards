@@ -120,6 +120,6 @@ end
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetCounter(0x45)==3 then
-		Duel.Win(tp,0x59)
+		Duel.Win(tp,0x99)
 	end
 end
