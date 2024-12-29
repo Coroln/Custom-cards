@@ -48,7 +48,7 @@ function s.initial_effect(c)
 	--win
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e5:SetCode(EVENT_CHAIN_SOLVING)
+	e5:SetCode(EVENT_ADD_COUNTER)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_DELAY)
 	e5:SetOperation(s.winop)
@@ -121,6 +121,6 @@ end
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetCounter(0x45)==3 then
-		Duel.Win(tp,WIN_REASON_POSAIDON)
+		Duel.Win(tp)
 	end
 end
