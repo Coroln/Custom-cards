@@ -54,6 +54,7 @@ function s.initial_effect(c)
 	e5:SetOperation(s.winop)
 	c:RegisterEffect(e5)
 end
+WIN_REASON_POSAIDON = 0x59
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)==LOCATION_SZONE
 		and re:IsActiveType(TYPE_SPELL) and Duel.IsChainDisablable(ev) and not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
@@ -119,6 +120,6 @@ end
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetCounter(0x45)==3 then
-		Duel.Win(tp,0x59)
+		Duel.Win(tp,WIN_REASON_POSAIDON)
 	end
 end
