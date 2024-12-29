@@ -48,14 +48,13 @@ function s.initial_effect(c)
 	--win
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e5:SetCode(EVENT_ADD_COUNTER)
+	e5:SetCode(EVENT_CHAIN_SOLVING)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_DELAY)
 	e5:SetOperation(s.winop)
 	c:RegisterEffect(e5)
 end
 s.counter_place_list={0x45}
-WIN_REASON_POSAIDON = 0x59
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)==LOCATION_SZONE
 		and re:IsActiveType(TYPE_SPELL) and Duel.IsChainDisablable(ev) and not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
@@ -121,6 +120,6 @@ end
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetCounter(0x45)==3 then
-		Duel.Win(tp)
+		Duel.Win(tp,WIN_REASON_CREATORGOD)
 	end
 end
