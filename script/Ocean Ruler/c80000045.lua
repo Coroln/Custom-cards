@@ -1,7 +1,7 @@
 --Possaidon, Ozeanherrscher der Weltmeere
 local s,id=GetID()
 function s.initial_effect(c)
-	c:EnableCounterPermit(0x44)
+	c:EnableCounterPermit(0x45)
 	--xyz summon
 	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_SEASERPENT),8,2)
 	c:EnableReviveLimit()
@@ -107,19 +107,18 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_EFFECT)
-		and e:GetHandler():IsCanAddCounter(0x44,1) end
-	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x44)
+		and e:GetHandler():IsCanAddCounter(0x45,1) end
+	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x45)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsFaceup() and c:RemoveOverlayCard(tp,1,1,REASON_EFFECT) then
-		c:AddCounter(0x44,1)
+		c:AddCounter(0x45,1)
 	end
 end
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
-	local WIN_REASON_POSSAIDON_OZEANHERRSCHER_DER_WELTMEERE=0x1d
 	local c=e:GetHandler()
-	if c:GetCounter(0x44)==3 then
-		Duel.Win(tp,WIN_REASON_POSSAIDON_OZEANHERRSCHER_DER_WELTMEERE)
+	if c:GetCounter(0x45)==3 then
+		Duel.Win(tp,0x59)
 	end
 end
