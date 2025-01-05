@@ -54,7 +54,7 @@ function s.target1(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.activate1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateSummon(eg)
-	Duel.Destroy(eg,REASON_EFFECT)
+	Duel.SendtoDeck(eg,nil,2,REASON_EFFECT)
 end
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev) and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil)
@@ -67,8 +67,10 @@ function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.activate2(e,tp,eg,ep,ev,re,r,rp)
+	local ec=re:GetHandler()
 	if Duel.NegateActivation(ev) and re:GetHandler():IsRelateToEffect(re) then
-		Duel.Destroy(eg,REASON_EFFECT)
+		ec:CancelToGrave()
+		Duel.SendtoDeck(ec,nil,2,REASON_EFFECT)
 	end
 end
 
