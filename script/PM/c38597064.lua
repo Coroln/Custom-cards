@@ -12,6 +12,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_HAND)
     e2:SetCountLimit(id,1)
 	e2:SetCost(aux.SelfDiscardCost)
+	e2:SetCondition(s.dircon)
 	e2:SetTarget(s.atktg)
 	e2:SetOperation(s.atkop)
 	c:RegisterEffect(e2)
@@ -28,6 +29,13 @@ function s.extrafil(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetMatchingGroup(s.mfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,nil)
 end
 --atkup
+function s.cfilter1(c)
+	return c:IsFaceup() and (c:IsCode(35777553) or c:IsCode(41092585) or c:IsRace(RACE_DRAGON))
+end
+function s.dircon(e)
+	local tp=e:GetHandlerPlayer()
+	return Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_ONFIELD,0,1,nil)
+end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
 end
