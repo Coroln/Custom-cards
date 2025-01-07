@@ -38,6 +38,15 @@ function s.initial_effect(c)
     e3:SetCost(aux.SelfBanishCost)
     c:RegisterEffect(e3)
 
+	--change name
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e4:SetCode(EFFECT_ADD_CODE)
+	e4:SetRange(LOCATION_MZONE+LOCATION_GRAVE)
+	e4:SetValue(CARD_DARK_MAGICIAN)
+	c:RegisterEffect(e4)
+
 end
 s.listed_names={CARD_DARK_MAGICIAN,957130001}
 s.material={CARD_DARK_MAGICIAN,957130001}
