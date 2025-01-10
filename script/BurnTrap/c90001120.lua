@@ -1,5 +1,6 @@
 --BurnTRAP Keyblade
 --Script by Coroln
+Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon
@@ -17,7 +18,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--Set 1 Trap card
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_BE_MATERIAL)
@@ -40,14 +41,14 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RegisterFlagEffect(id,RESET_CHAIN,0,1)
 end
 function s.filter(c)
-	return c:IsFacedown() and c:IsLocation(LOCATION_SZONE) and c:GetSequence()~=5
+	return c:IsFacedown() and c:GetSequence()~=5
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() and s.filter(chkc) end
 	local c=e:GetHandler()
+	if chkc then return chkc:IsLocation(LOCATION_SZONE) and s.filter(chkc) end
 	if chk==0 then return c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
-	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_SZONE,LOCATION_SZONE,1,1,nil)
 	if #g>0 then
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
 	end
@@ -65,7 +66,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 --Set 1 Trap card
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	return not (r&REASON_FUSION+REASON_SYNCHRO+REASON_LINK)~=0
+    local c=e:GetHandler()
+    return (r&REASON_TRICK) and not c:IsSummonType(SUMMON_TYPE_MAXIMUM)
 end
 function s.setfilter(c)
 	return c:IsTrap() and c:IsSSetable()

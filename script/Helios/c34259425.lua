@@ -38,6 +38,7 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_UPDATE_ATTACK)
 	e4:SetRange(LOCATION_SZONE)
 	e4:SetTargetRange(LOCATION_MZONE,0)
+	e4:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x6C))
 	e4:SetValue(s.atkval)
 	c:RegisterEffect(e4)
 end
