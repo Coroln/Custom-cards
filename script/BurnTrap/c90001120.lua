@@ -32,8 +32,7 @@ function s.cfilter(c)
 	return c:IsFacedown()
 end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetFieldGroup(tp,LOCATION_SZONE,LOCATION_SZONE)
-	return #g>0 and g:FilterCount(s.cfilter,nil)==#g
+	return Duel.IsExistingMatchingCard(Card.IsFacedown,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
