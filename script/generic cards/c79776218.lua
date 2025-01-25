@@ -3,7 +3,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
     --Pendulum
-    Pendulum.AddProcedure(c,false)
+    Pendulum.AddProcedure(c)
     --draw then special
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DRAW+CATEGORY_DAMAGE)
