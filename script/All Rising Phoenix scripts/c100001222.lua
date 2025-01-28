@@ -1,5 +1,7 @@
 --Created and scripted by Rising Phoenix
-function c100001222.initial_effect(c)
+--fixed by Coroln
+local s,id=GetID()
+function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -11,9 +13,9 @@ function c100001222.initial_effect(c)
 	e2:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
-	e2:SetTarget(c100001222.extg)
+	e2:SetTarget(s.extg)
 	c:RegisterEffect(e2)
-		--code
+	--code
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -21,93 +23,92 @@ function c100001222.initial_effect(c)
 	e3:SetRange(LOCATION_FZONE)
 	e3:SetValue(56433456)
 	c:RegisterEffect(e3)
-		--to hand
-	local e11=Effect.CreateEffect(c)
-	e11:SetDescription(aux.Stringid(100001222,0))
-	e11:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
-	e11:SetType(EFFECT_TYPE_IGNITION)
-	e11:SetRange(LOCATION_FZONE)
-	e11:SetCountLimit(1)
-	e11:SetTarget(c100001222.thtg)
-	e11:SetOperation(c100001222.thop)
-	e11:SetCondition(c100001222.spcon)
-	c:RegisterEffect(e11)
-		--avoid battle damage
-	local e13=Effect.CreateEffect(c)
-	e13:SetType(EFFECT_TYPE_FIELD)
-	e13:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
-	e13:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-	e13:SetRange(LOCATION_FZONE)
-	e13:SetTargetRange(LOCATION_MZONE,0)
-	e13:SetTarget(c100001222.extg)
-	e13:SetCondition(c100001222.con)
-	e13:SetValue(1)
-	c:RegisterEffect(e13)
-		--no damage
+	--to hand
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetRange(LOCATION_FZONE)
+	e4:SetCountLimit(1)
+	e4:SetTarget(s.thtg)
+	e4:SetOperation(s.thop)
+	c:RegisterEffect(e4)
+	--avoid battle damage
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_FIELD)
-	e5:SetCode(EFFECT_CHANGE_DAMAGE)
+	e5:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
+	e5:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e5:SetRange(LOCATION_FZONE)
-	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e5:SetTargetRange(1,0)
-	e5:SetCondition(c100001222.con)
-	e5:SetValue(c100001222.damval)
+	e5:SetTargetRange(LOCATION_MZONE,0)
+	e5:SetTarget(s.extg)
+	e5:SetCondition(s.con)
+	e5:SetValue(1)
 	c:RegisterEffect(e5)
-	local e6=e5:Clone()
-	e6:SetCode(EFFECT_NO_EFFECT_DAMAGE)
+	--no damage
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_FIELD)
+	e6:SetCode(EFFECT_CHANGE_DAMAGE)
+	e6:SetRange(LOCATION_FZONE)
+	e6:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e6:SetTargetRange(1,0)
+	e6:SetCondition(s.con)
+	e6:SetValue(s.damval)
 	c:RegisterEffect(e6)
-		--indes
-	local e21=Effect.CreateEffect(c)
-	e21:SetType(EFFECT_TYPE_FIELD)
-	e21:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e21:SetRange(LOCATION_FZONE)
-	e21:SetTargetRange(LOCATION_MZONE,0)
-	e21:SetTarget(c100001222.indtg)
-	e21:SetValue(1)
-	e21:SetCondition(c100001222.con)
-	c:RegisterEffect(e21)
-	local e22=e21:Clone()
-	e22:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
-	c:RegisterEffect(e22)
+	local e7=e6:Clone()
+	e7:SetCode(EFFECT_NO_EFFECT_DAMAGE)
+	c:RegisterEffect(e7)
+	--indes
+	local e8=Effect.CreateEffect(c)
+	e8:SetType(EFFECT_TYPE_FIELD)
+	e8:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e8:SetRange(LOCATION_FZONE)
+	e8:SetTargetRange(LOCATION_MZONE,0)
+	e8:SetTarget(s.indtg)
+	e8:SetValue(1)
+	e8:SetCondition(s.con)
+	c:RegisterEffect(e8)
+	local e9=e8:Clone()
+	e9:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	c:RegisterEffect(e9)
 end
-function c100001222.filter22(c)
-	return c:IsFaceup() and c:IsCode(56433456)
-end
-function c100001222.con(e)
-	return Duel.IsExistingMatchingCard(c100001222.filter22,e:GetHandler():GetControler(),LOCATION_GRAVE,0,1,nil)
-end
-function c100001222.indtg(e,c)
-	return c:IsRace(RACE_FAIRY) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsLevelBelow(4)
-end
-function c100001222.damval(e,re,val,r,rp,rc)
-	if bit.band(r,REASON_EFFECT)~=0 and rp~=e:GetOwnerPlayer() then return 0 else return val end
-end
-function c100001222.extg(e,c)
+--extra summon/no damage target
+function s.extg(e,c)
 	return c:IsRace(RACE_FAIRY) and c:IsAttribute(ATTRIBUTE_LIGHT) 
 end
-function c100001222.cfilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_FAIRY) and c:IsAttribute(ATTRIBUTE_LIGHT) 
-end
-function c100001222.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c100001222.cfilter,tp,LOCATION_MZONE,0,1,nil)
-end
-function c100001222.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+--to hand
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>2 end
 end
-function c100001222.thfilter(c)
+function s.thfilter(c)
 	return (c:IsRace(RACE_FAIRY) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsAbleToHand()) or (c:IsType(TYPE_COUNTER) and c:IsAbleToHand())
 end
-function c100001222.thop(e,tp,eg,ep,ev,re,r,rp)
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)<3 then return end
 	Duel.ConfirmDecktop(tp,3)
 	local g=Duel.GetDecktopGroup(tp,3)
-	if g:IsExists(c100001222.thfilter,1,nil) then
+	if g:IsExists(s.thfilter,1,nil) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local sg=g:FilterSelect(tp,c100001222.thfilter,1,1,nil)
+		local sg=g:FilterSelect(tp,s.thfilter,1,1,nil)
 		Duel.SendtoHand(sg,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,sg)
 		Duel.ShuffleHand(tp)
 	end
 	Duel.ShuffleDeck(tp)
 end
+--no damage/indes con
+function s.con(e)
+	return Duel.IsExistingMatchingCard(s.filter,e:GetHandler():GetControler(),LOCATION_GRAVE,0,1,nil)
+end
+--no damage
+function s.filter(c)
+	return c:IsFaceup() and c:IsCode(56433456)
+end
+function s.damval(e,re,val,r,rp,rc)
+	if bit.band(r,REASON_EFFECT)~=0 and rp~=e:GetOwnerPlayer() then return 0 else return val end
+end
+--indes
+function s.indtg(e,c)
+	return c:IsRace(RACE_FAIRY) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsLevelBelow(4)
+end
+
