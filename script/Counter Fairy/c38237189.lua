@@ -12,9 +12,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SUMMON,s.counterfilter)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_FLIPSUMMON,s.counterfilter)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON+ACTIVITY_SUMMON+ACTIVITY_FLIPSUMMON,s.counterfilter)
 end
 --add to hand
 function s.counterfilter(c)
@@ -25,7 +23,7 @@ function s.cfilter(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,e:GetHandler())
-            and Duel.GetActivityCount(id,tp,ACTIVITY_SUMMON)==0 and Duel.GetActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 and Duel.GetActivityCount(id,tp,ACTIVITY_FLIPSUMMON)==0 end
+            and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SUMMON)==0 and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 and Duel.GetCustomActivityCount(id,tp,ACTIVITY_FLIPSUMMON)==0 end
     --Cannot Special Summon, except Fairy monsters
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetDescription(aux.Stringid(id,0))
