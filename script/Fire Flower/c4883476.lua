@@ -31,7 +31,7 @@ function s.initial_effect(c)
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_DELAY)
-	e3:SetCode(EVENT_DESTROYED)
+	e3:SetCode(EVENT_TO_GRAVE)
 	e3:SetRange(LOCATION_GRAVE)
     e3:SetCountLimit(1,{id,2})
 	e3:SetCondition(s.spcon)
@@ -68,11 +68,12 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --spsummon
-function s.spfilter(c)
-	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP) and (c:GetPreviousAttributeOnField()&ATTRIBUTE_FIRE)~=0
+function s.spfilter(c,tp)
+	return c:IsMonster() and (c:GetReason()&0x41)==0x41 and c:IsPreviousControler(tp)
+		and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP) and (c:GetPreviousAttributeOnField()&ATTRIBUTE_FIRE)~=0
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return not eg:IsContains(e:GetHandler()) and eg:IsExists(s.spfilter,1,nil) and (r&REASON_EFFECT)~=0
+	return eg:IsExists(s.spfilter,1,nil,tp)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
