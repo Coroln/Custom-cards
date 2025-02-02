@@ -37,8 +37,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
     local tc=e:GetLabelObject()
     if not (c:IsRelateToEffect(e) and tc) then return end
     
-    local atk=tc:GetAttack()
-    local def=tc:GetDefense()
+    local atk=math.floor((tc:GetAttack()*0.55)/100)*100
+    local def=math.floor((tc:GetDefense()*0.55)/100)*100
     local lvl=tc:GetLevel()
     
     if atk>0 then
