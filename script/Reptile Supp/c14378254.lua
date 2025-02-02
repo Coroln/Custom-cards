@@ -59,6 +59,7 @@ function s.initial_effect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e5:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e5:SetCode(EVENT_DESTROYED)
+	e5::SetCountLimit(1,{id,1})
 	e5:SetCondition(s.sppcon)
 	e5:SetTarget(s.spptg)
 	e5:SetOperation(s.sppop)
@@ -117,7 +118,7 @@ function s.cosfilter(c)
     return c:IsMonster() and c:IsAbleToGraveAsCost()
 end
 function s.tdcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cosfilter,tp,LOCATION_HAND,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cosfilter,tp,LOCATION_DECK,0,1,nil) end
     local g1=Duel.SelectMatchingCard(tp,s.cosfilter,tp,LOCATION_DECK,0,1,1,nil)
     Duel.SendtoGrave(g1,REASON_COST)
 end
