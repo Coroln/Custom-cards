@@ -27,7 +27,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetCode(EFFECT_CHANGE_CODE)
-	e3:SetRange(LOCATION_GRAVE+LOCATION_HAND)
+	e3:SetRange(LOCATION_GRAVE+LOCATION_HAND+LOCATION_MZONE)
 	e3:SetValue(77207191)
 	c:RegisterEffect(e3)
 end
