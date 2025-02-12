@@ -1,9 +1,17 @@
 --魔導戦士 ブレイカー
---Breaker the Magical Warrior
+--Tengu Magician
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(COUNTER_SPELL)
 	c:SetCounterLimit(COUNTER_SPELL,1)
+	--Type Spellcaster
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e0:SetCode(EFFECT_ADD_RACE)
+	e0:SetRange(LOCATION_MZONE)
+	e0:SetValue(RACE_SPELLCASTER)
+	c:RegisterEffect(e0)
 	--summon success
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
