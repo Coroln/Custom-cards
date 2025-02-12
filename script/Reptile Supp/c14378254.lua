@@ -137,7 +137,7 @@ function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 end
 --special summon from gy
 function s.sppcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousLocation(LOCATION_MZONE) and e:GetHandler():IsPreviousControler(tp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD) and e:GetHandler():IsPreviousControler(tp)
 end
 function s.pfilter(c,e,tp)
 	return c:IsRace(RACE_REPTILE) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
