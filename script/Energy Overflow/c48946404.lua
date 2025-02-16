@@ -29,7 +29,7 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_PHASE+PHASE_STANDBY)
 	e3:SetRange(LOCATION_REMOVED)
 	e3:SetCountLimit(1)
-	e3:SetTarget(s.target)
+	e3:SetTarget(s.rtg)
 	e3:SetOperation(s.operation)
 	c:RegisterEffect(e3)
 end
@@ -83,7 +83,7 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --recover opponent LP
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.rtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetTargetPlayer(1-tp)
 	Duel.SetTargetParam(500)
