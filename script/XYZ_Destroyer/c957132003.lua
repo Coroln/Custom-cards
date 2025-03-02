@@ -41,7 +41,7 @@ function s.cfilter(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     local g=Group.CreateGroup()
-	local mg=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	local mg=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	for tc in aux.Next(mg) do
 		g:Merge(tc:GetOverlayGroup())
 	end

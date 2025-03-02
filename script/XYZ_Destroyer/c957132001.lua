@@ -27,7 +27,7 @@ end
 -- Kosten: Lege 1 Xyz-Material von einem Xyz-Monster auf deiner Seite ab
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     local g=Group.CreateGroup()
-	local mg=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	local mg=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	for tc in aux.Next(mg) do
 		g:Merge(tc:GetOverlayGroup())
 	end
