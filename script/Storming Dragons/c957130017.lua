@@ -104,7 +104,4 @@ function s.operatione5(e,tp,eg,ep,ev,re,r,rp,chk)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END, 2)
 	e1:SetValue(1800)
 	a:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetCode(EFFECT_UPDATE_DEFENSE)
-	a:RegisterEffect(e2)
 end
