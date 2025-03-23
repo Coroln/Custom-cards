@@ -32,14 +32,17 @@ end
 ---------------------------------------------
 -- 2) Zielauswahl (target)
 ---------------------------------------------
+
+function s.cfilter(c)
+	return c:IsRace(RACE_DRAGON) and c:IsType(TYPE_MONSTER) and c:IsType(TYPE_NORMAL) and c:IsAbleToGraveAsCost()
+end
+
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then
-        -- Meistens reicht hier "return true", 
-        -- da wir immer aktivieren dürfen.
-        return true
+        return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_DECK,0,1,nil)
     end
     
-    -- Wir wählen bis zu 3 passende Monster (Kosten)
+    -- Wir wählen bis zu 3 passende Monster
     local g=Duel.SelectMatchingCard(tp,s.cost_filter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_ONFIELD,0,1,3,nil)
     local ct=#g
     if ct>0 then
