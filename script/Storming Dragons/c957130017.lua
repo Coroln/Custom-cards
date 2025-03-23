@@ -66,7 +66,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 --e4
 function s.filter(c)
-	return c:IsAttackBelow(2700) and c:IsRace(RACE_DRAGON) and c:IsAbleToHand()
+	return c:IsAttack(2700) and c:IsRace(RACE_DRAGON) and c:IsAbleToHand()
 end
 function s.targete4(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
