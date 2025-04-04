@@ -30,8 +30,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 s.listed_series={0x39F}
-s.listed_names={id}
-s.listed_names={31812496}
+s.listed_names={id,31812496}
 --Double damage
 function s.dcon(e)
 	return Duel.GetAttackTarget()==e:GetHandler()
@@ -41,7 +40,7 @@ function s.damop(e,re,val,r,rp)
 end
 --Special Summon 1 Level 4 or lower OR Level 4 or higher Rock-Type monster from your GY
 function s.spfilter(c,e,tp,ex)
-	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and (c:IsLevelBelow(4) or (ex and (c:IsLevelAbove(4))))
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsRace(RACE_ROCK) and (c:IsLevelBelow(4) or (ex and (c:IsLevelAbove(4))))
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local ex=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0
