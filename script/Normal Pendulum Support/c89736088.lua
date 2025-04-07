@@ -4,31 +4,15 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--Pendulum Attribute
 	Pendulum.AddProcedure(c)
-
 	--Pendulum Effect 1: Treat Monster Zones as linked zones (Target specific monster zone)
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_BECOME_LINKED_ZONE)
+	local e1 = Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_NO_TURN_RESET)
 	e1:SetRange(LOCATION_PZONE)
-    e1:SetTargetRange(0xff,0xff)
-    e1:SetCondition(s.lcon)
-    e1:SetValue(0x1)
+	e1:SetCountLimit(1)
+	e1:SetTarget(s.linkedzone_target)
+	e1:SetOperation(s.linkedzone_value)
 	c:RegisterEffect(e1)
-    local e1a=e1:Clone()
-    e1a:SetValue(0x100000)
-    c:RegisterEffect(e1a)
-    local e1b=Effect.CreateEffect(c)
-	e1b:SetType(EFFECT_TYPE_FIELD)
-	e1b:SetCode(EFFECT_BECOME_LINKED_ZONE)
-	e1b:SetRange(LOCATION_PZONE)
-    e1b:SetTargetRange(0xff,0xff)
-    e1b:SetCondition(s.lcon2)
-    e1b:SetValue(0x10)
-	c:RegisterEffect(e1b)
-    local e1c=e1b:Clone()
-    e1c:SetValue(0x10000)
-    c:RegisterEffect(e1c)
-
 	--Pendulum Effect 2: ATK Boost for Normal Pendulum Monsters
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
@@ -38,7 +22,6 @@ function s.initial_effect(c)
 	e2:SetTarget(s.boostfilter)
 	e2:SetValue(s.atkval)
 	c:RegisterEffect(e2)
-
 	--Pendulum Effect 3: Restrict Pendulum Summon
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
@@ -49,7 +32,6 @@ function s.initial_effect(c)
 	e3:SetCondition(s.pscon)
     e3:SetValue(0)
 	c:RegisterEffect(e3)
-
 	--Monster Effect 1: ATK Boost during battle
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_QUICK_O)
@@ -59,7 +41,6 @@ function s.initial_effect(c)
 	e4:SetCondition(s.atkcon)
 	e4:SetOperation(s.atkop)
 	c:RegisterEffect(e4)
-
 	--Monster Effect 2: Search and Gain LP
 	local e5=Effect.CreateEffect(c)
 	e5:SetCategory(CATEGORY_TOEXTRA+CATEGORY_RECOVER)
@@ -71,12 +52,22 @@ function s.initial_effect(c)
 	e5:SetOperation(s.addop)
 	c:RegisterEffect(e5)
 end
---
-function s.lcon(e)
-	return e:GetHandler():GetSequence()==0
+--Pendulum Effect 1: Treat Monster Zones as linked zones (Target specific monster zone)
+function s.linkedzone_target(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
+	local seq=Duel.SelectFieldZone(tp,1,LOCATION_MZONE,0,0)
+	Duel.Hint(HINT_ZONE,tp,seq)
+	e:SetLabel(seq)
 end
-function s.lcon2(e)
-	return e:GetHandler():GetSequence()==4
+function s.linkedzone_value(e,tp,eg,ep,ev,re,r,rp)
+	local seq2=e:GetLabel()
+    local e1=Effect.CreateEffect(e:GetHandler())
+    e1:SetType(EFFECT_TYPE_FIELD)
+    e1:SetCode(EFFECT_BECOME_LINKED_ZONE)
+    e1:SetTargetRange(LOCATION_MZONE,0)
+    e1:SetValue(seq2)
+    Duel.RegisterEffect(e1,tp)
 end
 --Pendulum Effect: ATK Boost for Normal Pendulum Monsters
 function s.boostfilter(e,c)
@@ -86,7 +77,6 @@ function s.atkval(e,c)
 	local g=Duel.GetFieldGroup(e:GetHandlerPlayer(),LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE)
 	return g:FilterCount(Card.IsType,nil,TYPE_NORMAL)*100
 end
-
 --Pendulum Effect: Restrict Pendulum Summon
 function s.psfilter(c)
     return bit.band(c:GetOriginalType(), TYPE_NORMAL) ~= 0 and bit.band(c:GetOriginalType(), TYPE_PENDULUM) ~= 0
@@ -111,7 +101,6 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		tc=g:GetNext()
 	end
 end
-
 --Monster Effect: Search and Gain LP
 function s.addfilter(c)
 	return c:IsType(TYPE_NORMAL) and c:IsType(TYPE_PENDULUM) and c:IsAbleToExtra()
