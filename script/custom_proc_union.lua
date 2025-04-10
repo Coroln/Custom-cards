@@ -49,4 +49,3 @@ function Auxiliary.UnionEquipGYOperation(f)
 		end
 	end
 end
-
