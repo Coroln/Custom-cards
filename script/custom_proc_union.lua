@@ -15,8 +15,8 @@ function Auxiliary.AddUnionEquipFromGYEffect(c,f)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_SZONE)
-	e2:SetTarget(Auxiliary.UnionSumTarget(oldequip))
-	e2:SetOperation(Auxiliary.UnionSumOperation(oldequip))
+	e2:SetTarget(Auxiliary.UnionSumTarget())
+	e2:SetOperation(Auxiliary.UnionSumOperation())
 	c:RegisterEffect(e2)
 	--eqlimit
 	local e4=Effect.CreateEffect(c)
@@ -55,6 +55,28 @@ function Auxiliary.UnionEquipGYOperation(f)
 			if Duel.Equip(tp,c,tc,false) then
 				Auxiliary.SetUnionState(c)
 			end
+		end
+	end
+end
+function Auxiliary.UnionSumTarget()
+	return function (e,tp,eg,ep,ev,re,r,rp,chk)
+		local c=e:GetHandler()
+		local code=c:GetOriginalCode()
+		local pos=POS_FACEUP
+		if chk==0 then return c:GetFlagEffect(code)==0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+			and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,true,false,pos) end
+		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
+		c:RegisterFlagEffect(code,RESET_EVENT+(RESETS_STANDARD-RESET_TOFIELD-RESET_LEAVE)+RESET_PHASE+PHASE_END,0,1)
+	end
+end
+function Auxiliary.UnionSumOperation()
+	return function (e,tp,eg,ep,ev,re,r,rp)
+		local c=e:GetHandler()
+		if not c:IsRelateToEffect(e) then return end
+		local pos=POS_FACEUP
+		if Duel.SpecialSummon(c,0,tp,tp,true,false,pos)==0 and Duel.GetLocationCount(tp,LOCATION_MZONE)<=0
+			and c:IsCanBeSpecialSummoned(e,0,tp,true,false,pos) then
+			Duel.SendtoGrave(c,REASON_RULE)
 		end
 	end
 end
