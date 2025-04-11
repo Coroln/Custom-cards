@@ -56,9 +56,9 @@ end
 function s.linkedzone_target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
-	local seq=Duel.SelectFieldZone(tp,1,LOCATION_MZONE,0,0)
+	local seq1=Duel.SelectFieldZone(tp,1,LOCATION_MZONE,0,0)
 	local seq2=Duel.SelectFieldZone(tp,1,0,LOCATION_MZONE,0)
-	seq:Merge(seq2)
+	local seq=seq1|seq2
 	Duel.Hint(HINT_ZONE,tp,seq)
 	e:SetLabel(seq)
 end
