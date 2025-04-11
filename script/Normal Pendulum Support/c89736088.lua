@@ -57,16 +57,18 @@ function s.linkedzone_target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
 	local seq=Duel.SelectFieldZone(tp,1,LOCATION_MZONE,0,0)
+	local seq2=Duel.SelectFieldZone(tp,1,0,LOCATION_MZONE,0)
+	seq:Merge(seq2)
 	Duel.Hint(HINT_ZONE,tp,seq)
 	e:SetLabel(seq)
 end
 function s.linkedzone_value(e,tp,eg,ep,ev,re,r,rp)
-	local seq2=e:GetLabel()
+	local seq3=e:GetLabel()
     local e1=Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_BECOME_LINKED_ZONE)
     e1:SetTargetRange(LOCATION_MZONE,0)
-    e1:SetValue(seq2)
+    e1:SetValue(seq3)
     Duel.RegisterEffect(e1,tp)
 end
 --Pendulum Effect: ATK Boost for Normal Pendulum Monsters
