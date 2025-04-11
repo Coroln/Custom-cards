@@ -42,6 +42,7 @@ function s.initial_effect(c)
 	e4:SetValue(s.atkval)
 	c:RegisterEffect(e4)
 end
+s.listed_names={30241314}
 --search
 function s.thfilter(c)
 	return c:IsSetCard(0x6C) and c:IsAbleToHand()

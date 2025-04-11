@@ -77,6 +77,7 @@ function s.initial_effect(c)
 	e7:SetOperation(s.operation)
 	c:RegisterEffect(e7)
 end
+s.listed_names={30241314}
 --Trick Summon
 --Monster filter
 function s.filter(c)

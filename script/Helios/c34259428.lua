@@ -55,6 +55,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 s.listed_series={SET_HELIOS}
+s.listed_names={30241314}
 --special summmon
 function s.spcon(e,c)
 	if c==nil then return true end
