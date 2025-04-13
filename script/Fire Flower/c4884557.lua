@@ -27,7 +27,7 @@ function s.filter(c)
     return c:IsAttribute(ATTRIBUTE_FIRE) and c:IsRace(RACE_PLANT)
 end
 function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_REMOVED,0,1,nil) end
 	local g=Duel.GetMatchingGroup(s.filter,0,LOCATION_REMOVED,0,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g,#g,0,0)
 end
