@@ -60,6 +60,7 @@ end
 function s.efop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local rc=c:GetReasonCard()
+	if not rc:IsNonEffectMonster() then return end
 	local e1=Effect.CreateEffect(rc)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_SINGLE)
