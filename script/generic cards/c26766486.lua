@@ -25,17 +25,17 @@ function s.setfilter(c)
 	return c:IsTrap() and c:IsSSetable()
 end
 function s.mgfilter(c,e,tp,sync)
-	return c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE)
+	return c:IsLocation(LOCATION_GRAVE)
 		and (c:GetReason()&0x80008)==0x80008 and c:GetReasonCard()==sync
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.mgfilter2(c,e,tp,fusc)
-	return c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE)
+	return c:IsLocation(LOCATION_GRAVE)
 		and (c:GetReason()&(REASON_FUSION|REASON_MATERIAL))~=(REASON_FUSION|REASON_MATERIAL) or c:GetReasonCard()~=fusc
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.mgfilter3(c,e,tp,linc,mg)
-	return c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE)
+	return c:IsLocation(LOCATION_GRAVE)
 		and (c:GetReason()&0x10000008)==0x10000008 and c:GetReasonCard()==linc
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
