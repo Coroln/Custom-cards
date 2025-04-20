@@ -2,6 +2,7 @@
 --Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
+    c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1,0)
     --spsummon
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,0))
@@ -69,14 +70,17 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if not c:IsImmuneToEffect(e) then
-		local e1=Effect.CreateEffect(e:GetHandler())
-        e1:SetType(EFFECT_TYPE_SINGLE)
-        e1:SetCode(EFFECT_EXTRA_ATTACK)
-        e1:SetValue(99)
-        e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
-        e:GetHandler():RegisterEffect(e1)
-	end
+    if not c:IsRelateToEffect(e) or not c:IsFaceup() then return end
+    local current = c:GetFlagEffectLabel(id) or 0
+    local newcount = current + 1
+    local e1=Effect.CreateEffect(c)
+    e1:SetType(EFFECT_TYPE_SINGLE)
+    e1:SetCode(EFFECT_EXTRA_ATTACK)
+    e1:SetValue(newcount)
+    e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
+    c:RegisterEffect(e1)
+    c:ResetFlagEffect(id)
+    c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1,newcount)
 end
 --equip
 function s.costfilter(c)
