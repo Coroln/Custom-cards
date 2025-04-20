@@ -70,7 +70,12 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsImmuneToEffect(e) then
-		Duel.ChainAttack()
+		local e1=Effect.CreateEffect(e:GetHandler())
+        e1:SetType(EFFECT_TYPE_SINGLE)
+        e1:SetCode(EFFECT_EXTRA_ATTACK)
+        e1:SetValue(99)
+        e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
+        e:GetHandler():RegisterEffect(e1)
 	end
 end
 --equip
