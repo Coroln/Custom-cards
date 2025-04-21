@@ -10,7 +10,7 @@ function s.initial_effect(c)
     e1:SetCode(EVENT_FREE_CHAIN)
     e1:SetRange(LOCATION_HAND)
     e1:SetHintTiming(0,TIMINGS_CHECK_MONSTER_E+TIMING_BATTLE_PHASE)
-    e1:SetCost(s.discost)
+    e1:SetCost(Cost.SelfDiscard)
     e1:SetOperation(s.atkop)
     c:RegisterEffect(e1)
     --If destroys monster by battle
@@ -36,10 +36,6 @@ function s.initial_effect(c)
     c:RegisterEffect(e3)
 end
 --Quick effect from hand: discard to boost + Battle Phase lock
-function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return e:GetHandler():IsDiscardable() end
-    Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
-end
 function s.atkfilter(c)
     return c:IsFaceup() and c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
 end
@@ -58,6 +54,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
     e2:SetCode(EFFECT_CANNOT_ACTIVATE)
     e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e2:SetTargetRange(0,1)
+    e2:SetCondition(function() return Duel.IsBattlePhase() end)
     e2:SetValue(function(e,re,tp) return true end)
     e2:SetReset(RESET_PHASE+PHASE_BATTLE)
     Duel.RegisterEffect(e2,tp)
