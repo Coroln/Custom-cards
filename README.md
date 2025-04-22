@@ -29,23 +29,15 @@ next open the file with any text editor and add following
                 "should_update": true,
                 "should_read": true
         }
-    ],
-    "servers": [
-        {
-            "name" : "CCS_unofficial",
-            "address": "212.132.121.56",
-            "duelport": 7911,
-            "roomaddress": "212.132.121.56",
-            "roomlistprotocol": "http",
-            "roomlistport": 7922
-        }
     ]
 }
 ```
 
 now save the file.
 
-now when you start/restart EdoPro it should download all the cards in this repo, also when you click on servers you should see a server named CCS_unofficial where you can play with these cards, but mind the server is not strong so it could be that it is offline
+now when you start/restart EdoPro it should download all the cards in this repo.
+
+also when you want to play with your friends online, all of you need to add these cards and need to use Hamachi or similar programs that simulate a LAN connection.
 
 # Discord
 when you need a place to find friends to play with join my discord server. It was originally intended as my YouTube community discord but I upload so rarely that it makes more sense for this
