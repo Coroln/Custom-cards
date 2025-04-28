@@ -70,5 +70,5 @@ function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 end
 --Effect destruction protection
 function s.ndtg(e,c)
-	return Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x6C),0,LOCATION_MZONE,0,e:GetHandler()) and c~=e:GetHandler()
+	return c:IsFaceup() and c:IsSetCard(0x6C) and c~=e:GetHandler()
 end
