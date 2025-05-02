@@ -95,7 +95,7 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     if not tc or not tc:IsFaceup() or not tc:IsRelateToEffect(e) then return end
-    local atk=tc:GetLink()*400
+    local atk=tc:GetLink()*500
     local g=tc:GetLinkedGroup():Filter(Card.IsFaceup,nil)
     g:AddCard(tc)
     for sc in g:Iter() do
@@ -103,7 +103,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetCode(EFFECT_UPDATE_ATTACK)
         e1:SetValue(atk)
-        e1:SetReset(RESET_EVENT|RESETS_STANDARD_DISABLE)
+        e1:SetReset(RESETS_STANDARD_DISABLE_PHASE_END,2)
         sc:RegisterEffect(e1)
     end
 end
