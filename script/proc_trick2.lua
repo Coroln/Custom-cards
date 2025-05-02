@@ -86,7 +86,18 @@ function Trick.SummonCheck(e,tp,mons,traps,min,max,chk)
 	if chk==0 then
 		return aux.SelectUnselectGroup(g,e,tp,min,max,Trick.Rescon(mons,traps,min),0)
 	else
-		local mat=aux.SelectUnselectGroup(g,e,tp,min,max,Trick.Rescon(mons,traps,min),1,tp,HINTMSG_TRICK_MATERIAL,Trick.Rescon(mons,traps,min),nil,true)
+		local function is_valid_material(c)
+			for _, t in ipairs(mons) do
+				if t[1](c) then return true end
+			end
+			for _, t in ipairs(traps) do
+				if t[1](c) then return true end
+			end
+			return false
+		end
+		
+		local filtered = g:Filter(is_valid_material, nil)
+		local mat=aux.SelectUnselectGroup(filtered,e,tp,min,max,Trick.Rescon(mons,traps,min),1,tp,HINTMSG_TRICK_MATERIAL,Trick.Rescon(mons,traps,min),nil,true)
 		mat:KeepAlive()
 		return mat
 	end
