@@ -1,7 +1,8 @@
 --Mechasect - Scrapyard
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
-	--Activate
+	--Special Summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -21,9 +22,10 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x586}
+s.listed_series={0x586,0x587}
+--Special Summon
 function s.filter(c,e,tp)
-	return c:IsSetCard(0x586) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x586) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -38,9 +40,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
---
+--draw
 function s.filter1(c)
-	return c:IsCode(53790616) and c:IsAbleToDeck()
+	return c:IsSetCard(0x587) and c:IsSpell() and c:IsAbleToDeck()
 end
 function s.target1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp)

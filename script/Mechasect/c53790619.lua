@@ -1,5 +1,7 @@
 --Mechasect - Thunder Bee
-function c53790619.initial_effect(c)
+--Script by Coroln
+local s,id=GetID()
+function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--spsummon condition
 	local e1=Effect.CreateEffect(c)
@@ -13,60 +15,51 @@ function c53790619.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
-	e2:SetValue(c53790619.val)
+	e2:SetValue(s.val)
 	c:RegisterEffect(e2)
-	--atkdown
+	--atk down (level)
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(53790619,0))
-	e3:SetType(EFFECT_TYPE_QUICK_O)
-	e3:SetCode(EVENT_FREE_CHAIN)
-	e3:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetCode(EFFECT_UPDATE_ATTACK)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetHintTiming(TIMING_DAMAGE_STEP)
-	e3:SetCountLimit(1)
-	e3:SetCondition(c53790619.condition)
-	e3:SetCost(c53790619.cost)
-	e3:SetTarget(c53790619.target)
-	e3:SetOperation(c53790619.operation)
+	e3:SetTargetRange(0,LOCATION_MZONE)
+	e3:SetValue(s.val2)
 	c:RegisterEffect(e3)
-	--add code
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e4:SetCode(EFFECT_ADD_CODE)
-	e4:SetValue(53790613)
+	--atk down (rank)
+	local e3a=e3:Clone()
+	e3a:SetValue(s.val3)
+	c:RegisterEffect(e3a)
+	--atk down (link)
+	local e3b=e3:Clone()
+	e3b:SetValue(s.val4)
+	c:RegisterEffect(e3b)
+	--def down (level)
+	local e4=e3:Clone()
+	e4:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e4)
+	--def down (rank)
+	local e4a=e3:Clone()
+	e4a:SetCode(EFFECT_UPDATE_DEFENSE)
+	e4a:SetValue(s.val3)
+	c:RegisterEffect(e4a)
 end
-function c53790619.val(e,c)
-	return Duel.GetFieldGroupCount(c:GetControler(),0,LOCATION_MZONE)*800
+s.listed_names={53790613}
+--atkup
+function s.valfilter(c)
+	return c:GetControler() and c:IsSummonType(SUMMON_TYPE_SPECIAL)
 end
-function c53790619.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
+function s.val(e,c)
+	return Duel.GetFieldGroupCount(s.valfilter,0,LOCATION_MZONE)*300
 end
-function c53790619.cfilter(c)
-	return c:IsSetCard(0x586) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
+--atk/def down (level)
+function s.val2(e,c)
+	return c:GetLevel()*-100
 end
-function c53790619.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c53790619.cfilter,tp,LOCATION_GRAVE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,c53790619.cfilter,tp,LOCATION_GRAVE,0,1,1,nil)
-	e:SetLabel(g:GetFirst():GetAttack())
-	Duel.Remove(g,POS_FACEUP,REASON_COST)
+--atk/def down (rank)
+function s.val3(e,c)
+	return c:GetRank()*-100
 end
-function c53790619.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-end
-function c53790619.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetValue(-e:GetLabel())
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e1)
-	end
+--atk down (link)
+function s.val4(e,c)
+	return c:GetLink()*-100
 end

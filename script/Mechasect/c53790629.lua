@@ -1,10 +1,11 @@
 --Mechasect Magma Scarab
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
---Link Summon
+	--Link Summon
 	c:EnableReviveLimit()
 	Link.AddProcedure(c,nil,2,nil,s.lcheck)
-	--Special Summon 1 "Sunseed Genius Loci" from your GY
+	--Special Summon 1 Level 8 or lower machine from your GY
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -29,9 +30,11 @@ function s.initial_effect(c)
 	e2:SetOperation(s.disop)
 	c:RegisterEffect(e2)
 end
+--Link Summon
 function s.lcheck(g,lc,sumtype,tp)
 	return g:CheckDifferentPropertyBinary(Card.GetAttribute,lc,sumtype,tp)
 end
+--Special Summon 1 Level 8 or lower machine from your GY
 function s.spfilter(c,e,tp)
 	return c:IsRace(RACE_MACHINE) and c:IsLevelBelow(8) and c:IsCanBeSpecialSummoned(e,0,tp,true,true)
 end
@@ -47,7 +50,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(g,0,tp,tp,true,true,POS_FACEUP)
 	end
 end
---
+--Negate Spell/Trap or effect
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) then return false end
 	return re:IsActiveType(TYPE_SPELL+TYPE_TRAP) and Duel.IsChainNegatable(ev)

@@ -1,7 +1,8 @@
 --Mechasect - Dragonfly Gettling
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
-	--Add to hand when summoned
+	--Add to hand when summoned or sp summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
@@ -29,12 +30,14 @@ function s.initial_effect(c)
 	e4:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x586))
 	c:RegisterEffect(e4)
 end
+s.listed_series={0x586}
+--Add to hand when summoned or sp summon
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
 end
 function s.thfilter(c,ft,e,tp)
-	return c:IsSetCard(0x586) and not c:IsCode(id)
+	return c:IsSetCard(0x586) and c:IsMonster() and not c:IsCode(id)
 		and (c:IsAbleToHand() or (ft>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)))
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
