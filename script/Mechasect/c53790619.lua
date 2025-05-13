@@ -46,10 +46,10 @@ end
 s.listed_names={53790613}
 --atkup
 function s.valfilter(c)
-	return c:GetControler() and c:IsSummonType(SUMMON_TYPE_SPECIAL)
+	return (c:GetSummonType()&SUMMON_TYPE_SPECIAL)==SUMMON_TYPE_SPECIAL
 end
 function s.val(e,c)
-	return Duel.GetFieldGroupCount(s.valfilter,0,LOCATION_MZONE)*300
+	return Duel.GetFieldGroupCount(s.valfilter,c:GetControler(),0,LOCATION_MZONE,nil)*300
 end
 --atk/def down (level)
 function s.val2(e,c)
