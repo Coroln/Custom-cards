@@ -83,13 +83,13 @@ function s.initial_effect(c)
 end
 
 function s.FusGenFilter(c)
-	return c:IsSetCard(3003)
+	return c:IsSetCard(3003) and c:IsMonster()
 end
 function s.FusLIGHTFilter(c)
-	return c:IsSetCard(3003) and c:IsAttribute(ATTRIBUTE_LIGHT)
+	return c:IsSetCard(3003) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsMonster()
 end
 function s.FusDARKFilter(c)
-	return c:IsSetCard(3003) and c:IsAttribute(ATTRIBUTE_DARK)
+	return c:IsSetCard(3003) and c:IsAttribute(ATTRIBUTE_DARK) and c:IsMonster()
 end
 function s.contactfil(tp)
 	return Duel.GetMatchingGroup(Card.IsAbleToDeckOrExtraAsCost,tp,LOCATION_GRAVE,0,nil)
