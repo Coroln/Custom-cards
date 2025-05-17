@@ -142,7 +142,7 @@ function s.ToDeck_cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function s.tdfilter(c)
-	return c:IsMonster() and c:IsSummonType(SUMMON_TYPE_SPECIAL) and c:IsAbleToDeck()
+	return c:IsMonster() and (c:IsLocation(LOCATION_GRAVE) or (c:IsLocation(LOCATION_MZONE) and c:IsSummonType(SUMMON_TYPE_SPECIAL))) and c:IsAbleToDeck()
 end
 
 function s.ToDeck_tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
