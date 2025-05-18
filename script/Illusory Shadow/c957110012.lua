@@ -38,7 +38,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 
     --e5
-    --Shuffle card into the Deck; Shuffle opponents monster into the Deck
+    --Shuffle monster into the Deck; Shuffle opponents monster into the Deck
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(id,0))
 	e5:SetCategory(CATEGORY_TODECK)
@@ -46,7 +46,7 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetHintTiming(0,TIMINGS_CHECK_MONSTER|TIMING_MAIN_END)
 	e5:SetRange(LOCATION_MZONE)
-	e5:SetCountLimit(1)
+	e5:SetCountLimit(1,id)
     e5:SetCost(s.ToDeck_cost)
 	e5:SetTarget(s.ToDeck_tg)
 	e5:SetOperation(s.ToDeck_op)
