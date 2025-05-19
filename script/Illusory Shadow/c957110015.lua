@@ -62,12 +62,11 @@ end
 
 --Effect 2: GY – Special Summon monster from S/T Zone
 function s.filter(c,e,sp)
-	return c:IsFaceup() and c:IsCanBeSpecialSummoned(e,0,sp,true,false)
+	return c:IsFaceup() and c:IsOriginalType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,sp,true,false)
 end
 function s.coste2(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsAbleToRemoveAsCost() and Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
-	Debug.Message("co chk")
 	Duel.Remove(c,POS_FACEUP,REASON_COST)
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST|REASON_DISCARD,nil)
 end
