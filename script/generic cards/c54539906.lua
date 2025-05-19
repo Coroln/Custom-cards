@@ -17,26 +17,29 @@ end
 function s.costfilter(c)
 	return c:IsMonster() and c:IsDiscardable() and c:GetOriginalLevel()>0
 end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	e:SetLabel(100)
-	return true
-end
-function s.filter1(c,e,tp)
-	local lv=c:GetLevel()
-	return lv>0 and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_HAND,0,1,nil,lv,e,tp,c)
-end
 function s.filter2(c,lv,e,tp,mc)
 	return c:GetLevel()==lv and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
-		if e:GetLabel()~=100 then return false end
-		e:SetLabel(0)
-		return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_HAND,0,1,nil,e,tp)
+		local g=Duel.GetMatchingGroup(s.costfilter,tp,LOCATION_HAND,0,nil)
+		for tc in g:Iter() do
+			local lv=tc:GetLevel()
+			if Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_HAND,0,1,tc,lv,e,tp) then
+				return true
+			end
+		end
+		return false
 	end
-	local rg=Duel.SelectMatchingCard(tp,s.filter1,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-	e:SetLabel(rg:GetFirst():GetLevel())
-	Duel.SendtoGrave(rg,REASON_DISCARD|REASON_COST)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
+	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_HAND,0,1,1,nil)
+	local tc=g:GetFirst()
+	e:SetLabel(tc:GetLevel())
+	Duel.SendtoGrave(tc,REASON_COST+REASON_DISCARD)
+end
+
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
