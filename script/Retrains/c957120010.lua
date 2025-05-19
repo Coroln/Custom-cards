@@ -27,17 +27,17 @@ function s.initial_effect(c)
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_GRAVE)
-	e3:SetCost(aux.SelfBanishCost)
+	e3:SetCost(Cost.SelfBanish)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
 end
 s.listed_names={01641882}
-function s.ffilter1(c,fc,sumtype,tp)
-	return c:IsRace(RACE_BEAST,fc,sumtype,tp) and c:IsAttribute(ATTRIBUTE_EARTH,fc,sumtype,tp) and c:IsType(TYPE_NORMAL) and c:GetLevel()<=3
+function s.ffilter1(c)
+	return c:IsRace(RACE_BEAST) and c:IsAttribute(ATTRIBUTE_EARTH) and c:GetLevel()<=3
 end
-function s.ffilter2(c,fc,sumtype,tp)
-	return c:IsRace(RACE_FAIRY,fc,sumtype,tp) and c:IsAttribute(ATTRIBUTE_LIGHT,fc,sumtype,tp) and c:IsType(TYPE_NORMAL) and c:GetLevel()<=3
+function s.ffilter2(c)
+	return c:IsRace(RACE_FAIRY) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:GetLevel()<=3
 end
 
 function s.spfilter(c,e,tp)
