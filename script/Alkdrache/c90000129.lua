@@ -1,4 +1,5 @@
 --Alcdragon Jonas the Jäger
+--Script by creasycat
 local s,id=GetID()
 function s.initial_effect(c)
 	--Add 1 "Alcdragon" monsters from the Deck or GY to the hand

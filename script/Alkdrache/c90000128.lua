@@ -1,4 +1,5 @@
 --Alcdragon Grenouille de Champagne
+--Script by creasycat
 local s,id=GetID()
 function s.initial_effect(c)
 	--Equip
@@ -25,6 +26,10 @@ function s.initial_effect(c)
 	e3:SetCode(EFFECT_ADD_TYPE)
 	e3:SetValue(TYPE_TUNER)
 	c:RegisterEffect(e3)
+end
+--Equip
+function s.efilter(e,te)
+	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:GetOwner()~=e:GetOwner()
 end
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
@@ -62,6 +67,11 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoGrave(c,REASON_RULE)
 	end
 end
-function s.efilter(e,te)
-	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:GetOwner()~=e:GetOwner()
+function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return not c:IsReason(REASON_REPLACE) end
+	return Duel.SelectEffectYesNo(tp,c,96)
+end
+function s.repop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Destroy(e:GetHandler(),REASON_EFFECT|REASON_REPLACE)
 end
