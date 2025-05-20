@@ -11,6 +11,20 @@ function s.initial_effect(c)
 	e1:SetTarget(s.eqtg)
 	e1:SetOperation(s.eqop)
 	c:RegisterEffect(e1)
+	--destroy sub
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_EQUIP+EFFECT_TYPE_CONTINUOUS)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+	e2:SetCode(EFFECT_DESTROY_REPLACE)
+	e2:SetTarget(s.reptg)
+	e2:SetOperation(s.repop)
+	c:RegisterEffect(e2)
+	--add type
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_EQUIP)
+	e3:SetCode(EFFECT_ADD_TYPE)
+	e3:SetValue(TYPE_TUNER)
+	c:RegisterEffect(e3)
 end
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
@@ -38,7 +52,16 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(function(e,c)return c==e:GetLabelObject()end)
 		e1:SetLabelObject(tc)
 		c:RegisterEffect(e1)
+		--immune
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_EQUIP)
+		e2:SetCode(EFFECT_IMMUNE_EFFECT)
+		e2:SetValue(s.efilter)
+		tc:RegisterEffect(e2)
 	else
 		Duel.SendtoGrave(c,REASON_RULE)
 	end
+end
+function s.efilter(e,te)
+	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:GetOwner()~=e:GetOwner()
 end
