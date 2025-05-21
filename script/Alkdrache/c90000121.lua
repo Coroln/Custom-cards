@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--Xyz summon procedure
 	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_DRAGON),6,2)
-	--attack up
+	--take control
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_CONTROL)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1,false,REGISTER_FLAG_DETACH_XMAT)
 	--special summon
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
@@ -29,7 +29,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
---
+--take control
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST)
 		and e:GetHandler():GetAttackAnnouncedCount()==0 end
@@ -55,21 +55,20 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		
 	end
 end
---
-function s.costfilter(c,tp)
-	return c:IsRace(RACE_DRAGON) and Duel.GetMZoneCount(tp,c,tp)>0 and not c:IsCode(id)
-end
+--special summon
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.costfilter,1,false,nil,e,tp) end
-	local g=Duel.SelectReleaseGroupCost(tp,s.costfilter,1,1,false,nil,e,tp)
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsRace,1,false,nil,e:GetHandler(),RACE_DRAGON) end
+	local g=Duel.SelectReleaseGroupCost(tp,Card.IsRace,1,1,false,nil,e:GetHandler(),RACE_DRAGON)
 	Duel.Release(g,REASON_COST)
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x14EC) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,LOCATION_DECK)
+	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
+	if e:GetHandler():GetSequence()<5 then ft=ft+1 end
+	if chk==0 then return ft>0 and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
@@ -79,24 +78,24 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		local tc=g:GetFirst()
 		for tc in aux.Next(g) do
 			Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
-			--Negate its effects
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetCode(EFFECT_DISABLE)
-		e1:SetReset(RESET_EVENT|RESETS_STANDARD|RESET_PHASE|PHASE_END)
-		tc:RegisterEffect(e1)
-		local e2=e1:Clone()
-		e2:SetCode(EFFECT_DISABLE_EFFECT)
-		e2:SetValue(RESET_TURN_SET)
-		tc:RegisterEffect(e2)
-		if tc:IsType(TYPE_TRAPMONSTER) then
-			local e3=e1:Clone()
-			e3:SetCode(EFFECT_DISABLE_TRAPMONSTER)
-			tc:RegisterEffect(e3)
+				--Negate its effects
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+			e1:SetCode(EFFECT_DISABLE)
+			e1:SetReset(RESET_EVENT|RESETS_STANDARD|RESET_PHASE|PHASE_END)
+			tc:RegisterEffect(e1)
+			local e2=e1:Clone()
+			e2:SetCode(EFFECT_DISABLE_EFFECT)
+			e2:SetValue(RESET_TURN_SET)
+			tc:RegisterEffect(e2)
+			if tc:IsType(TYPE_TRAPMONSTER) then
+				local e3=e1:Clone()
+				e3:SetCode(EFFECT_DISABLE_TRAPMONSTER)
+				tc:RegisterEffect(e3)
+			end
+			Duel.SpecialSummonComplete()
+			g:KeepAlive()
 		end
-		Duel.SpecialSummonComplete()
-		g:KeepAlive()
 	end
-end
 end
