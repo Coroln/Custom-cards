@@ -40,8 +40,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		if Duel.SendtoHand(g,nil,REASON_EFFECT)>0 then
 			Duel.ConfirmCards(1-tp,g)
-			local b1=Duel.IsExistingMatchingCard(s.rf,tp,LOCATION_GRAVE,0,1,nil,e,tp)
-			local b2=Duel.IsExistingMatchingCard(s.sf,tp,LOCATION_DECK,0,1,nil,e,tp)
+			local b1=Duel.IsExistingMatchingCard(s.rf,tp,LOCATION_GRAVE,0,1,nil)
+			local b2=Duel.IsExistingMatchingCard(s.sf,tp,LOCATION_DECK,0,1,nil)
 			if not ((b1 or b2) and Duel.SelectYesNo(tp,aux.Stringid(id,1))) then return end
 			local op=Duel.SelectEffect(tp,
 				{b1,aux.Stringid(id,2)},
@@ -49,15 +49,15 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 			if op==1 then
 				-- Target 1 "Alcdragon" monster in your GY; return that target to the Deck.
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-				local g=Duel.SelectMatchingCard(tp,s.rf,tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
+				local g=Duel.SelectMatchingCard(tp,s.rf,tp,LOCATION_GRAVE,0,1,1,nil)
 				if #g>0 then
 					Duel.BreakEffect()
-					Duel.SendtoDeck(g,nil,2,REASON_EFFECT) --2=Deck+Shuffle
+					Duel.SendtoDeck(g,nil,2,REASON_EFFECT) --2 = Deck+Shuffle
 				end
 			elseif op==2 then
 				-- Send 1 "Alcdragon" monster from your Deck to the GY.
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-				local sc=Duel.SelectMatchingCard(tp,s.sf,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
+				local sc=Duel.SelectMatchingCard(tp,s.sf,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
 				if not sc then return end
 				Duel.BreakEffect()
 				Duel.SendtoGrave(sc,REASON_EFFECT,tp)
