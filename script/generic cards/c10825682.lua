@@ -30,7 +30,7 @@ function s.initial_effect(c)
 end
 --Draw
 function s.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
+	if chk==0 and Duel.GetLP(tp)>=Duel.GetFieldGroupCount(tp,LOCATION_HAND,LOCATION_HAND)*500 then return true end
 	local dam=Duel.GetFieldGroupCount(tp,LOCATION_HAND,LOCATION_HAND)*500
 	Duel.PayLPCost(tp,dam)
 end
