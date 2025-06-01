@@ -19,6 +19,7 @@ function s.initial_effect(c)
     e2:SetCategory(CATEGORY_EQUIP)
     e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
     e2:SetCode(EVENT_BATTLE_DESTROYING)
+    e2:SetProperty(EFFECT_FLAG_DELAY)
     e2:SetCondition(aux.bdocon)
     e2:SetTarget(s.eqtg)
     e2:SetOperation(s.eqop)
@@ -71,12 +72,13 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
     if not tc:IsRelateToEffect(e) or Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return end
     if not Duel.Equip(tp,bc,tc) then return end
     --Equip limit
-    local e1=Effect.CreateEffect(c)
-    e1:SetType(EFFECT_TYPE_SINGLE)
-    e1:SetCode(EFFECT_EQUIP_LIMIT)
-    e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-    e1:SetValue(function(e,c) return e:GetOwner()==c end)
-    bc:RegisterEffect(e1)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_EQUIP_LIMIT)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetValue(s.eqlimit)
+	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+	bc:RegisterEffect(e1)
     --+1000 ATK
     local e2=Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_EQUIP)
@@ -84,6 +86,9 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
     e2:SetValue(1000)
     e2:SetReset(RESET_EVENT+RESETS_STANDARD)
     bc:RegisterEffect(e2)
+end
+function s.eqlimit(e,c)
+	return c:GetControler()==e:GetHandlerPlayer()
 end
 --If destroyed by battle: add from GY or send from Deck
 function s.optiontg(e,tp,eg,ep,ev,re,r,rp,chk)
