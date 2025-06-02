@@ -1,4 +1,5 @@
 --PM Solgaleo
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
 --Normal monster
@@ -29,6 +30,7 @@ function s.initial_effect(c)
 	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e4:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
 	e4:SetCode(EVENT_SUMMON_SUCCESS)
+	e4:SetProperty(EFFECT_FLAG_DELAY)
 	e4:SetTarget(s.tg)
 	e4:SetOperation(s.op)
 	c:RegisterEffect(e4)
