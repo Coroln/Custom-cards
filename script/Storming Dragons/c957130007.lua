@@ -29,7 +29,7 @@ end
 ---------------------------------------------
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then
-        return Duel.IsExistingMatchingCard(s.gy_filter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_ONFIELD,0,3,nil)
+        return Duel.IsExistingMatchingCard(s.gy_filter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_ONFIELD,0,1,nil)
     end
     -- Senden wird jetzt als Effekt behandelt, daher wird es hier nicht ausgeführt
     Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,3,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_ONFIELD)
