@@ -80,11 +80,11 @@ function s.atkval(e,c)
 	return g:FilterCount(Card.IsType,nil,TYPE_NORMAL)*100
 end
 --Pendulum Effect: Restrict Pendulum Summon
-function s.psfilter(c)
-    return bit.band(c:GetOriginalType(), TYPE_NORMAL) ~= 0 and bit.band(c:GetOriginalType(), TYPE_PENDULUM) ~= 0
-end
 function s.pscon(e,tp,eg,ep,ev,re,r,rp)
-	return not Duel.IsExistingMatchingCard(s.psfilter,e:GetHandlerPlayer(),LOCATION_PZONE,0,1,e:GetHandler())
+	local g=Duel.GetFieldGroup(e:GetHandlerPlayer(),LOCATION_PZONE,0)
+	if g:FilterCount(Card.IsType,nil,TYPE_NORMAL+TYPE_PENDULUM) then
+		return false
+	end
 end
 --Monster Effect: ATK Boost during battle
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
