@@ -39,7 +39,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
 		local g=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil,cg)
 		if #g>0 then
-		    Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
+		    Duel.ChangePosition(g,POS_FACEDOWN_DEFENSE)
 	    end
 	end
 
