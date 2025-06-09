@@ -1,5 +1,5 @@
---Empress of the Crimson Serpent
---Script by Coroln
+--The Fiendish Demon Empress, Luciela
+--Script by Rika
 Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
