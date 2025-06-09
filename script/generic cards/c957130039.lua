@@ -48,7 +48,7 @@ end
 --e1
 function s.addct(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x0999 )
+	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x0998 )
 end
 function s.addc(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
