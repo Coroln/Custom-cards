@@ -138,7 +138,7 @@ end
 --e3
 function s.e3con(e,tp,eg,ep,ev,re,r,rp)
     local c = e:GetHandler()
-	return c:IsSummonType(SUMMON_TYPE_TRICK) and c:GetMaterialCount()>=4
+	return c:IsPreviousLocation(LOCATION_EXTRA) and not c:IsReason(REASON_EFFECT) and c:GetMaterialCount()>=4
 end
 function s.e3tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c = e:GetHandler()
