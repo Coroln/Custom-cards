@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--Xyz Summon procedure: 2 Level 8 Dragon monsters
-	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsTrick),7,3)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsTrick),7,4)
 	--Set 1 Trao from GY
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,1))
