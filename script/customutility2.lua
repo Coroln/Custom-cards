@@ -421,3 +421,12 @@ function Auxiliary.CanConOperation(required,filter)
 end
 --Checks for cards with different names (to be used with Aux.SelectUnselectGroup)
 Auxiliary.drcheck=Auxiliary.dpcheck(Card.GetRace)
+--d12 dice roll
+function Auxiliary.d12(tp)
+    local d = Duel.TossDice(tp, 1) -- real dice roll
+    local useAlt = Duel.GetTurnCount() % 2 == 1 -- toggle logic or replace with something else
+    local d12_map_a = {1,3,5,7,9,11}
+    local d12_map_b = {2,4,6,8,10,12}
+    local result = useAlt and d12_map_b[d] or d12_map_a[d]
+    return result
+end
