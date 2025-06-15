@@ -146,7 +146,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.e1filter(e,re)
-	return re:IsMonsterEffect() and re:GetHandler():GetControler()~=tp
+	return re:IsMonsterEffect() and re:GetHandler():GetControler()~=e:GetHandler():GetControler()
 end
 function s.e2filter(e)
     local c=e:GetHandler()
