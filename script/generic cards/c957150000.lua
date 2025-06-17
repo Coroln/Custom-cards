@@ -1,5 +1,12 @@
 local s,id=GetID()
 function s.initial_effect(c)
+	--Cannot be used as Xyz material, except for an insect monster
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_CANNOT_BE_XYZ_MATERIAL)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetValue(1)
+	c:RegisterEffect(e0)
 	--special summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
