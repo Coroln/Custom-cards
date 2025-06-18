@@ -26,6 +26,7 @@ end
 --e1
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetAttackTarget()
+	if tc == nil then return false end
 	return tp~=Duel.GetTurnPlayer() and tc:IsAttribute(ATTRIBUTE_DARK)
 end
 
