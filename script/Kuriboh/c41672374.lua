@@ -96,11 +96,6 @@ function s.refcon(e,re,val,r,rp,rc)
 	else return val end
 end
 --spsummon
-function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	if chk==0 then return c:IsAbleToRemoveAsCost() and (c:IsLocation(LOCATION_GRAVE) or (c:IsLocation(LOCATION_ONFIELD) and c:IsPosition(POS_FACEUP))) end
-	Duel.Remove(c,POS_FACEUP,REASON_COST)
-end
 function s.filter(c,e,tp)
 	return c:IsSetCard(0xA4) and c:IsMonster() and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
