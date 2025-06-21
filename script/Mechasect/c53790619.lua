@@ -49,7 +49,7 @@ function s.valfilter(c)
 	return (c:GetSummonType()&SUMMON_TYPE_SPECIAL)==SUMMON_TYPE_SPECIAL
 end
 function s.val(e,c)
-	return Duel.GetFieldGroupCount(s.valfilter,c:GetControler(),0,LOCATION_MZONE,nil)*300
+	return Duel.GetMatchingGroupCount(s.valfilter,c:GetControler(),0,LOCATION_MZONE,nil)*300
 end
 --atk/def down (level)
 function s.val2(e,c)

@@ -32,7 +32,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x586,0x587}
 function s.chainfilter(re,tp,cid)
-	return re:GetHandler():IsSetCard(0x586)
+	return (re:GetHandler():IsSetCard(0x586) or re:GetHandler():IsSetCard(0x587))
 end
 function s.filter(c)
 	return c:IsSetCard(0x586) and not c:IsCode(id) and c:IsAbleToHand()
@@ -50,11 +50,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cfilter(c)
-	return c:IsFacedown() or not c:IsSetCard(0x586) and c:IsMonster()
+	return c:IsSetCard(0x586) and c:IsMonster()
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)>0
-		and not Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(s.cfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_CHAIN)==0 end
