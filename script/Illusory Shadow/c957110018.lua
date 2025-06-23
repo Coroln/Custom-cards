@@ -74,7 +74,7 @@ end
 
 --e2
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return re:IsMonsterEffect() and re:GetHandler():GetControler()~=tp and and re:GetActivateLocation()&(LOCATION_ONFIELD|LOCATION_HAND)>0
+	return re:IsMonsterEffect() and re:GetHandler():GetControler()~=tp and re:GetActivateLocation()&(LOCATION_ONFIELD|LOCATION_HAND)>0
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
