@@ -1,4 +1,5 @@
---Demonking Naraku
+--Inu - Demonking Naraku
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
 	--synchro summon
@@ -17,7 +18,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-	--(3) Gain ATK/DEF
+	--Gain ATK/DEF
     local e2=Effect.CreateEffect(c)
     e2:SetDescription(aux.Stringid(id,1))
     e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE)
@@ -28,7 +29,7 @@ function s.initial_effect(c)
     e2:SetTarget(s.atktg1)
     e2:SetOperation(s.atkop1)
     c:RegisterEffect(e2)
-	--
+	--Gain ATK during Damage Step
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_ATKCHANGE)
 	e3:SetType(EFFECT_TYPE_TRIGGER_F+EFFECT_TYPE_SINGLE)
@@ -37,6 +38,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.atkop)
 	c:RegisterEffect(e3)
 end
+s.listed_series={0x5EB}
+--negate
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local rc=re:GetHandler()
@@ -49,7 +52,20 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
 	end
 end
---(3) Gain ATK/DEF
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local rc=re:GetHandler()
+	if Duel.NegateActivation(ev) and rc:IsRelateToEffect(re) and Duel.Destroy(rc,REASON_EFFECT)~=0 and rc:GetBaseAttack()>=0
+		and c:IsRelateToEffect(e) and c:IsFaceup() then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END)
+		e1:SetValue(rc:GetBaseAttack())
+		c:RegisterEffect(e1)
+	end
+end
+--Gain ATK/DEF
 function s.atkcon1(e,tp,eg,ep,ev,re,r,rp)
   local des=eg:GetFirst()
   local rc=des:GetReasonCard()
@@ -80,19 +96,7 @@ function s.atkop1(e,tp,eg,ep,ev,re,r,rp)
   e2:SetCode(EFFECT_UPDATE_DEFENSE)
   c:RegisterEffect(e2)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local rc=re:GetHandler()
-	if Duel.NegateActivation(ev) and rc:IsRelateToEffect(re) and Duel.Destroy(rc,REASON_EFFECT)~=0 and rc:GetBaseAttack()>=0
-		and c:IsRelateToEffect(e) and c:IsFaceup() then
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END)
-		e1:SetValue(rc:GetBaseAttack())
-		c:RegisterEffect(e1)
-	end
-end
+--Gain ATK during Damage Step
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
