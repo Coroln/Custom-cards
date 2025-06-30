@@ -76,6 +76,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --e2
+function s.cfilter2(c)
+	return c:IsFaceup() and c:IsCode(957110005)
+end
 function s.setfilter(c,tp)
 	return c:IsSetCard(0xBBB) and c:IsFaceup() and c:IsMonster() and c:IsAbleToDeckOrExtraAsCost()
 end
