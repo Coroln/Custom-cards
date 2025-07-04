@@ -8,6 +8,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_TO_GRAVE)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.thcon)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.tgop)
 	c:RegisterEffect(e1)
@@ -22,6 +23,10 @@ function s.initial_effect(c)
     e2:SetCondition(s.atkcon)
 	e2:SetOperation(s.atkop)
 	c:RegisterEffect(e2)
+end
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+	return (r&REASON_EFFECT)~=0 and re:IsMonsterEffect()
+		and e:GetHandler():IsPreviousLocation(LOCATION_DECK)
 end
 function s.thfilter(c)
 	return c:GetLevel()==4 and c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_WARRIOR) and c:IsAbleToHand() and not c:IsCode(id)
@@ -40,10 +45,6 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --e2
-function s.indcon(e)
-	return e:GetHandler():IsAttackPos()
-end
---e3
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsTurnPlayer(tp)
 end
