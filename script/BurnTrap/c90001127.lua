@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e0:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e0:SetCondition(function(e) return e:GetHandler():IsSummonType(SUMMON_TYPE_TRICK) end)
+	e0:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
 	e0:SetOperation(s.sucop)
 	c:RegisterEffect(e0)
 	--material count check
