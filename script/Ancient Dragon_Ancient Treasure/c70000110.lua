@@ -54,8 +54,12 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 end
 ----to S/T Zone
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
+	if not re then return false end
 	local c=e:GetHandler()
-	return (r&REASON_TRICK) and not c:IsSummonType(SUMMON_TYPE_MAXIMUM) and e:GetHandler():IsPreviousPosition(POS_FACEDOWN) and c:GetReasonCard():IsSetCard(0xADFE)
+	local sc=re:GetHandler()
+	return sc:IsSummonType(SUMMON_TYPE_SPECIAL) and sc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (sc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
+		and e:GetHandler():IsPreviousPosition(POS_FACEDOWN) and c:GetReasonCard():IsSetCard(0xADFE)
 end
 function s.tftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end

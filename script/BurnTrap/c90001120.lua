@@ -65,8 +65,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 --Set 1 Trap card
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-    local c=e:GetHandler()
-    return (r&REASON_TRICK) and not c:IsSummonType(SUMMON_TYPE_MAXIMUM)
+	if not re then return false end
+    local c=e:GetHandler() -- the material
+    local sc=re:GetHandler() -- the monster that was summoned using this card as material
+    return sc:IsSummonType(SUMMON_TYPE_SPECIAL) and sc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (sc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
 end
 function s.setfilter(c)
 	return c:IsTrap() and c:IsSSetable()

@@ -78,7 +78,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 --Set 1 Trap directly from the Hand
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	return not (r&REASON_FUSION+REASON_SYNCHRO+REASON_LINK)~=0
+	if not re then return false end
+    local c=e:GetHandler() -- the material
+    local sc=re:GetHandler() -- the monster that was summoned using this card as material
+    return sc:IsSummonType(SUMMON_TYPE_SPECIAL) and sc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (sc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
 end
 function s.setfilter(c)
 	return c:IsTrap() and c:IsSSetable()
