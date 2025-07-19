@@ -5,7 +5,6 @@ function s.initial_effect(c)
 									 extrafil=s.fextra,extraop=Fusion.ShuffleMaterial,stage2=s.Effgain_op,extratg=s.extrtarget})
 	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	e1:SetHintTiming(0,TIMING_MAIN_END)
-	e1:SetCondition(function() return Duel.IsMainPhase() end)
 	c:RegisterEffect(e1)
 
     --GY Effect: Special Summon from S&T Zone
