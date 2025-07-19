@@ -78,14 +78,17 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	if tc and tc:IsRelateToBattle() and tc:IsControler(1-tp) then
 		if Duel.Destroy(tc,REASON_EFFECT) then
-            local e1=Effect.CreateEffect(e:GetHandler())
-            e1:SetType(EFFECT_TYPE_FIELD)
-            e1:SetCode(EFFECT_UPDATE_ATTACK)
-            e1:SetTargetRange(LOCATION_MZONE,0)
-            e1:SetValue(500)
-            e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-            Duel.RegisterEffect(e1,tp)
-        end
+			local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,0,nil)
+			local c=e:GetHandler()
+			for mc in aux.Next(g) do
+				local e1=Effect.CreateEffect(c)
+				e1:SetType(EFFECT_TYPE_SINGLE)
+				e1:SetCode(EFFECT_UPDATE_ATTACK)
+				e1:SetValue(500)
+				e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+				mc:RegisterEffect(e1)
+			end
+		end
 	end
 end
 
