@@ -15,7 +15,6 @@ function s.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
     e2:SetCode(EFFECT_SYNCHRO_LEVEL)
-    e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetValue(s.slevel)
 	c:RegisterEffect(e2)
@@ -61,8 +60,7 @@ function s.slevel(e,c)
     local lv=e:GetHandler():GetLevel()
 	if not c:IsRace(RACE_FIEND) then return lv
 	else
-		if lv<=4 then return 16 end
-		return 4
+		return 4<<16|lv
 	end
 end
 --Send 1 Fiend monster to the GY
