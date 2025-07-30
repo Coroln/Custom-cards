@@ -4,7 +4,7 @@ local s,id=GetID()
 function s.initial_effect(c)
     -- Xyz summon procedure
     c:EnableReviveLimit()
-    Xyz.AddProcedure(c,nil,4,2,nil,nil,99,nil,false,s.xyzcheck)
+    Xyz.AddProcedure(c,nil,4,2,nil,nil,Xyz.InfiniteMats,nil,false,s.xyzcheck)
     -- Add 1 "Kuransain" card from GY to hand
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,1))
