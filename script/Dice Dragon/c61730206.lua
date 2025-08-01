@@ -51,51 +51,35 @@ function s.condition(e,c)
 	return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_ONFIELD,0,1,nil)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<1 then return end
-    local d1,d2=Duel.TossDice(tp,2)
-    local sum=d1+d2
-    local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil,e,tp)
-    local combos={}
-    for tc in g:Iter() do
-        if tc:GetLevel()==sum then
-            table.insert(combos,Group.FromCards(tc))
-        end
-    end
-    for tc1 in g:Iter() do
-        for tc2 in g:Iter() do
-            if tc1~=tc2 and tc1:GetLevel()+tc2:GetLevel()==sum then
-                table.insert(combos,Group.FromCards(tc1,tc2))
-            end
-        end
-    end
-    if #combos==0 then return end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-    local options=Group.CreateGroup()
-    for _,subg in ipairs(combos) do
-        options:Merge(subg)
-    end
-    local sg=options:Select(tp,1,2,nil)
-    if #sg==0 then return end
-    local lv=0
-    for tc in sg:Iter() do
-        lv=lv+tc:GetLevel()
-    end
-    if lv~=sum then return end
-    for tc in sg:Iter() do
-        Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
-        local e1=Effect.CreateEffect(e:GetHandler())
-        e1:SetType(EFFECT_TYPE_SINGLE)
-        e1:SetCode(EFFECT_DISABLE)
-        e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-        tc:RegisterEffect(e1)
-        local e2=e1:Clone()
-        e2:SetCode(EFFECT_DISABLE_EFFECT)
-        tc:RegisterEffect(e2)
-    end
-    Duel.SpecialSummonComplete()
+	local d1,d2=Duel.TossDice(tp,2)
+	local sum=d1+d2
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
+		local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil,e,tp)
+		local ft=math.min(Duel.GetLocationCount(tp,LOCATION_MZONE),2)
+		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local sg=g:SelectWithSumEqual(tp,Card.GetLevel,sum,1,ft)
+		if #sg>0 then
+			for tc in sg:Iter() do
+				if Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
+					--Negate their effects
+					local e1=Effect.CreateEffect(e:GetHandler())
+					e1:SetType(EFFECT_TYPE_SINGLE)
+					e1:SetCode(EFFECT_DISABLE)
+					e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+					e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+					tc:RegisterEffect(e1)
+					local e2=e1:Clone()
+					e2:SetCode(EFFECT_DISABLE_EFFECT)
+					tc:RegisterEffect(e2)
+				end
+			end
+			Duel.SpecialSummonComplete()
+		end
+	end
 end
 function s.filter(c,e,tp)
-    return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsLevelAbove(1)
+    return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:HasLevel()
 end
 --Burn effect on destruction
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
