@@ -32,8 +32,8 @@ function s.sfilter(c,val,scard,sumtype,tp)
 	return c.roll_dice
 end
 --Destroy monsters
-function s.filter(c,lv)
-	return c:IsFaceup() and c:GetLevel()==lv and not c.roll_dice
+function s.filter(c)
+	return c:IsFaceup() and c:HasLevel() and not c.roll_dice
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
