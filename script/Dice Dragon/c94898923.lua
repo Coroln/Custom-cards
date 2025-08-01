@@ -9,9 +9,9 @@ function s.initial_effect(c)
         s.global_check = true
         local ge=Effect.CreateEffect(c)
         ge:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-        ge:SetCode(EVENT_TOSS_DICE)           -- catch every dice roll
+        ge:SetCode(EVENT_TOSS_DICE)
         ge:SetOperation(s.global_dice_op)
-        Duel.RegisterEffect(ge,0)            -- register on player 0 (global)
+        Duel.RegisterEffect(ge,0)
     end
 	--lv change
 	local e2=Effect.CreateEffect(c)
@@ -34,7 +34,7 @@ function s.initial_effect(c)
     local e4=Effect.CreateEffect(c)
     e4:SetDescription(aux.Stringid(id,1))
     e4:SetCategory(CATEGORY_DICE+CATEGORY_DAMAGE)
-    e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+    e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
     e4:SetCode(EVENT_TO_GRAVE)
     e4:SetCondition(s.damcon)
     e4:SetTarget(s.damtg)
