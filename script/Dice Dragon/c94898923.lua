@@ -82,6 +82,13 @@ function s.global_dice_op(e,tp,eg,ep,ev,re,r,rp)
         Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(id,3))
         s.last_chain = cid
         s.effect_used = true
+        local e_reset = Effect.CreateEffect(e:GetHandler())
+        e_reset:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+        e_reset:SetCode(EVENT_PHASE+PHASE_END)
+        e_reset:SetCountLimit(1)
+        e_reset:SetOperation(function() s.effect_used=false end)
+        e_reset:SetReset(RESET_PHASE+PHASE_END)
+        Duel.RegisterEffect(e_reset, 0)
     end
 end
 --lv change
