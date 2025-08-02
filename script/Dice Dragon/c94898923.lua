@@ -79,7 +79,7 @@ function s.global_dice_op(e,tp,eg,ep,ev,re,r,rp)
             results[i] = 0 -- set others to 0
         end
         Duel.SetDiceResult(table.unpack(results))
-        Debug.ShowHint("Changed result to 2 by the Effect of 'Dice Deity TWO - Gluttony'")
+        Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(id,3))
         s.last_chain = cid
         s.effect_used = true
     end
