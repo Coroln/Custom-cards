@@ -64,6 +64,7 @@ def create_lua_files(folder_path, n, start_number):
             with open(file_path, 'w') as file:
                 file.write(f"--CARD_NAME\n")
                 file.write(f"--Script by: {author_name}\n")
+                file.write("local s,id=GetID()\n")
                 file.write("function s.initial_effect(c)\n")
                 file.write("end\n")
                 pass
