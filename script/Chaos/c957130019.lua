@@ -2,6 +2,12 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
     
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e0:SetCode(EVENT_BE_BATTLE_TARGET)
+	e0:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)end)
+	c:RegisterEffect(e0)
+
 	local e1=Effect.CreateEffect(c)
     e1:SetCategory(CATEGORY_TOGRAVE+CATEGORY_REMOVE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -44,7 +50,7 @@ end
 s.listed_series={0x21cf}
 s.listed_series={0xcf}
 function s.e1Con(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():GetAttackAnnouncedCount()==0
+	return e:GetHandler():GetAttackAnnouncedCount()==0 and not (e:GetHandler():GetFlagEffect(id)>0)
 end
 function s.cfilter(c)
 	return c:IsMonster() and (c:IsAttribute(ATTRIBUTE_LIGHT) or c:IsAttribute(ATTRIBUTE_DARK)) and c:IsRace(RACE_FAIRY) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c)
