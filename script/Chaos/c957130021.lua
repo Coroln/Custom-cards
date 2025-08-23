@@ -2,36 +2,22 @@
 local s,id=GetID()
 function s.initial_effect(c)
     --Ritual Summon
-    local e1=Ritual.CreateProc({
-        handler=c,
-        filter=s.ritual_filter,
-        level=Ritual.LevelEqual,
-        location=LOCATION_HAND,
-        extra_material=s.extrafil,
-        stage2=s.stage2
-    })
-    e1:SetCountLimit(1,id)
-    c:RegisterEffect(e1)
+    Ritual.AddProcEqual(c,s.ritual_filter, nil, nil, nil, nil, nil, s.stage2, LOCATION_HAND):SetCountLimit(1,id)
     --set
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_GRAVE)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_GRAVE)
     e1:SetCountLimit(1,{id,1})
-	e2:SetCost(s.setcost)
-	e2:SetTarget(s.settg)
-	e2:SetOperation(s.setop)
-	c:RegisterEffect(e2)
+	e1:SetCost(s.setcost)
+	e1:SetTarget(s.settg)
+	e1:SetOperation(s.setop)
+	c:RegisterEffect(e1)
 end
 
 -- Nur „Mythical Chaos Angel“-Ritualmonster
 function s.ritual_filter(c)
     return c:IsRitualMonster() and c:IsSetCard(0x40CF) -- Ersetze 0xXYZ durch den tatsächlichen Setcode
-end
-
--- Zusätzliche Materialien aus Hand/Feld
-function s.extrafil(e,tp,eg,ep,ev,re,r,rp,chk)
-    return Duel.GetMatchingGroup(Card.IsMonster, tp, LOCATION_HAND+LOCATION_MZONE, 0, nil)
 end
 
 -- Effekt nach der Beschwörung: 1 verbanntes „Mythical Chaos Angel“-Ritualmonster zur Hand hinzufügen
