@@ -37,6 +37,7 @@ function s.initial_effect(c)
     e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
     e4:SetCode(EVENT_TO_DECK)
     e4:SetRange(LOCATION_FZONE)
+    e4:SetCondition(s.ctcon)
     e4:SetOperation(s.ctop)
     c:RegisterEffect(e4)
 
@@ -106,15 +107,21 @@ function s.rmlimit(e,c,tp,r)
 end
 
 --e4
+function s.ctfilter(c,tp)
+    return c:IsLocation(LOCATION_DECK)
+        and c:IsControler(tp)
+        and c:IsPreviousLocation(LOCATION_HAND+LOCATION_ONFIELD+LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_EXTRA)
+end
 
--- Counter-Operation
+function s.ctcon(e,tp,eg,ep,ev,re,r,rp)
+    return eg:IsExists(s.ctfilter,1,nil,tp)
+end
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     if not c:IsFaceup() then return end
-    -- prüft, ob die Karte ins Deck gemischt wurde (egal ob Kosten oder Effekt)
     local g=eg:Filter(Card.IsPreviousLocation,nil,LOCATION_HAND+LOCATION_ONFIELD+LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_EXTRA)
     if #g>0 then
-        c:AddCounter(0x1BBB,1) -- Illusory Shadow Counter (0xBBB ist dein Setcode; Counter-ID kannst du frei wählen)
+        c:AddCounter(0x1BBB,1)
     end
 end
 
