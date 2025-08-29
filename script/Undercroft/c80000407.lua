@@ -1,3 +1,5 @@
+--Undercroft Blood Prince
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
 	c:AddSetcodesRule(id,false,0x601)
@@ -39,7 +41,7 @@ end
 function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 	local tc=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tp):GetFirst()
-	aux.PlayFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp)
+	Duel.ActivateFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp)
 end
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
