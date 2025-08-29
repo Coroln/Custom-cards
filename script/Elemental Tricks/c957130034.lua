@@ -17,5 +17,5 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.filter(c)
-	return c:IsTrick()
+	return c:IsTrick() and c:IsLevelBelow(6)
 end
