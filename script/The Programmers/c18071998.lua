@@ -101,7 +101,7 @@ function s.initial_effect(c)
 	e15:SetType(EFFECT_TYPE_SINGLE)
 	e15:SetCode(EFFECT_CANNOT_BE_MATERIAL)
 	e15:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e15:SetCondition(s.atkcon)
+	e15:SetCondition(s.atkconconcon)
 	e15:SetValue(aux.cannotmatfilter(SUMMON_TYPE_FUSION,SUMMON_TYPE_SYNCHRO,SUMMON_TYPE_XYZ,SUMMON_TYPE_LINK,SUMMON_TYPE_TRICK))
 	c:RegisterEffect(e15)
 	--send to grave
@@ -118,7 +118,7 @@ s.listed_names={id}
 s.listed_series={0x4879}
 --
 function s.conconfilter(c)
-	return c:IsFaceup() and c:GetBaseAttack()>3000
+	return c:IsFaceup() and c:GetBaseAttack()>=3000
 end
 function s.atkconcon(e,c)
 	if c==nil then return true end
@@ -127,7 +127,7 @@ function s.atkconcon(e,c)
 		and Duel.IsExistingMatchingCard(s.conconfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.conconconfilter(c)
-	return c:IsFaceup() and c:GetBaseAttack()>3000
+	return c:IsFaceup() and c:GetBaseAttack()>=3000
 end
 function s.atkconconcon(e,c)
 	if c==nil then return true end
@@ -248,7 +248,7 @@ function s.pspop(e,tp,eg,ep,ev,re,r,rp)
 end
 --Increase its own ATK
 function s.confilter(c)
-	return c:IsFaceup() and c:GetBaseAttack()>3000
+	return c:IsFaceup() and c:GetBaseAttack()>=3000
 end
 function s.atkcon(e,c)
 	if c==nil then return true end
