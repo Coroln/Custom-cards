@@ -3,7 +3,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
-	Xyz.AddProcedure(c,nil,12,3,s.ovfilter,aux.Stringid(id,0),2,s.xyzop)
+	Xyz.AddProcedure(c,nil,12,3,s.ovfilter,aux.Stringid(id,0),3,s.xyzop)
 	c:EnableReviveLimit()
 	--Banish as many Special Summoned monsters then attach 1
 	local e1=Effect.CreateEffect(c)

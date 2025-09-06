@@ -49,7 +49,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 --search
 function s.ffilter(c)
-	return c:IsSetCard(0x2328) and c:GetCode()~=id and c:IsAbleToHand()
+	return c:IsRace(RACE_INSECT) and (c:IsLevel(12) or c:IsLevelBelow(4)) and c:IsAbleToHand()
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.ffilter,tp,LOCATION_DECK,0,1,nil) end
@@ -76,7 +76,7 @@ end
 function s.tgspop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_DECK,0,2,2,nil)
-	Duel.SendtoGrave(g,REASON_COST)
+	Duel.SendtoGrave(g,REASON_EFFECT)
 	if e:GetHandler():IsRelateToEffect(e) then
 		Duel.SpecialSummon(e:GetHandler(),0,tp,tp,false,false,POS_FACEUP)
 	end
