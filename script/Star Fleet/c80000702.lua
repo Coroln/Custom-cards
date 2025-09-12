@@ -34,6 +34,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)
+	e1:SetReset(RESETS_STANDARD_PHASE_END&~RESET_TOFIELD)
 	c:RegisterEffect(e1)
 end
 --search
