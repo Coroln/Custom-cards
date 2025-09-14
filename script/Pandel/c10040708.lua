@@ -73,8 +73,8 @@ function s.plop(e,tp,eg,ep,ev,re,r,rp)
     pc:AddCard(e:GetHandler())
     if c:IsRelateToEffect(e) and pc and Duel.Destroy(pc,REASON_COST)==2 then
         if Duel.CheckLocation(tp,LOCATION_PZONE,0) and Duel.CheckLocation(tp,LOCATION_PZONE,1) then
-            local pg=aux.SelectUnselectGroup(g,e,tp,2,2,aux.TRUE,1,tp,HINTMSG_TOFIELD)
-            if #pg~=2 then return end
+            local pg=aux.SelectUnselectGroup(g,e,tp,1,2,aux.TRUE,1,tp,HINTMSG_TOFIELD)
+            if #pg==0 then return end
             local pc1,pc2=pg:GetFirst(),pg:GetNext()
             if Duel.MoveToField(pc1,tp,tp,LOCATION_PZONE,POS_FACEUP,false) then
                 if Duel.MoveToField(pc2,tp,tp,LOCATION_PZONE,POS_FACEUP,false) then
