@@ -72,15 +72,18 @@ function s.plop(e,tp,eg,ep,ev,re,r,rp)
     local pc=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,LOCATION_ONFIELD,0,1,1,e:GetHandler())
     pc:AddCard(e:GetHandler())
     if c:IsRelateToEffect(e) and pc and Duel.Destroy(pc,REASON_COST)==2 then
-        if Duel.CheckLocation(tp,LOCATION_PZONE,0) and Duel.CheckLocation(tp,LOCATION_PZONE,1) then
-            local pg=aux.SelectUnselectGroup(g,e,tp,1,2,aux.TRUE,1,tp,HINTMSG_TOFIELD)
-            if #pg==0 then return end
-            local pc1,pc2=pg:GetFirst(),pg:GetNext()
-            if Duel.MoveToField(pc1,tp,tp,LOCATION_PZONE,POS_FACEUP,false) then
-                if Duel.MoveToField(pc2,tp,tp,LOCATION_PZONE,POS_FACEUP,false) then
-                    pc2:SetStatus(STATUS_EFFECT_ENABLED,true)
-                end
-                pc1:SetStatus(STATUS_EFFECT_ENABLED,true)
+		local pz=0
+        local lz=Duel.GetFieldCard(tp,LOCATION_PZONE,0)
+        local rz=Duel.GetFieldCard(tp,LOCATION_PZONE,1)
+        if not lz then pz=pz+1 end
+        if not rz then pz=pz+1 end
+        if pz<=0 then return end
+        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
+        local pg=aux.SelectUnselectGroup(g,e,tp,1,pz,aux.TRUE,1,tp,HINTMSG_TOFIELD)
+        if #pg==0 then return end
+        for tc in pg:Iter() do
+            if Duel.MoveToField(tc,tp,tp,LOCATION_PZONE,POS_FACEUP,false) then
+                tc:SetStatus(STATUS_EFFECT_ENABLED,true)
             end
         end
     end
