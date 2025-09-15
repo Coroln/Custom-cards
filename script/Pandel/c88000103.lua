@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	e2:SetCondition(s.mtcon)
 	e2:SetOperation(s.mtop)
 	c:RegisterEffect(e2)
-	--Special Summon
+	--Special Summon (synchro)
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -34,7 +34,7 @@ function s.initial_effect(c)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
-	--special summon
+	--special summon (gy and extra)
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,0))
 	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -65,7 +65,7 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(e:GetHandler(),REASON_COST)
 	end
 end
---Special Summon
+--Special Summon (synchro)
 function s.cfilter(c,e,tp)
 	return c:IsFaceup() and c:IsType(TYPE_SYNCHRO) and c:IsSummonType(SUMMON_TYPE_SYNCHRO)
 		and c:IsSetCard(0x45) and c:IsControler(tp) and c:GetMaterial():IsExists(s.spfilter,1,nil,e,tp,c)
@@ -95,7 +95,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
 end
---spsummon
+--spsummon (gy and extra)
 function s.dfilter(c,e,tp)
 	return c:IsSetCard(0x9F1) and c:IsDiscardable()
 end

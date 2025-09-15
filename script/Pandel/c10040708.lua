@@ -90,7 +90,7 @@ function s.plop(e,tp,eg,ep,ev,re,r,rp)
 end
 --special summon
 function s.spfilter(c)
-	return c:IsSetCard(0x45) and c:IsAbleToGraveAsCost()
+	return c:IsSetCard(0x45) and c:IsMonster() and c:IsAbleToGraveAsCost()
 end
 function s.spcon(e,c)
 	if c==nil then return true end
@@ -125,6 +125,7 @@ function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.spop2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.spfilter2,tp,LOCATION_DECK,0,1,1,nil,e,tp)
