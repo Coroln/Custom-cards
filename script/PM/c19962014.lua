@@ -47,6 +47,7 @@ function s.rectg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.recop(e,tp,eg,ep,ev,re,r,rp)
     if Duel.SendtoDeck(e:GetHandler(),tp,0,REASON_EFFECT)>0 then
+		Duel.ShuffleDeck(tp)
         local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
         Duel.Draw(p,d,REASON_EFFECT)
     end
