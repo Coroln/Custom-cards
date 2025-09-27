@@ -15,6 +15,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
+s.listed_names={19962004,80000087}
 s.fit_monster={80000087}
 --Ritual Summon
 function s.ritualfil(c)
