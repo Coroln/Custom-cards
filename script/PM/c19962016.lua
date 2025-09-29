@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e2:SetCondition(s.hspcon2)
 	e2:SetOperation(s.hspop)
 	c:RegisterEffect(e2)
-    --Target 1 "Aquaactress" monster or "Aquarium" card in the GY and either Special Summon it or add it to the hand
+    --Target 1 "PM" card in the GY and either Special Summon it or add it to the hand
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SPECIAL_SUMMON)

@@ -57,6 +57,7 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e5:SetCode(EVENT_DESTROYED)
 	e5:SetCountLimit(1,{id,3})
+	e5:SetCondition(s.spcon)
 	e5:SetTarget(s.sptg2)
 	e5:SetOperation(s.spop2)
 	c:RegisterEffect(e5)
@@ -156,6 +157,10 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --if destroyed in monster zone, Special summon
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsPreviousLocation(LOCATION_MZONE)
+end
 function s.spfilter(c,e,tp)
 	return c:IsCode(19962005) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
