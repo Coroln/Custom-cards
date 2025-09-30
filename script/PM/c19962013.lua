@@ -44,7 +44,7 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e4:SetCode(EVENT_CHAINING)
 	e4:SetCountLimit(1,{id,2})
-	e4:SetCondition(s.discon)
+	e4:SetCondition(function(e) return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev) end)
 	e4:SetCost(s.discost)
 	e4:SetTarget(s.distg)
 	e4:SetOperation(s.disop)
@@ -129,10 +129,6 @@ function s.thop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --Negate
-function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
-		and re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev)
-end
 function s.cfilter(c)
 	return c:IsAbleToRemoveAsCost() and c:IsSpell() and aux.SpElimFilter(c)
 end
