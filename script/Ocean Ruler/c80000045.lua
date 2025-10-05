@@ -35,7 +35,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--counter
 	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetDescription(aux.Stringid(id,2))
 	e4:SetCategory(CATEGORY_COUNTER)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetCountLimit(1)
@@ -55,6 +55,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 s.counter_place_list={0x45}
+s.listed_names={CARD_UMI}
+s.listed_series={0x1864}
+--negate
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)==LOCATION_SZONE
 		and re:IsActiveType(TYPE_SPELL) and Duel.IsChainDisablable(ev) and not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
@@ -71,6 +74,7 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Overlay(c,Group.FromCards(rc))
 	end
 end
+--change battle target
 function s.cbcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp and Duel.GetAttackTarget()~=e:GetHandler()
 end
@@ -87,6 +91,7 @@ function s.cbop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+--counter
 function s.filter(e,tp,eg,ep,ev,re,r,rp,c)
 	return c:IsCode(22702055)
 end
@@ -117,6 +122,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:AddCounter(0x45,1)
 	end
 end
+--win
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetCounter(0x45)==3 then

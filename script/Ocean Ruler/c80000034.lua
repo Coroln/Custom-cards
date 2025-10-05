@@ -1,5 +1,7 @@
 --Levvia, Ozeanherrscher der Tiefsee
-function c80000034.initial_effect(c)
+--Script by Coroln
+local s,id=GetID()
+function s.initial_effect(c)
 	--cannot destroy
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -10,12 +12,12 @@ function c80000034.initial_effect(c)
 	c:RegisterEffect(e1)
 	--pos
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(80000034,0))
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_POSITION)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
-	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-	e2:SetOperation(c80000034.posop)
+	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e2:SetOperation(s.posop)
 	c:RegisterEffect(e2)
 	local e3=e2:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -27,7 +29,8 @@ function c80000034.initial_effect(c)
 	e4:SetValue(1)
 	c:RegisterEffect(e4)
 end
-function c80000034.posop(e,tp,eg,ep,ev,re,r,rp)
+--pos
+function s.posop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		Duel.ChangePosition(c,POS_FACEUP_DEFENSE,0,POS_FACEUP_ATTACK,0)

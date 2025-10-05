@@ -1,19 +1,21 @@
 --Daedalus, Ober-Ozeanherrscherin der Meere
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
---xyz summon
-	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x1864),4,3)
+	--xyz summon
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_SEASERPENT),4,3)
 	c:EnableReviveLimit()
---defense attack
+	--defense attack
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_DEFENSE_ATTACK)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
-	--Activate
+	--Activate "Umi"
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetCountLimit(1,id)
 	e2:SetCondition(s.setcon)
@@ -22,7 +24,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	--remove
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetDescription(aux.Stringid(id,5))
 	e3:SetCategory(CATEGORY_REMOVE)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_MZONE)
@@ -32,6 +34,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.operation)
 	c:RegisterEffect(e3)
 end
+s.listed_names={CARD_UMI}
+--Activate "Umi"
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetSummonType()==SUMMON_TYPE_XYZ
 end
@@ -47,6 +51,7 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,tp):GetFirst()
 	aux.PlayFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp)
 end
+--remove
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
