@@ -2,7 +2,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	Link.AddProcedure(c,nil,3)
-	--Return to the hand all monsters this card points to
+	--Destroy all monsters this card points to
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_DESTROY)
@@ -12,8 +12,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
-
-    --Inflict 500 Damage to the opponent when their card or effect is activated
+	--Stell 400 ATK from opponents monster on Spell activation.
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_CHAINING)
@@ -30,7 +29,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.damop)
 	c:RegisterEffect(e3)
 
-    --Inactivate
+    --Negate Effect that targets this card for 1500ATK
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_DISABLE+CATEGORY_DESTROY)
@@ -71,27 +70,29 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
     local c = e:GetHandler()
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
 	for tc in aux.Next(g) do
-        finalATK = 400
+        local finalATK = 400
         if tc:GetAttack() < 400 then
             finalATK = tc:GetAttack()
         end
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-		e1:SetValue(-400)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-		tc:RegisterEffect(e1)
-        
-        local e2=Effect.CreateEffect(c)
-        e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_UPDATE_ATTACK)
-		e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-		e2:SetValue(finalATK)
-		e2:SetRange(LOCATION_MZONE)
-		e2:SetReset(RESET_EVENT|RESETS_STANDARD)
-		c:RegisterEffect(e2)
+		if not tc:IsImmuneToEffect(e) then
+			local e1=Effect.CreateEffect(c)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_UPDATE_ATTACK)
+			e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+			e1:SetValue(-400)
+			e1:SetRange(LOCATION_MZONE)
+			e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+			tc:RegisterEffect(e1)
+
+			local e2=Effect.CreateEffect(c)
+			e2:SetType(EFFECT_TYPE_SINGLE)
+			e2:SetCode(EFFECT_UPDATE_ATTACK)
+			e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+			e2:SetValue(finalATK)
+			e2:SetRange(LOCATION_MZONE)
+			e2:SetReset(RESET_EVENT|RESETS_STANDARD)
+			c:RegisterEffect(e2)
+		end
 	end
 end
 
