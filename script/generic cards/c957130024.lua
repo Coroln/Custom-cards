@@ -74,7 +74,7 @@ function s.atkcon(e)
 	local c=e:GetHandler()
 	local g=Duel.GetMatchingGroup(Card.IsType, c:GetControler(), LOCATION_MZONE, LOCATION_MZONE, nil, TYPE_LINK)
 	for tc in g:Iter() do
-		if tc:GetLinkedGroup():IsContains(c) then
+		if tc:GetLinkedGroup():IsContains(c) and tc:IsRace(RACE_ZOMBIE) then
 			return true
 		end
 	end
