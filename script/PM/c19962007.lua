@@ -31,6 +31,9 @@ function s.extrafil(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetMatchingGroup(s.mfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,nil)
 end
 --Special Summon 1 non-Ritual "PM" from your Deck
+function s.cfilter(c)
+	return c:IsMonster() and c:IsType(TYPE_RITUAL) and c:IsSetCard(0x7CC)
+end
 function s.spcond(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
 end

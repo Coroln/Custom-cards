@@ -62,7 +62,7 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return r&REASON_EFFECT+REASON_BATTLE~=0
 end
 function s.thfilter(c)
-	return c:IsSetCard(0xC55) and not c:IsAttribute(ATTRIBUTE_FIRE) and c:IsAbleToHand()
+	return c:IsSetCard(0xC55) and not c:IsAttribute(ATTRIBUTE_FIRE) and c:IsMonster() and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
