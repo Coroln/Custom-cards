@@ -1,0 +1,28 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	--cos
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetCountLimit(1)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetOperation(s.cosoperation)
+	c:RegisterEffect(e1)
+end
+function s.cosoperation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local ac=Duel.AnnounceCard(tp)
+	--Debug.Message(ac)
+	local token=Duel.CreateToken(tp,ac)
+	local val=token:GetOriginalCode()
+	--Debug.Message(val)
+	if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_CHANGE_CODE)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
+	e1:SetValue(val)
+	c:RegisterEffect(e1)
+end

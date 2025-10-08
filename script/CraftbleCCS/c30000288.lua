@@ -1,0 +1,72 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	--destroy
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_RECOVER)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCost(s.cost)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetTargetRange(LOCATION_ONFIELD,0)
+	e2:SetTarget(s.disable)
+	e2:SetCode(EFFECT_CANNOT_DISABLE)
+	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetCode(EFFECT_CANNOT_INACTIVATE)
+	e3:SetValue(s.efilter)
+	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EFFECT_CANNOT_DISEFFECT)
+	e4:SetValue(s.efilter)
+	c:RegisterEffect(e4)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetCode(EFFECT_IMMUNE_EFFECT)
+	e5:SetValue(s.unaffectedval)
+	c:RegisterEffect(e5)
+end
+s.listed_names={2468169}
+function s.unaffectedval(e,te)
+	return te:GetHandler():IsContinuousSpellTrap() and te:GetOwnerPlayer()~=e:GetHandlerPlayer()
+end
+function s.efilter(e,ct)
+	local te=Duel.GetChainInfo(ct,CHAININFO_TRIGGERING_EFFECT)
+	return te:GetHandler():IsControler(e:GetHandlerPlayer()) and (te:GetHandler():ListsCode(2468169) or te:GetHandler():IsContinuousSpellTrap())
+end
+function s.disable(e,c)
+	return (c:ListsCode(2468169) or c:IsType(TYPE_CONTINUOUS))
+end
+function s.cfilter(c,e,tp,ec)
+	return c:IsContinuousSpellTrap() and c:IsFaceup() and c:IsReleasable()
+end
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:IsReleasable()
+		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,c,e,tp,c) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
+	local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,c,e,tp,c):GetFirst()
+	Duel.Release(Group.FromCards(c,tc),REASON_COST)
+end
+function s.filter(c)
+	local tpe=c:GetType()
+	return c:IsFaceup() and (tpe==0x20002 or tpe==0x20004)
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(1000)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,1000)
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
+end
