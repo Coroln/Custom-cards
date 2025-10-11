@@ -1,5 +1,7 @@
+--Earthbound Spirit
 local s,id=GetID()
 function s.initial_effect(c)
+	--add from outside the duel
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_TRIGGER_F+EFFECT_TYPE_SINGLE)
@@ -7,20 +9,23 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FLIP)
 	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
-	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_DAMAGE)
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1)
-	e2:SetCondition(s.spcon)
-	e2:SetTarget(s.tg)
-	e2:SetOperation(s.op)
+	local e2=e1:Clone()
+	e2:SetCode(EVENT_SUMMON_SUCCESS)
 	c:RegisterEffect(e2)
-	local e3=e1:Clone()
-	e1:SetCode(EVENT_SUMMON_SUCCESS)
+	--burn for 1000
+	local e3=Effect.CreateEffect(c)
+	e3:SetCategory(CATEGORY_DAMAGE)
+	e3:SetType(EFFECT_TYPE_IGNITION)
+	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetCountLimit(1)
+	e3:SetCondition(s.spcon)
+	e3:SetTarget(s.tg)
+	e3:SetOperation(s.op)
 	c:RegisterEffect(e3)
+	
 end
+--add from outside the duel
 function s.filter(c)
 	return (c:IsSetCard(0x1c) or c:IsCode(CARD_DESTINY_BOARD))
 end
@@ -31,6 +36,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local token=Duel.CreateToken(tp,ac)
 	Duel.SendtoHand(token,nil,REASON_EFFECT)
 end
+--burn for 1000
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,31893528),tp,LOCATION_ONFIELD,0,1,nil)
 end
