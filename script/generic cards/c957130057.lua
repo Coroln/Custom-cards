@@ -64,7 +64,7 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return ep==1-tp and c:HasFlagEffect(id)
+	return c:HasFlagEffect(id)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
     local c = e:GetHandler()
