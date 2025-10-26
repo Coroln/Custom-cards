@@ -1,0 +1,47 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	--Activate
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_CHAINING)
+	e1:SetCondition(s.condition)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.activate)
+	c:RegisterEffect(e1)
+end
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetCurrentChain(true)>=3
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	local ng=Group.CreateGroup()
+	local dg=Group.CreateGroup()
+	for i=1,ev do
+		local te=Duel.GetChainInfo(i,CHAININFO_TRIGGERING_EFFECT)
+		if e:GetOwnerPlayer()~=te:GetOwnerPlayer() then
+		local tc=te:GetHandler()
+		if te:IsHasType(EFFECT_TYPE_ACTIVATE) or te:IsMonsterEffect() then
+			ng:AddCard(tc)
+			if tc:IsRelateToEffect(te) then
+				dg:AddCard(tc)
+			end
+		end
+		end
+	end
+	if chk==0 then return #ng>0 end
+	Duel.SetTargetCard(dg)
+	Duel.SetOperationInfo(0,CATEGORY_NEGATE,ng,#ng,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,dg,#dg,0,0)
+end
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	local dg=Group.CreateGroup()
+	for i=1,ev do
+		local te=Duel.GetChainInfo(i,CHAININFO_TRIGGERING_EFFECT)
+		local tc=te:GetHandler()
+		if (te:IsHasType(EFFECT_TYPE_ACTIVATE) or te:IsMonsterEffect()) and e:GetOwnerPlayer()~=te:GetOwnerPlayer() and Duel.NegateActivation(i) 
+			and tc:IsRelateToEffect(e) and tc:IsRelateToEffect(te) then
+			dg:AddCard(tc)
+		end
+	end
+	Duel.Destroy(dg,REASON_EFFECT)
+end
