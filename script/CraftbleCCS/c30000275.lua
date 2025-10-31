@@ -46,7 +46,7 @@ function s.addccon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
 end
 function s.addc(e,tp,eg,ep,ev,re,r,rp)
-	e:GetHandler():AddCounter(0x29,1)
+	e:GetHandler():AddCounter(COUNTER_SPELL,1)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
