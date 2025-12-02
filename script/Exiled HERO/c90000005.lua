@@ -43,13 +43,15 @@ function s.initial_effect(c)
 	local e6=Effect.CreateEffect(c)
 	e6:SetType(EFFECT_TYPE_SINGLE)
 	e6:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e6:SetRange(LOCATION_MZONE)
+	e6:SetRange(LOCATION_MZONE+LOCATION_REMOVED)
 	e6:SetCode(EFFECT_CHANGE_CODE)
 	e6:SetValue(89943723)
 	c:RegisterEffect(e6)
 end
+s.listed_series={0x8,0x9008}
+s.listed_names={id,89943723}
 function s.cfilter(c,tp)
-	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x9008)
+	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x8)
 end
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil,tp) end

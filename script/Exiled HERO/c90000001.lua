@@ -40,8 +40,10 @@ function s.initial_effect(c)
 	e5:SetValue(LOCATION_REMOVED)
 	c:RegisterEffect(e5)
 end
+s.listed_series={0x8,0x9008}
+s.listed_names={id}
 function s.cfilter(c,tp)
-	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x9008)
+	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x8)
 end
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil,tp) end

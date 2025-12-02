@@ -39,6 +39,8 @@ function s.initial_effect(c)
 	e5:SetValue(LOCATION_REMOVED)
 	c:RegisterEffect(e5)
 end
+s.listed_series={0x8,0x9008}
+s.listed_names={id}
 --draw
 function s.cfilter(c,tp)
 	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x9008)
