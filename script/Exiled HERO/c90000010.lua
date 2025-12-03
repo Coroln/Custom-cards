@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id)
 	c:RegisterEffect(e1)
-	--Activate
+	--search
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
@@ -40,15 +40,18 @@ function s.initial_effect(c)
 	e5:SetValue(LOCATION_REMOVED)
 	c:RegisterEffect(e5)
 end
+s.listed_series={0x8,0x9008}
+s.listed_names={id}
 --redirect
 function s.recon(e)
 	return e:GetHandler()
 end
-function s.cfilter(c,tp)
+--search
+function s.cfilter(c,e,tp)
 	return c:IsSetCard(0x9008) and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_HAND)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,0,tp)
+	return eg:IsExists(s.cfilter,1,nil,e,tp)
 end
 function s.filter(c)
 	return c:IsSetCard(0x8) and c:IsMonster() and c:IsAbleToHand()
