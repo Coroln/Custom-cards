@@ -11,10 +11,24 @@ function s.initial_effect(c)
 	local e2=e1:Clone()
 	e2:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e2)
+	--redirect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_TO_GRAVE_REDIRECT)
+	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e3:SetCondition(s.recon)
+	e3:SetValue(LOCATION_REMOVED)
+	c:RegisterEffect(e3)
 end
+s.listed_series={0x8,0x9008}
+--equip
 function s.filter(c)
-	return c:IsSetCard(0x9008) or c:IsCode(90000010,id,90000011)
+	return c:IsSetCard(0x9008) or c:IsCode(90000010,id)
 end
 function s.val(e,c)
 	return Duel.GetMatchingGroupCount(s.filter,e:GetHandler():GetControler(),LOCATION_REMOVED,0,nil)*200
+end
+--redirect
+function s.recon(e)
+	return e:GetHandler()
 end
