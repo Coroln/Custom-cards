@@ -32,7 +32,7 @@ end
 --spsummon
 function s.filter(c,e,tp)
 	return c:IsMonster() and c:IsType(TYPE_EFFECT) and ((c:IsAttack(800) and c:IsDefense(750))
-		or (c:IsAttack(750) and c:IsDefense(800))) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		or (c:IsAttack(750) and c:IsDefense(800))) and not c:IsCode(511001217) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
