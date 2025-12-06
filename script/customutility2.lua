@@ -430,3 +430,81 @@ function Auxiliary.d12(tp)
     local result = useAlt and d12_map_b[d] or d12_map_a[d]
     return result
 end
+--neos return
+function Auxiliary.EnableSupremeNeosReturn(c,extracat,extrainfo,extraop,returneff)
+	if not extracat then extracat=0 end
+	--return
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_TODECK | extracat)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCode(EVENT_PHASE+PHASE_END)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1)
+	e1:SetCondition(Auxiliary.SupremeNeosReturnCondition1)
+	e1:SetTarget(Auxiliary.SupremeNeosReturnTarget(c,extrainfo))
+	e1:SetOperation(Auxiliary.SupremeNeosReturnOperation(c,extraop))
+	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(0)
+	e2:SetCondition(Auxiliary.SupremeNeosReturnCondition2)
+	c:RegisterEffect(e2)
+	if returneff then
+		e1:SetLabelObject(returneff)
+		e2:SetLabelObject(returneff)
+	end
+end
+function Auxiliary.SupremeNeosReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
+	return not e:GetHandler():IsHasEffect(42015635)
+end
+function Auxiliary.SupremeNeosReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsHasEffect(42015635)
+end
+function Auxiliary.SupremeNeosReturnTarget(c,extrainfo)
+	return function(e,tp,eg,ep,ev,re,r,rp,chk)
+		if chk==0 then return true end
+		Duel.SetOperationInfo(0,CATEGORY_TODECK,e:GetHandler(),1,0,0)
+		if extrainfo then extrainfo(e,tp,eg,ep,ev,re,r,rp,chk) end
+	end
+end
+function Auxiliary.SupremeNeosReturnSubstituteFilter(c)
+	return c:IsCode(14088859) and c:IsAbleToRemoveAsCost()
+end
+function Auxiliary.SupremeNeosReturnFilter(c,list)
+    if not c:IsAbleToHand() then return false end
+    for _,v in ipairs(list) do
+        if type(v)=="number" then
+            -- Treat 0x9, 0x3008 etc. as setcodes:
+            if v <= 0xFFFF then
+                if c:IsSetCard(v) then return true end
+            else
+                -- Treat larger values as specific card codes:
+                if c:IsCode(v) then return true end
+            end
+        end
+    end
+    return false
+end
+function Auxiliary.SupremeNeosReturnOperation(c,extraop)
+	return function(e,tp,eg,ep,ev,re,r,rp)
+		local c=e:GetHandler()
+		if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
+		local sc=Duel.GetFirstMatchingCard(Auxiliary.NecroValleyFilter(Auxiliary.SupremeNeosReturnSubstituteFilter),tp,LOCATION_GRAVE,0,nil)
+		if sc and Duel.SelectYesNo(tp,aux.Stringid(14088859,0)) then
+			Duel.Remove(sc,POS_FACEUP,REASON_COST)
+		else
+			Duel.SendtoDeck(c,nil,2,REASON_EFFECT)
+			local list=c.neos_add or {}
+			local g=Duel.SelectMatchingCard(tp,function(tc) return Auxiliary.SupremeNeosReturnFilter(tc,list) end,tp,LOCATION_DECK,0,1,1,nil)
+			if #g>0 then
+				Duel.SendtoHand(g,tp,REASON_EFFECT)
+				Duel.ConfirmCards(1-tp,g)
+			end
+		end
+		if c:IsLocation(LOCATION_EXTRA) then
+			if extraop then
+				extraop(e,tp,eg,ep,ev,re,r,rp)
+			end
+		end
+	end
+end

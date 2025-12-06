@@ -2,17 +2,15 @@
 --Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
-	--code
-	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_SINGLE)
-	e0:SetCode(EFFECT_ADD_SETCODE)
-	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e0:SetRange(LOCATION_ALL)
-	e0:SetValue(0x9008)
-	c:RegisterEffect(e0)
-    local e1=e0:Clone()
-    e1:SetValue(0xA008)
-    c:RegisterEffect(e1)
+	local sets={0x3008,0x9008,0x5008,0x6008,0xa008,0xc008}
+    for _,sc in ipairs(sets) do
+        local e=Effect.CreateEffect(c)
+        e:SetType(EFFECT_TYPE_SINGLE)
+        e:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+        e:SetCode(EFFECT_ADD_SETCODE)
+        e:SetValue(sc)
+        c:RegisterEffect(e)
+    end
     --race
     local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
