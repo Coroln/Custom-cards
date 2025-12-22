@@ -14,8 +14,8 @@ function s.initial_effect(c)
 end
 s.counter_list={0xFF}
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsCanRemoveCounter(tp,1,0,0xFF,2,REASON_COST) end
-	Duel.RemoveCounter(tp,1,0,0xFF,2,REASON_COST)
+	if chk==0 then return Duel.IsCanRemoveCounter(tp,1,0,0xFF,5,REASON_COST) end
+	Duel.RemoveCounter(tp,1,0,0xFF,5,REASON_COST)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,0,LOCATION_MZONE,1,nil) end
