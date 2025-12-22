@@ -14,6 +14,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 s.counter_list={0xFF}
+function s.filter(c,e,tp)
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsCanRemoveCounter(tp,1,0,0xFF,2,REASON_COST) end
 	Duel.RemoveCounter(tp,1,0,0xFF,2,REASON_COST)
