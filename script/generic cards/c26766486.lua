@@ -1,6 +1,6 @@
 --Disassembling Card
 --Script by Coroln
-Duel.LoadScript ("customutility2.lua")
+Duel.LoadScript ("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Special Summon, then send to GY
@@ -85,7 +85,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SpecialSummon(mg,0,owner,owner,false,false,POS_FACEUP)
 			Duel.SendtoGrave(tc,REASON_EFFECT)
 		end
-	elseif tc:IsType(TYPE_TRICK) then
+	elseif tc:IsTrick() then
 		Duel.Sendto(tc,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN)
 		if Duel.IsExistingMatchingCard(aux.NecroValleyFilter(s.setfilter),tp,LOCATION_GRAVE,0,1,nil) then
 			local g=Duel.SelectMatchingCard(tp,s.setfilter,tp,LOCATION_GRAVE,0,1,1,nil)
