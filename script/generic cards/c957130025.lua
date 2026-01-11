@@ -166,7 +166,7 @@ end
 --e4
 function s.e4con(e,tp,eg,ep,ev,re,r,rp)
     local c = e:GetHandler()
-	return c:IsSummonType(SUMMON_TYPE_TRICK) and c:GetMaterialCount()>=5
+    return c:IsSummonType(SUMMON_TYPE_TRICK) and c:GetMaterialCount()>=5
 end
 function s.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
@@ -186,9 +186,9 @@ end
 --e5
 function s.e5con(e,tp,eg,ep,ev,re,r,rp)
     local c = e:GetHandler()
-	return c:IsSummonType(SUMMON_TYPE_TRICK) and c:GetMaterialCount()>=6
+	return c:IsPreviousLocation(LOCATION_EXTRA) and not c:IsReason(REASON_EFFECT) and c:GetMaterialCount()>=6
 end
 --Unaffected by opponent's card effects
-function s.efilter(e,re)
-    return e:GetOwnerPlayer()==1-re:GetOwnerPlayer()
+function s.efilter(e,te)
+    return te:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
