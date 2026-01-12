@@ -24,6 +24,7 @@ function s.initial_effect(c)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_HAND)
 	e4:SetCountLimit(1,id)
+	e4:SetCost(s.nscost)
 	e4:SetOperation(s.nsop)
 	c:RegisterEffect(e4)
 
@@ -77,17 +78,21 @@ function s.tlimit(e,c)
 end
 
 -- Extra Normal Summon
+function s.nscost(e,tp,eg,ep,ev,re,r,rp,chk)
+    local c=e:GetHandler()
+    if chk==0 then return c:IsAbleToDeckAsCost() end
+    Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_COST)
+end
+
 function s.nsop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)>0 then
-		local e1=Effect.CreateEffect(c)
-		e1:SetDescription(aux.Stringid(id, 1))
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
-		e1:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
-		e1:SetReset(RESET_PHASE+PHASE_END)
-		Duel.RegisterEffect(e1,tp)
-	end
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id, 1))
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
+	e1:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e1,tp)
 end
 
 -- Send to GY if Special Summoned
