@@ -43,6 +43,8 @@ function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsMonster,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
 	if #g==0 then return end
 	if Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)>0 then
+		Duel.ShuffleDeck(tp)
+		Duel.ShuffleDeck(1-tp)
 		Duel.DiscardDeck(tp,2,REASON_EFFECT)
 		Duel.DiscardDeck(1-tp,2,REASON_EFFECT)
 	end
