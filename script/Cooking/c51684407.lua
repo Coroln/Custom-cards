@@ -39,7 +39,7 @@ function s.indtg(e,c)
 end
 --to hand
 function s.filter(c)
-	return c:IsSetCard(SET_AQUAACTRESS) and c:IsMonster() and c:IsAbleToHand()
+	return c:IsMonster() and c:IsType(TYPE_EFFECT) and ((c:IsAttack(800) and c:IsDefense(750)) or (c:IsAttack(750) and c:IsDefense(800))) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

@@ -10,6 +10,16 @@ function s.initial_effect(c)
 	e1:SetTarget(s.fstg)
 	e1:SetOperation(s.fsop)
 	c:RegisterEffect(e1)
+	--Shuffle
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetCategory(CATEGORY_TODECK)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetCost(Cost.SelfBanish)
+	e2:SetTarget(s.tdtg)
+	e2:SetOperation(s.tdop)
+	c:RegisterEffect(e2)
 end
 --Baking
 function s.fusionfilter(c,tp)
@@ -56,4 +66,40 @@ function table.contains(t,val)
 		if v==val then return true end
 	end
 	return false
+end
+--shuffle
+function s.tdfilter(c)
+	return c:IsMonster() and c:IsType(TYPE_EFFECT) and c:IsAbleToDeck()
+end
+function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.tdfilter,tp,LOCATION_GRAVE,0,3,e:GetHandler()) end
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,nil,3,tp,LOCATION_GRAVE)
+end
+function s.tdop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
+	local g=Duel.SelectMatchingCard(tp,s.tdfilter,tp,LOCATION_GRAVE,0,3,3,nil)
+	if #g==3 then
+		Duel.HintSelection(g)
+		if Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)==3 then
+			Duel.Draw(tp,1,REASON_EFFECT)
+			--Cannot Special Summon from the Extra Deck, except Fusion Monsters
+			local e1=Effect.CreateEffect(c)
+			e1:SetDescription(aux.Stringid(id,1))
+			e1:SetType(EFFECT_TYPE_FIELD)
+			e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+			e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+			e1:SetTargetRange(1,0)
+			e1:SetTarget(s.splimit)
+			e1:SetReset(RESET_PHASE|PHASE_END)
+			Duel.RegisterEffect(e1,tp)
+			--Clock Lizard check
+			aux.addTempLizardCheck(c,tp,s.lizfilter)
+		end
+	end
+end
+function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
+	return c:IsLocation(LOCATION_EXTRA) and not c:IsType(TYPE_FUSION)
+end
+function s.lizfilter(e,c)
+	return not c:IsOriginalType(TYPE_FUSION)
 end
