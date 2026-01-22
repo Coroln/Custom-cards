@@ -35,7 +35,7 @@ s.listed_names={51684406}
 s.listed_series={0x1430}
 --indes
 function s.indtg(e,c)
-	return c:IsMonster() and c:IsType(TYPE_EFFECT)
+	return c:IsMonster() and c:IsType(TYPE_EFFECT) and c~=e:GetHandler()
 end
 --to hand
 function s.filter(c)
