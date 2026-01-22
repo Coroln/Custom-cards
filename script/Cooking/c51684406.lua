@@ -82,6 +82,7 @@ function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.HintSelection(g)
 		if Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)==3 then
 			Duel.Draw(tp,1,REASON_EFFECT)
+			local c=e:GetHandler()
 			--Cannot Special Summon from the Extra Deck, except Fusion Monsters
 			local e1=Effect.CreateEffect(c)
 			e1:SetDescription(aux.Stringid(id,1))
