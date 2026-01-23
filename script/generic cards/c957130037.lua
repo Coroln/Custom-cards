@@ -11,7 +11,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
     --summon/set with 1 tribute
     local e2=aux.AddNormalSummonProcedure(c,true,true,1,1,SUMMON_TYPE_TRIBUTE,aux.Stringid(id,0),nil,s.otop)
-    --draw
+    --sort
     local e3=Effect.CreateEffect(c)
     e3:SetDescription(aux.Stringid(id,0))
     e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
@@ -22,6 +22,17 @@ function s.initial_effect(c)
     e3:SetTarget(s.e3tg)
     e3:SetOperation(s.e3op)
     c:RegisterEffect(e3)
+	--add
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1,{id,1})
+	e4:SetTarget(s.e4tg)
+	e4:SetOperation(s.e4op)
+	c:RegisterEffect(e4)
 end
 local CARD_AEOREOS = 957130033
 s.listed_names={CARD_AEOREOS}
@@ -75,20 +86,58 @@ function s.e3con(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.e3tg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then
+		return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=3
+			and Duel.IsExistingMatchingCard(s.e3filterA,tp,LOCATION_DECK,0,1,nil)
+	end
+end
+
+function s.e3filterA(c)
+	return (c:ListsCode(CARD_AEOREOS) or c:IsCode(CARD_AEOREOS)) and c:GetCode()~=id
+end
+function s.e3filterB(c)
+	return c:GetCode()~=id
+end
+function s.e3op(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)<3 then return end
+
+	-- 1 Pflichtkarte
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+	local g1=Duel.SelectMatchingCard(tp,s.e3filterA,tp,LOCATION_DECK,0,1,1,nil)
+	if #g1==0 then return end
+
+	-- 2 weitere Karten
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+	local g2=Duel.SelectMatchingCard(tp,s.e3filterB,tp,LOCATION_DECK,0,2,2,g1:GetFirst())
+	g1:Merge(g2)
+
+	-- Reveal
+	Duel.ConfirmCards(1-tp,g1)
+
+	-- Karten wirklich oben platzieren
+	Duel.DisableShuffleCheck()
+	Duel.MoveToDeckTop(g1)
+
+	-- Reihenfolge bestimmen (nur Top 3!)
+	Duel.SortDecktop(tp,tp,3)
+end
+
+--e4
+function s.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>2 end
 	Duel.SetPossibleOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
-function s.e3filter(c)
+function s.e4filter(c)
 	return (c:ListsCode(CARD_AEOREOS) or c:IsCode(CARD_AEOREOS)) and c:IsAbleToHand() and c:GetCode()~=id
 end
-function s.e3op(e,tp,eg,ep,ev,re,r,rp)
+function s.e4op(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)<3 then return end
 	local g=Duel.GetDecktopGroup(tp,3)
 	Duel.ConfirmCards(tp,g)
-	if g:IsExists(s.e3filter,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+	if g:IsExists(s.e4filter,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local sg=g:FilterSelect(tp,s.e3filter,1,1,nil)
+		local sg=g:FilterSelect(tp,s.e4filter,1,1,nil)
 		Duel.DisableShuffleCheck()
 		Duel.SendtoHand(sg,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,sg)
