@@ -309,7 +309,7 @@ function s.e9filter(c)
 end
 
 function s.e9cost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsCanRemoveCounter(tp,LOCATION_ONFIELD,LOCATION_ONFIELD,COUNTER_AEOREOS,1,REASON_COST) end
+    if chk==0 then return Duel.IsExistingMatchingCard(s.e9filter,tp,LOCATION_ONFIELD,0,1,nil) and Duel.IsCanRemoveCounter(tp,LOCATION_ONFIELD,0,COUNTER_AEOREOS,1,REASON_COST) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_COUNTER)
     local g=Duel.SelectMatchingCard(tp,s.e9filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
     g:GetFirst():RemoveCounter(tp,COUNTER_AEOREOS,1,REASON_COST)
