@@ -76,8 +76,11 @@ end
 --e2
 
 function s.conEffGain(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return (r&REASON_TRICK) and not c:IsSummonType(SUMMON_TYPE_MAXIMUM) and c:GetReasonCard():IsAttribute(ATTRIBUTE_EARTH)
+	if not re then return false end
+    local c=e:GetHandler() -- the material
+    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
+    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK)) and rc:IsAttribute(ATTRIBUTE_EARTH)
 end
 
 function s.opEffGain(e,tp,eg,ep,ev,re,r,rp)

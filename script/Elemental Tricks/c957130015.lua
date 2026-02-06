@@ -47,9 +47,9 @@ end
 function s.thcon2(e,tp,eg,ep,ev,re,r,rp)
 	if not re then return false end
     local c=e:GetHandler() -- the material
-    local sc=re:GetHandler() -- the monster that was summoned using this card as material
-    return sc:IsSummonType(SUMMON_TYPE_SPECIAL) and sc:IsPreviousLocation(LOCATION_EXTRA)
-        and not (sc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK)) and c:GetReasonCard():IsAttribute(ATTRIBUTE_WIND)
+    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
+    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK)) and rc:IsAttribute(ATTRIBUTE_WIND)
 end
 
 function s.rmfilter(c,e)

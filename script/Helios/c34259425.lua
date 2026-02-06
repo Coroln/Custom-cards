@@ -29,6 +29,7 @@ function s.initial_effect(c)
 	e3:SetCategory(CATEGORY_REMOVE)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetCondition(s.setcon)
 	e3:SetTarget(s.rmtg)
 	e3:SetOperation(s.rmop)
 	c:RegisterEffect(e3)
@@ -58,6 +59,13 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --remove
+function s.setcon(e,tp,eg,ep,ev,re,r,rp)
+	if not re then return false end
+    local c=e:GetHandler() -- the material
+    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
+    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
+end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,3,PLAYER_ALL,LOCATION_DECK)

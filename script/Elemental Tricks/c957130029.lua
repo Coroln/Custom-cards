@@ -41,12 +41,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 --e2
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-    local c=e:GetHandler()
-	if((r&REASON_TRICK) and (not c:IsSummonType(SUMMON_TYPE_MAXIMUM)) and c:GetReasonCard():IsAttribute(ATTRIBUTE_DARK))then
-		return 1
-	else
-		return 0
-	end
+    if not re then return false end
+    local c=e:GetHandler() -- the material
+    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
+    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
+        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
