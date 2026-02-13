@@ -19,19 +19,19 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_TO_GRAVE)
 	e2:SetCountLimit(1,id)
-	e2:SetCondition(s.condition)
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.operation)
+	e2:SetCondition(s.condition2)
+	e2:SetTarget(s.target2)
+	e2:SetOperation(s.operation2)
 	c:RegisterEffect(e2)
 end
 s.listed_names={id}
 s.listed_series={0xCF13}
 --special summon
 function s.cfilter(c)
-	return c:IsMonster() and c:GetRace()~=RACE_PLANT
+	return c:IsMonster() and c:GetRace()==RACE_PLANT
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return not Duel.IsExistingMatchingCard(s.cfilter,e:GetHandlerPlayer(),LOCATION_GRAVE,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.cfilter,e:GetHandlerPlayer(),LOCATION_GRAVE,0,1,nil)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsPlayerCanDiscardDeck(tp,1) then
@@ -39,18 +39,18 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --destroy
-function s.condition(e,tp,eg,ep,ev,re,r,rp)
+function s.condition2(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsReason(REASON_EFFECT)
 end
 function s.filter(c)
 	return c:IsMonster() and c:IsDestructable()
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.target2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
+function s.operation2(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.Destroy(tc,REASON_EFFECT)
