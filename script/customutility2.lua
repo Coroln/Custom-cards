@@ -508,3 +508,17 @@ function Auxiliary.SupremeNeosReturnOperation(c,extraop)
 		end
 	end
 end
+--pendulum copy
+function aux.CopyPendulumEffects(c,source_code,reset)
+    local tc=Duel.CreateToken(c:GetControler(),source_code)
+    if not tc then return end
+    
+    local effects={tc:GetCardEffect()}
+    for _,te in ipairs(effects) do
+        if te:GetRange()==LOCATION_PZONE then
+            local ce=te:Clone()
+            ce:SetReset(reset or RESET_EVENT+RESETS_STANDARD)
+            c:RegisterEffect(ce)
+        end
+    end
+end

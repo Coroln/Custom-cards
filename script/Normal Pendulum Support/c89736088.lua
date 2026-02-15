@@ -1,18 +1,9 @@
 --Maiden of War
---Script by Coroln and ChatGPT
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
 	--Pendulum Attribute
 	Pendulum.AddProcedure(c)
-	--Pendulum Effect 1: Treat Monster Zones as linked zones (Target specific monster zone)
-	local e1 = Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_NO_TURN_RESET)
-	e1:SetRange(LOCATION_PZONE)
-	e1:SetCountLimit(1)
-	e1:SetTarget(s.linkedzone_target)
-	e1:SetOperation(s.linkedzone_value)
-	c:RegisterEffect(e1)
 	--Pendulum Effect 2: ATK Boost for Normal Pendulum Monsters
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
@@ -52,32 +43,13 @@ function s.initial_effect(c)
 	e5:SetOperation(s.addop)
 	c:RegisterEffect(e5)
 end
---Pendulum Effect 1: Treat Monster Zones as linked zones (Target specific monster zone)
-function s.linkedzone_target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
-	local seq1=Duel.SelectFieldZone(tp,1,LOCATION_MZONE,0,0)
-	local seq2=Duel.SelectFieldZone(tp,1,0,LOCATION_MZONE,0)
-	local seq=seq1|seq2
-	Duel.Hint(HINT_ZONE,tp,seq)
-	e:SetLabel(seq)
-end
-function s.linkedzone_value(e,tp,eg,ep,ev,re,r,rp)
-	local seq3=e:GetLabel()
-    local e1=Effect.CreateEffect(e:GetHandler())
-    e1:SetType(EFFECT_TYPE_FIELD)
-    e1:SetCode(EFFECT_BECOME_LINKED_ZONE)
-    e1:SetTargetRange(LOCATION_MZONE,0)
-    e1:SetValue(seq3)
-    Duel.RegisterEffect(e1,tp)
-end
 --Pendulum Effect: ATK Boost for Normal Pendulum Monsters
 function s.boostfilter(e,c)
 	return c:IsType(TYPE_NORMAL) and c:IsType(TYPE_PENDULUM)
 end
 function s.atkval(e,c)
 	local g=Duel.GetFieldGroup(e:GetHandlerPlayer(),LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE)
-	return g:FilterCount(Card.IsType,nil,TYPE_NORMAL)*100
+	return g:FilterCount(Card.IsType,nil,TYPE_NORMAL)*200
 end
 --Pendulum Effect: Restrict Pendulum Summon
 function s.pscon(e,tp,eg,ep,ev,re,r,rp)
