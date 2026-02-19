@@ -61,8 +61,9 @@ function s.tfilter2(c)
 end
 --negate
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
-	return re:GetHandler()~=e:GetHandler() and not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
-		and (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE)) and Duel.IsChainNegatable(ev)
+	local c=e:GetHandler()
+	if c:IsStatus(STATUS_BATTLE_DESTROYED) then return false end
+	return Duel.IsChainNegatable(ev)
 end
 function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
