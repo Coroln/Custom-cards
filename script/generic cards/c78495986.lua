@@ -40,10 +40,13 @@ function s.initial_effect(c)
 end
 --Move to another MMZ
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then e:GetLabelObject():SetLabel(0) return true end
+	local c=e:GetHandler()
+	if chk==0 then e:GetLabelObject():SetLabel(0) return Duel.IsExistingMatchingCard(aux.True,tp,LOCATION_HAND,0,1,c) end
 	if e:GetLabelObject():GetLabel()>0 then
 		e:GetLabelObject():SetLabel(0)
-		Duel.DiscardHand(tp,aux.TRUE,1,1,REASON_DISCARD+REASON_COST,nil)
+		if Duel.IsExistingMatchingCard(aux.True,tp,LOCATION_HAND,0,1,c) then
+			Duel.DiscardHand(tp,aux.TRUE,1,1,REASON_DISCARD+REASON_COST,c)
+		end
 	end
 end
 function s.seqfilter(c)
