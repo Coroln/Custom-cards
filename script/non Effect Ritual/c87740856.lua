@@ -2,7 +2,7 @@
 --Coroln
 local s,id=GetID()
 function s.initial_effect(c)
-	local e1=Ritual.CreateProc({handler=c,lvtype=RITPROC_EQUAL,extrafil=s.extrafil,extraop=s.extraop,matfilter=s.forcedgroup,forcedselection=s.ritcheck})
+	local e1=Ritual.CreateProc({handler=c,filter=s.ritfilter,lvtype=RITPROC_EQUAL,extrafil=s.extrafil,extraop=s.extraop,matfilter=s.forcedgroup,forcedselection=s.ritcheck})
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DECKDES)
 	c:RegisterEffect(e1)
 	--to hand
