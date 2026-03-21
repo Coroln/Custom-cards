@@ -19,10 +19,23 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EVENT_PHASE+PHASE_END)
+	e2:SetCondition(s.spcon)
 	e2:SetCost(s.lvupcost)
 	e2:SetTarget(s.lvuptg)
 	e2:SetOperation(s.lvupop)
 	c:RegisterEffect(e2)
+	--reg
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e3:SetCode(EVENT_SUMMON_SUCCESS)
+	e3:SetOperation(s.regop)
+	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e4)
+	local e5=e3:Clone()
+	e5:SetCode(EVENT_FLIP)
+	c:RegisterEffect(e5)
 end
 s.listed_names={70000038}
 s.listed_series={0x41}
@@ -44,7 +57,14 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
         Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
     end
 end
+--reg
+function s.regop(e,tp,eg,ep,ev,re,r,rp)
+	e:GetHandler():RegisterFlagEffect(id+1,RESET_EVENT|RESET_TOGRAVE|RESET_REMOVE|RESET_TOHAND|RESET_TODECK|RESET_LEAVE|RESET_TOFIELD|RESET_PHASE|PHASE_END,0,1)
+end
 --special summon LV UP
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetFlagEffect(id+1)==0
+end
 function s.lvupcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
