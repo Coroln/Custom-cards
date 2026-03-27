@@ -23,6 +23,7 @@ function s.init(c)
     local e2=Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
     e2:SetCode(EVENT_PREDRAW)
+    e2:SetTargetRange(1,1)
     e2:SetOperation(s.drop)
     Duel.RegisterEffect(e2,0)
 end
@@ -41,13 +42,13 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
     -- Modifier amount (0–4)
     ----------------------------------------------------------------------
     Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
-    local magnitude = Duel.AnnounceNumber(tp,0,1,2,3,4)
+    local magnitude = Duel.AnnounceNumber(Duel.GetTurnPlayer(),0,1,2,3,4)
 
     ----------------------------------------------------------------------
     -- Modifier sign
     ----------------------------------------------------------------------
     Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,1))
-    local sign = Duel.SelectOption(tp,aux.Stringid(id,2),aux.Stringid(id,3)) -- 0 neg, 1 pos
+    local sign = Duel.SelectOption(Duel.GetTurnPlayer(),aux.Stringid(id,2),aux.Stringid(id,3)) -- 0 neg, 1 pos
 
     local mod = (sign==0) and -magnitude or magnitude
 
@@ -59,31 +60,26 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 
     Debug.ShowHint("Modifier applied: "..mod.."\nFinal excavation count: "..total)
 
-    local deckct = Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
+    local deckct = Duel.GetFieldGroupCount(Duel.GetTurnPlayer(),LOCATION_DECK,0)
     if total > deckct then total = deckct end
     if total == 0 then return end
 
     ----------------------------------------------------------------------
     -- Excavation
     ----------------------------------------------------------------------
-    Duel.ConfirmDecktop(tp,total)
-    local g=Duel.GetDecktopGroup(tp,total)
+    Duel.ConfirmDecktop(Duel.GetTurnPlayer(),total)
+    local g=Duel.GetDecktopGroup(Duel.GetTurnPlayer(),total)
 
     ----------------------------------------------------------------------
     -- Player chooses 1 card to take
     ----------------------------------------------------------------------
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    local pick=g:Select(tp,1,1,nil):GetFirst()
+    local pick=g:Select(Duel.GetTurnPlayer(),1,1,nil):GetFirst()
 
     if pick then
         Duel.DisableShuffleCheck()
-        Duel.SendtoHand(pick,nil,REASON_EFFECT)
+        Duel.SendtoHand(pick,nil,REASON_DRAW)
         Duel.ConfirmCards(1-tp,pick)
         g:RemoveCard(pick)
     end
-
-    ----------------------------------------------------------------------
-    -- Put remaining cards back on top
-    ----------------------------------------------------------------------
-    Duel.SortDecktop(tp,tp,total-1)
 end
