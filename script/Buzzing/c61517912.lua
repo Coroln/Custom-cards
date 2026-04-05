@@ -34,7 +34,7 @@ end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local a=Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil,e,tp,0)
 	local b=Duel.IsExistingMatchingCard(s.tfilter,tp,LOCATION_MZONE,0,1,nil,e,tp,1)
-	if chk==0 then return a or b and b:GetFirst():GetAttack()>0 end
+	if chk==0 then return a or b end
 	if b then
 		if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			local g=Duel.SelectReleaseGroupCost(tp,s.tfilter,1,1,false,nil,nil,tp)
