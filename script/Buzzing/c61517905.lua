@@ -39,24 +39,28 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local b=Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,e,tp,1)
 	local g=Duel.GetMatchingGroup(s.costfilter,tp,LOCATION_ONFIELD,0,nil,tp)
 	if chk==0 then return a or b end
-	if b and g:GetFirst():IsCanRemoveCounter(tp,0x1BEE,1,REASON_COST) then
-		if Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-			if #g==1 then
-				g:GetFirst():RemoveCounter(tp,0x1BEE,1,REASON_COST)
-				e:SetLabel(1)
-			else
-				local ct=0
-				while ct<1 do
-					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SELECT)
-					local tc=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_ONFIELD,0,1,1,nil,tp):GetFirst()
-					tc:RemoveCounter(tp,0x1BEE,1,REASON_COST)
-					ct=ct+1
-				end
-				e:SetLabel(1)
-			end
-		end
-	else
+	if #g==0 then
 		e:SetLabel(0)
+	else
+		if b and g:GetFirst():IsCanRemoveCounter(tp,0x1BEE,1,REASON_COST) then
+			if Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+				if #g==1 then
+					g:GetFirst():RemoveCounter(tp,0x1BEE,1,REASON_COST)
+					e:SetLabel(1)
+				else
+					local ct=0
+					while ct<1 do
+						Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SELECT)
+						local tc=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_ONFIELD,0,1,1,nil,tp):GetFirst()
+						tc:RemoveCounter(tp,0x1BEE,1,REASON_COST)
+						ct=ct+1
+					end
+					e:SetLabel(1)
+				end
+			end
+		else
+			e:SetLabel(0)
+		end
 	end
 end
 function s.costfilter(c)
@@ -73,11 +77,12 @@ function s.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function s.sumop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-	if #g>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+		if #g>0 then
+			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		end
 	end
 	if e:GetLabel()==1 and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)

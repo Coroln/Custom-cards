@@ -140,24 +140,28 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local b=Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_DECK,0,1,nil,e,tp,1)
 	local g=Duel.GetMatchingGroup(s.costfilter,tp,LOCATION_ONFIELD,0,nil,tp)
 	if chk==0 then return a or b end
-	if b and g:GetFirst():IsCanRemoveCounter(tp,0x1BEE,5,REASON_COST) and Duel.IsPlayerCanDraw(tp,2) then
-		if Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
-			if #g==1 then
-				g:GetFirst():RemoveCounter(tp,0x1BEE,5,REASON_COST)
-				e:SetLabel(1)
-			else
-				local ct=0
-				while ct<5 do
-					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SELECT)
-					local tc=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_ONFIELD,0,1,1,nil,tp):GetFirst()
-					tc:RemoveCounter(tp,0x1BEE,1,REASON_COST)
-					ct=ct+1
-				end
-				e:SetLabel(1)
-			end
-		end
-	else
+	if #g==0 then
 		e:SetLabel(0)
+	else
+		if b and g:GetFirst():IsCanRemoveCounter(tp,0x1BEE,5,REASON_COST) and Duel.IsPlayerCanDraw(tp,2) then
+			if Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+				if #g==1 then
+					g:GetFirst():RemoveCounter(tp,0x1BEE,5,REASON_COST)
+					e:SetLabel(1)
+				else
+					local ct=0
+					while ct<5 do
+						Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SELECT)
+						local tc=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_ONFIELD,0,1,1,nil,tp):GetFirst()
+						tc:RemoveCounter(tp,0x1BEE,1,REASON_COST)
+						ct=ct+1
+					end
+					e:SetLabel(1)
+				end
+			end
+		else
+			e:SetLabel(0)
+		end
 	end
 end
 function s.costfilter(c)
