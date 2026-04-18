@@ -32,7 +32,7 @@ s.counter_list={0x1BEE}
 --Add 1 Spell/Trap that mentions "Insect Production Queen" from your Deck to your hand
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local a=Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,e,tp,0)
-	local b=Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_HAND,1,nil,e,tp,1)
+	local b=Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,0,LOCATION_HAND,1,nil,e,tp,1)
 	local g=Duel.GetMatchingGroup(s.costfilter,tp,LOCATION_ONFIELD,0,nil,tp)
 	if chk==0 then return a or b end
 	if #g==0 then
