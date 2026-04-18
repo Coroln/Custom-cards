@@ -38,7 +38,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if #g==0 then
 		e:SetLabel(0)
 	else
-		if b and g:GetFirst():IsCanRemoveCounter(tp,0x1BEE,1,REASON_COST) and Duel.GetFieldGroup(tp,0,LOCATION_HAND)>0 then
+		if b and g:GetFirst():IsCanRemoveCounter(tp,0x1BEE,1,REASON_COST) then
 			if Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 				if #g==1 then
 					g:GetFirst():RemoveCounter(tp,0x1BEE,1,REASON_COST)
