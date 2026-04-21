@@ -91,7 +91,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetReset(RESET_EVENT|RESETS_STANDARD)
 			tc:RegisterEffect(e2)
 			--Cannot Special Summon for the rest of this turn, except Insect monsters
-			local e0=Effect.CreateEffect(c)
+			local e0=Effect.CreateEffect(e:GetHandler())
 			e0:SetDescription(aux.Stringid(id,3))
 			e0:SetType(EFFECT_TYPE_FIELD)
 			e0:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
