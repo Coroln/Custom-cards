@@ -522,3 +522,19 @@ function aux.CopyPendulumEffects(c,source_code,reset)
         end
     end
 end
+
+function Auxiliary.AddIllusionBattleIndestructable(c)
+	--Neither monster can be destroyed by battle
+	local e=Effect.CreateEffect(c)
+	e:SetType(EFFECT_TYPE_FIELD)
+	e:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e:SetRange(LOCATION_MZONE)
+	e:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e:SetTarget(function (e,c)
+		local handler=e:GetHandler()
+		return c==handler or c==handler:GetBattleTarget()
+		end
+	)
+	e:SetValue(1)
+	c:RegisterEffect(e)
+end
