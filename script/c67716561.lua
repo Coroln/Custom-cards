@@ -272,7 +272,7 @@ function s.tknfilter(c)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,SET_PHANTASM_SPIRAL,TYPES_TOKEN,2000,2000,6,RACE_WYRM,ATTRIBUTE_WATER)
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,2819436,SET_PHANTASM_SPIRAL,TYPES_TOKEN,2000,2000,6,RACE_WYRM,ATTRIBUTE_WATER)
 		and e:GetHandler():GetFlagEffect(2819435)==0
 		and not Duel.IsExistingMatchingCard(s.tknfilter,tp,LOCATION_ONFIELD,0,1,nil) end
 	e:GetHandler():RegisterFlagEffect(2819435,RESET_EVENT|RESETS_STANDARD|RESET_CHAIN,0,1)
@@ -281,8 +281,8 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,SET_PHANTASM_SPIRAL,TYPES_TOKEN,2000,2000,6,RACE_WYRM,ATTRIBUTE_WATER) then
-		local token=Duel.CreateToken(tp,id+1)
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,2819436,SET_PHANTASM_SPIRAL,TYPES_TOKEN,2000,2000,6,RACE_WYRM,ATTRIBUTE_WATER) then
+		local token=Duel.CreateToken(tp,2819436)
 		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
