@@ -24,6 +24,12 @@ function s.initial_effect(c)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.activate)
 	c:RegisterEffect(e2)
+	--extra att
+	local e2a=Effect.CreateEffect(c)
+	e2a:SetType(EFFECT_TYPE_SINGLE)
+	e2a:SetCode(EFFECT_EXTRA_ATTACK)
+	e2a:SetValue(1)
+	c:RegisterEffect(e2a)
 	--atk
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
