@@ -1,5 +1,6 @@
 --PM Professor's Research
 --Coroln
+Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate (Draw)
@@ -40,11 +41,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 --Send or add
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	if not re then return false end
-    local c=e:GetHandler() -- the material
-    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
-    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA) and rc:IsSetCard(0x7CC)
-        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
+    local c=e:GetHandler()
+    local rc=e:GetHandler():GetReasonCard()
+	return rc:IsSetCard(0x7CC) and c:IsReason(REASON_TRICK) and c:IsLocation(LOCATION_GRAVE)
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

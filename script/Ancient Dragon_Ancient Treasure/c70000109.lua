@@ -1,6 +1,7 @@
 --Ancient Treasure Sword of Prophecy
 --Script by Coroln
 Duel.LoadScript("customutility2.lua")
+Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetUniqueOnField(1,1,aux.AncientUniqueFilter(c),LOCATION_SZONE)
@@ -53,12 +54,9 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 end
 ----to S/T Zone
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-	if not re then return false end
-    local c=e:GetHandler() -- the material
-    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
-    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
-        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
-		and e:GetHandler():IsPreviousPosition(POS_FACEDOWN) and rc:IsSetCard(0xADFE)
+    local c=e:GetHandler()
+    local rc=e:GetHandler():GetReasonCard()
+    return c:IsPreviousPosition(POS_FACEDOWN) and rc:IsSetCard(0xADFE) and c:IsReason(REASON_TRICK)
 end
 function s.tftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end

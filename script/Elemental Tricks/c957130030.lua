@@ -72,11 +72,9 @@ end
 
 --e5
 function s.conATK700(e,tp,eg,ep,ev,re,r,rp)
-	if not re then return false end
-    local c=e:GetHandler() -- the material
-    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
-    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
-        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK)) and rc:IsAttribute(ATTRIBUTE_LIGHT)
+	local c=e:GetHandler()
+    local rc=e:GetHandler():GetReasonCard()
+    return c:IsReason(REASON_TRICK) and rc:IsAttribute(ATTRIBUTE_LIGHT)
 end
 
 function s.opATK700(e,tp,eg,ep,ev,re,r,rp)

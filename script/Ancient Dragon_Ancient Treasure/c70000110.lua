@@ -54,12 +54,9 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 end
 ----to S/T Zone
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-	if not re then return false end
-    local c=e:GetHandler() -- the material
-    local rc=e:GetHandler():GetReasonCard() -- the monster that was summoned using this card as material
-    return rc:IsSummonType(SUMMON_TYPE_SPECIAL) and rc:IsPreviousLocation(LOCATION_EXTRA)
-        and not (rc:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK))
-		and e:GetHandler():IsPreviousPosition(POS_FACEDOWN) and rc:IsSetCard(0xADFE)
+	local c=e:GetHandler()
+    local rc=e:GetHandler():GetReasonCard()
+    return c:IsPreviousPosition(POS_FACEDOWN) and rc:IsSetCard(0xADFE) and c:IsReason(REASON_TRICK)
 end
 function s.tftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end

@@ -117,7 +117,8 @@ end
 --Grant effect when used as material for "HERO" Trick monster
 function s.efcon(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    return c:IsReason(REASON_TRICK)
+	local rc=e:GetHandler():GetReasonCard()
+    return rc:IsSetCard(0x8) and c:IsReason(REASON_TRICK)
 end
 function s.efop(e,tp,eg,ep,ev,re,r,rp)
 	local rc=e:GetHandler():GetReasonCard()
