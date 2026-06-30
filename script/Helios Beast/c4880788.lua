@@ -1,5 +1,6 @@
 --Helios Beast - Salamandra the Steel Breath
 --Script by Coroln
+Duel.LoadScript("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --Send 1 "Helios" card from Deck to GY
@@ -32,7 +33,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.tgfilter(c)
-	return c:IsSetCard(0x6C) and c:IsAbleToGrave()
+	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsAbleToGrave()
 end
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_DECK,0,1,nil) end
