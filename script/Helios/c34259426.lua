@@ -55,10 +55,14 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 	aux.DoubleSnareValidity(c,LOCATION_MZONE)
 end
+s.listed_series={c:IsTrueHelios()}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --Trick Summon
 --Monster filter
 function s.filter(c)
-	return c:IsSetCard(0x6C) or c:IsHelios()
+	return c:IsTrueHelios()
 end
 --Trap filter
 function s.filter2(c)

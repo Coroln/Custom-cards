@@ -56,8 +56,11 @@ function s.initial_effect(c)
 	e4:SetOperation(s.operation)
 	c:RegisterEffect(e4)
 end
-s.listed_series={SET_HELIOS}
 s.listed_names={30241314}
+s.listed_series={c:IsTrueHelios()}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --special summmon
 function s.spcon(e,c)
 	if c==nil then return true end

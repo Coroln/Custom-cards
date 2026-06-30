@@ -51,10 +51,14 @@ function s.initial_effect(c)
 	e5:SetOperation(s.activate)
 	c:RegisterEffect(e5)
 end
+s.listed_series={c:IsTrueHelios()}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --Trick Summon
 --Monster filter
 function s.filter(c)
-	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsLevelAbove(6)
+	return c:IsTrueHelios() and c:IsLevelAbove(6)
 end
 --Trap filter
 function s.filter2(c)

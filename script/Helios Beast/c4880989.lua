@@ -43,6 +43,9 @@ function s.initial_effect(c)
 end
 s.listed_series={0x6C,0x106C}
 s.listed_names={4880777}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --gain DEF
 function s.value(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,0)*500
@@ -70,5 +73,5 @@ function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 end
 --Effect destruction protection
 function s.ndtg(e,c)
-	return c:IsFaceup() and c:IsSetCard(0x6C) and c~=e:GetHandler()
+	return c:IsFaceup() and c:IsTrueHelios() and c~=e:GetHandler()
 end

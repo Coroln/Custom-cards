@@ -1,5 +1,6 @@
 --Helios Beast - Ekenas the mercury Fin
 --Script by Coroln
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --add to hand
@@ -25,14 +26,17 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop2)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={c:IsTrueHelios(),0x106C}
 s.listed_names={id}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --add to hand
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.filter(c)
-	return c:IsSetCard(0x6C) and c:IsAbleToHand()
+	return c:IsTrueHelios() and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

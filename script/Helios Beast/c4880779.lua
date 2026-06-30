@@ -25,14 +25,17 @@ function s.initial_effect(c)
 	e2:SetOperation(s.sretop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={c:IsTrueHelios(),0x106C}
 s.listed_names={id}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --spsummon
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.filter(c,e,tp)
-	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsTrueHelios() and c:IsMonster() and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

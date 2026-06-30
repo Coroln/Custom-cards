@@ -26,14 +26,17 @@ function s.initial_effect(c)
 	e2:SetOperation(s.damop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={c:IsTrueHelios(),0x106C}
 s.listed_names={id}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --Send 1 "Helios" card from Deck to GY
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.tgfilter(c)
-	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsAbleToGrave()
+	return c:IsTrueHelios() and c:IsAbleToGrave()
 end
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_DECK,0,1,nil) end

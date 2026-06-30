@@ -18,7 +18,7 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(1,1)
-	e2:SetTarget(function(e,c) return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsMonster() and c:GetControler()==e:GetHandlerPlayer() and c:IsLocation(LOCATION_ONFIELD) end)
+	e2:SetTarget(function(e,c) return c:IsTrueHelios() and c:IsMonster() and c:GetControler()==e:GetHandlerPlayer() and c:IsLocation(LOCATION_ONFIELD) end)
 	c:RegisterEffect(e2)
 	--special summon (from Hand or Deck)
 	local e3=Effect.CreateEffect(c)
@@ -33,6 +33,10 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={30241314}
+s.listed_series={c:IsTrueHelios()}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --special summon (from Hand)
 function s.spfilter(c)
 	return c:IsFaceup() and c:IsCode(30241314)
@@ -48,7 +52,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Release(e:GetHandler(),REASON_COST)
 end
 function s.filter(c,e,tp)
-	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsMonster() and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsTrueHelios() and c:IsMonster() and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)

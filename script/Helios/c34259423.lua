@@ -79,10 +79,14 @@ function s.initial_effect(c)
 	c:RegisterEffect(e7)
 end
 s.listed_names={30241314}
+s.listed_series={c:IsTrueHelios()}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --Trick Summon
 --Monster filter
 function s.filter(c)
-	return c:IsSetCard(0x6C) or c:IsHelios()
+	return c:IsTrueHelios()
 end
 --Trap filter
 function s.filter2(c)
@@ -97,7 +101,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
 end
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(0x6C) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsTrueHelios() and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

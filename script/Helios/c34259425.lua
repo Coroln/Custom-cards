@@ -41,14 +41,17 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_UPDATE_ATTACK)
 	e4:SetRange(LOCATION_SZONE)
 	e4:SetTargetRange(LOCATION_MZONE,0)
-	e4:SetTarget((aux.TargetBoolFunction(Card.IsSetCard,0x6C) or aux.TargetBoolFunction(Card.IsHelios)))
+	e4:SetTarget(aux.TargetBoolFunction(Card.IsTrueHelios))
 	e4:SetValue(s.atkval)
 	c:RegisterEffect(e4)
 end
 s.listed_names={30241314}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --search
 function s.thfilter(c)
-	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsAbleToHand()
+	return c:IsTrueHelios() and c:IsMonster() and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end

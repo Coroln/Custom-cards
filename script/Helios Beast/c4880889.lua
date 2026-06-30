@@ -27,14 +27,17 @@ function s.initial_effect(c)
 	e2:SetOperation(s.posop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={c:IsTrueHelios(),0x106C}
 s.listed_names={id}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --Change to Defense Position
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.posfilter(c)
-	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsPosition(POS_FACEUP_ATTACK) and c:IsCanChangePosition()
+	return c:IsTrueHelios() and c:IsPosition(POS_FACEUP_ATTACK) and c:IsCanChangePosition()
 end
 function s.postg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.posfilter,tp,LOCATION_MZONE,0,1,nil) end
