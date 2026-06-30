@@ -1,5 +1,6 @@
 --Helios Beast - Aretos the Tin Talon
 --Script by Coroln
+Duel.LoadScript("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon
@@ -31,7 +32,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function s.filter(c,e,tp)
-	return c:IsSetCard(0x6C) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
