@@ -1,5 +1,7 @@
 --The Primordial Sun
 --Script by Coroln
+Duel.LoadScript("proc_trick2.lua")
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--alias
@@ -39,14 +41,14 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_UPDATE_ATTACK)
 	e4:SetRange(LOCATION_SZONE)
 	e4:SetTargetRange(LOCATION_MZONE,0)
-	e4:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x6C))
+	e4:SetTarget((aux.TargetBoolFunction(Card.IsSetCard,0x6C) or aux.TargetBoolFunction(Card.IsHelios)))
 	e4:SetValue(s.atkval)
 	c:RegisterEffect(e4)
 end
 s.listed_names={30241314}
 --search
 function s.thfilter(c)
-	return c:IsSetCard(0x6C) and c:IsAbleToHand()
+	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
@@ -74,15 +76,6 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	g1:Merge(g2)
 	Duel.DisableShuffleCheck()
 	Duel.Remove(g1,POS_FACEUP,REASON_EFFECT)
-	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		--don't know why this is here
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-		e1:SetValue(500)
-		c:RegisterEffect(e1)
-	end
 end
 --atkup
 function s.atkval(e,c)

@@ -1,6 +1,7 @@
 --The Primordial Angel
 --Script
 Duel.LoadScript("proc_trick2.lua")
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
@@ -57,7 +58,7 @@ end
 --Trick Summon
 --Monster filter
 function s.filter(c)
-	return c:IsSetCard(0x6C)
+	return c:IsSetCard(0x6C) or c:IsHelios()
 end
 --Trap filter
 function s.filter2(c)

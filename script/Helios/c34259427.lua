@@ -1,6 +1,7 @@
 --Helios - True Megistus
 --Script by Coroln
 Duel.LoadScript("proc_trick2.lua")
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
@@ -53,7 +54,7 @@ end
 --Trick Summon
 --Monster filter
 function s.filter(c)
-	return c:IsSetCard(0x6C) and c:IsLevelAbove(6)
+	return (c:IsSetCard(0x6C) or c:IsHelios()) and c:IsLevelAbove(6)
 end
 --Trap filter
 function s.filter2(c)
@@ -74,7 +75,7 @@ end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetDecktopGroup(tp,5)
 	if chk==0 then return g:FilterCount(Card.IsAbleToRemoveAsCost,nil,POS_FACEUP)==5
-		and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=12 end
+		and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=5 end
 	Duel.DisableShuffleCheck()
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
