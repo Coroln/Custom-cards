@@ -1,4 +1,5 @@
 --Exiled HERO Darkshroud
+--Script by Coroln
 local s,id=GetID()
 function s.initial_effect(c)
 	--Banish 1 monster
@@ -42,6 +43,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x8,0x9008}
 s.listed_names={id}
+--Banish 1 monster
 function s.cfilter(c,tp)
 	return c:IsAbleToRemoveAsCost() and c:IsSetCard(0x8)
 end
@@ -65,12 +67,13 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	end
 end
+-- Add "Exiled HERO" monster to hand
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsPreviousLocation(LOCATION_HAND)
 end
 function s.thfilter(c)
-	return c:IsSetCard(0x9008) and not c:IsCode(id) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return c:IsSetCard(0x8) and not c:IsCode(id) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_REMOVED,0,1,nil) end
@@ -84,6 +87,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
+--redirect
 function s.recon(e)
 	return e:GetHandler()
 end
