@@ -55,7 +55,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 	aux.DoubleSnareValidity(c,LOCATION_MZONE)
 end
-s.listed_series={c:IsTrueHelios()}
+s.listed_series={Card.IsTrueHelios}
 function Card.IsTrueHelios(c)
 	return c:IsSetCard(0x6C) or c:IsHelios()
 end

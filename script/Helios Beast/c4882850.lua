@@ -1,5 +1,6 @@
 --Grandios Helios Convergence
 --Script by Coroln
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--SP Summon "Helios - The Primordial Sun"
@@ -13,8 +14,11 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={Card.IsTrueHelios,0x106C}
 s.listed_names={id,54493213}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --SP Summon "Helios - The Primordial Sun"
 function s.cfilter(c)
 	return c:IsSetCard(0x106C) and c:IsAbleToRemoveAsCost()

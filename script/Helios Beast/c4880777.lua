@@ -1,5 +1,6 @@
 --Primordial Helios Distill
 --Script by Coroln
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --Special Summon
@@ -27,8 +28,11 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={Card.IsTrueHelios,0x106C}
 s.listed_names={id}
+function Card.IsTrueHelios(c)
+	return c:IsSetCard(0x6C) or c:IsHelios()
+end
 --Special Summon
 function s.spcostfilter(c,e,tp)
 	return c:IsSetCard(0x106C) and c:IsAbleToRemoveAsCost() and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,e,tp,c:GetAttribute())

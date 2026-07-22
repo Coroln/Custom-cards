@@ -46,6 +46,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 s.listed_names={30241314}
+s.listed_series={Card.IsTrueHelios}
 function Card.IsTrueHelios(c)
 	return c:IsSetCard(0x6C) or c:IsHelios()
 end

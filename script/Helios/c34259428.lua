@@ -1,6 +1,7 @@
 --The Primordial Mother
 --Script by Coroln
 local s,id=GetID()
+Duel.LoadScript ("c420.lua")
 function s.initial_effect(c)
     --Name becomes "Helios - The Primodial Sun" in the hand
 	local e0=Effect.CreateEffect(c)
@@ -39,7 +40,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCountLimit(1,id)
-    e3:SetCost(s.cost)
+    e3:SetCost(Cost.SelfTribute)
 	e3:SetTarget(s.thtg)
 	e3:SetOperation(s.thop)
 	c:RegisterEffect(e3)
@@ -57,7 +58,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 s.listed_names={30241314}
-s.listed_series={c:IsTrueHelios()}
+s.listed_series={Card.IsTrueHelios}
 function Card.IsTrueHelios(c)
 	return c:IsSetCard(0x6C) or c:IsHelios()
 end
@@ -96,14 +97,13 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 					aux.Stringid(id,2))
 end
 --Special Summon itself from the GY
-function s.costfilter(c,tp)
+function s.costfilter(c)
 	return c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true)
-		and Duel.GetMZoneCount(tp,c)>0
 end
 function s.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE|LOCATION_GRAVE,0,1,e:GetHandler(),tp) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE|LOCATION_GRAVE,0,1,e:GetHandler()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE|LOCATION_GRAVE,0,1,1,e:GetHandler(),tp)
+	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE|LOCATION_GRAVE,0,1,1,e:GetHandler())
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)

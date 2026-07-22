@@ -26,7 +26,6 @@ function s.initial_effect(c)
 	e2:SetOperation(s.recop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x6C,0x106C}
 s.listed_names={id}
 --Draw
 function s.drwtg(e,tp,eg,ep,ev,re,r,rp,chk)

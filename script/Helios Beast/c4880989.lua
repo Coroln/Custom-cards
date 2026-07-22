@@ -1,5 +1,6 @@
 --Helios Beast - Homunculus the Golden Ray
 --Script by Coroln
+Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --gain DEF
@@ -27,7 +28,7 @@ function s.initial_effect(c)
 	e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetTargetRange(LOCATION_MZONE,0)
-	e3:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x6C))
+	e3:SetTarget(aux.TargetBoolFunction(Card.IsTrueHelios))
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
     --Effect destruction protection
@@ -41,7 +42,7 @@ function s.initial_effect(c)
 	e4:SetValue(1)
 	c:RegisterEffect(e4)
 end
-s.listed_series={0x6C,0x106C}
+s.listed_series={Card.IsTrueHelios,0x106C}
 s.listed_names={4880777}
 function Card.IsTrueHelios(c)
 	return c:IsSetCard(0x6C) or c:IsHelios()

@@ -26,7 +26,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop2)
 	c:RegisterEffect(e2)
 end
-s.listed_series={c:IsTrueHelios(),0x106C}
+s.listed_series={Card.IsTrueHelios,0x106C}
 s.listed_names={id}
 function Card.IsTrueHelios(c)
 	return c:IsSetCard(0x6C) or c:IsHelios()
