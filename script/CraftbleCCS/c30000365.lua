@@ -92,7 +92,7 @@ function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.damop2(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
-	if e:GetHandler():IsRelateToEffect(e) and tc:IsRelateToEffect(e) then Duel.Destroy(tc,REASON_EFFECT)~=0 end
+	if e:GetHandler():IsRelateToEffect(e) and tc:IsRelateToEffect(e) then Duel.Destroy(tc,REASON_EFFECT) end
 end
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
