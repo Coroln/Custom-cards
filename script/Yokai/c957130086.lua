@@ -166,10 +166,6 @@ function s.rdcon(e)
 	local a=Duel.GetAttacker()
 	local t=Duel.GetAttackTarget()
 
-	-- Prüfen, ob der Angreifer ODER das Angriffsziel in der Spalte des Synchromonsters liegt
 	local cg=c:GetColumnGroup()
-	local a_in_col = a and (a==c or cg:IsContains(a))
-	local t_in_col = t and (t==c or cg:IsContains(t))
-
-	return a_in_col or t_in_col
+	return cg:IsContains(a) or cg:IsContains(t)
 end
