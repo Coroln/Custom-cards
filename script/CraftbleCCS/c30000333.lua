@@ -25,6 +25,7 @@ function s.initial_effect(c)
 	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e6:SetCode(EVENT_PHASE+PHASE_END)
 	e6:SetRange(LOCATION_GRAVE)
+	e6:SetCountLimit(1)
 	e6:SetOperation(s.operation2)
 	c:RegisterEffect(e6)
 end
