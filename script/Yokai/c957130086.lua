@@ -97,7 +97,7 @@ end
 --GY SP
 
 function s.spfilter(c,e,tp)
-	return c:IsRace(RACE_YOKAI)
+	return c:IsRace(RACE_YOKAI) and c:IsLevelBelow(4)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 
