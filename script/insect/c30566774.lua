@@ -45,6 +45,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 				e1:SetReset(RESET_EVENT|RESETS_REDIRECT)
 				c:RegisterEffect(e1)
 			end
+			Duel.SpecialSummonComplete()
 		end
 	end
 end
