@@ -41,6 +41,11 @@ function s.initial_effect(c)
 	e2a:SetRange(LOCATION_MZONE)
 	e2a:SetTarget(function(e,c) return c:IsCode(94820406) and not c:IsType(TYPE_QUICKPLAY) and Duel.GetTurnPlayer()~=c:GetControler() end)
 	c:RegisterEffect(e2a)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_ATTACK_ALL)
+	e3:SetValue(1)
+	c:RegisterEffect(e3)
 end
 s.listed_names={CARD_DARK_FUSION}
 --Special Summon this card (from your hand) by discarding 1 Fiend monster
