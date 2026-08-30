@@ -137,6 +137,7 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(0,LOCATION_MZONE)
 	e1:SetTarget(s.atktg)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e1:SetValue(s.atkval)
 	rc:RegisterEffect(e1,true)
 
@@ -148,6 +149,7 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetTargetRange(1,1)
 	e2:SetCondition(s.rdcon)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e2:SetValue(HALF_DAMAGE)
 	rc:RegisterEffect(e2,true) -- WICHTIG: rc statt c verwenden!
 end
