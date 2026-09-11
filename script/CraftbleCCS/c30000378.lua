@@ -18,8 +18,9 @@ function s.initial_effect(c)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.op)
 end
+s.listed_names={CARD_CYBER_DRAGON}
 function s.filter(c)
-	return (c:IsSetCard(SET_CYBER) or c:IsSetCard(SET_CYBERNETIC)) and c:IsSpellTrap() and c:IsAbleToHand()
+	return c:ListsCode(CARD_CYBER_DRAGON) and c:IsSpellTrap() and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
