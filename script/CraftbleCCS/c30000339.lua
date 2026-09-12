@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCondition(s.dmgcon)
 	e2:SetTarget(s.target)
-	e2:SetOperation(s.dmgop)
+	e2:SetOperation(s.op)
 	c:RegisterEffect(e2)
 end
 function s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
@@ -31,7 +31,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,1000)
 	end
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
+function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==1 then
 		local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 		Duel.Damage(p,d,REASON_EFFECT)

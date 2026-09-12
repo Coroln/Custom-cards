@@ -53,5 +53,5 @@ function s.cointg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.coinop(e,tp,eg,ep,ev,re,r,rp)
 	local res=Duel.TossCoin(tp,1)
-	if res==COIN_HEADS then Duel.Recover(tp,1000,REASON_EFFECT)
+	if res==COIN_HEADS then Duel.Recover(tp,1000,REASON_EFFECT) end
 end
