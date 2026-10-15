@@ -8,6 +8,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_FLIP)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
+	e1:SetCountLimit(1,id)
 	c:RegisterEffect(e1)
 
     --revive
