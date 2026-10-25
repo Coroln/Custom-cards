@@ -11,6 +11,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
     e1:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
+    e1:SetProperty(EFFECT_FLAG_DELAY)
     e1:SetCountLimit(1,id)
     e1:SetTarget(s.milltg)
     e1:SetOperation(s.millop)
@@ -49,23 +50,25 @@ end
 
 --e1
 function s.filter(c)
-	return c:IsLocation(LOCATION_GRAVE) and c:IsTrap()
+	return c:IsLocation(LOCATION_GRAVE) and c:IsType(TYPE_TRAP)
 end
 function s.milltg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return true end
     Duel.SetOperationInfo(0,CATEGORY_DECKDES,nil,0,PLAYER_ALL,3)
 end
 function s.millop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.DiscardDeck(tp,3,REASON_EFFECT)
-    local dg=Duel.GetOperatedGroup()
-    local d=dg:FilterCount(s.filter,nil)
+    local c=e:GetHandler()
+    local d=0
 
-    Duel.DiscardDeck(1-tp,3,REASON_EFFECT)
-    local dg=Duel.GetOperatedGroup()
-    d=d+dg:FilterCount(s.filter,nil)
-
-	if d>0 then
-        c = e:GetHandler()
+    if Duel.DiscardDeck(tp,3,REASON_EFFECT) then
+        local dg=Duel.GetOperatedGroup()
+        d=d+dg:FilterCount(s.filter,nil)
+    end
+    if Duel.DiscardDeck(1-tp,3,REASON_EFFECT) then
+        local dg=Duel.GetOperatedGroup()
+        d=d+dg:FilterCount(s.filter,nil)
+    end
+	if d>0 and c:IsRelateToEffect(e) and c:IsFaceup() then
         c:UpdateAttack(d*300)
 	end
 end
