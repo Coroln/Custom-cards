@@ -1,5 +1,10 @@
 local s,id=GetID()
 function s.initial_effect(c)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e0:SetCode(EVENT_SUMMON_SUCCESS)
+	e0:SetOperation(s.damop)
+	c:RegisterEffect(e0)
 local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
@@ -15,6 +20,12 @@ local e1=Effect.CreateEffect(c)
 	e2:SetCondition(s.indcon)
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
+end
+s.listed_names={53119267}
+function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local token=Duel.CreateToken(tp,53119267)
+	Duel.SendtoHand(token,nil,REASON_EFFECT)
 end
 function s.indcon(e)
 	local c=e:GetHandler()
