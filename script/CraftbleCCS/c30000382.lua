@@ -1,33 +1,47 @@
+--ロイヤルナイツ
+--Royal Knight
 local s,id=GetID()
 function s.initial_effect(c)
-	--activate
+	--recover
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_RECOVER)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetCode(EVENT_BATTLE_DESTROYING)
+	e1:SetCondition(s.reccon)
+	e1:SetTarget(s.rectg)
+	e1:SetOperation(s.recop)
 	c:RegisterEffect(e1)
-	--pierce
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_PIERCE)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetTargetRange(LOCATION_MZONE,0)
-	e2:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_BEAST))
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_UPDATE_ATTACK)
+	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetValue(s.val)
 	c:RegisterEffect(e2)
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD)
-	e3:SetCode(EFFECT_UPDATE_ATTACK)
-	e3:SetRange(LOCATION_SZONE)
-	e3:SetTargetRange(LOCATION_MZONE,0)
-	e3:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_BEAST))
-	e3:SetValue(300)
-	c:RegisterEffect(e3)
-	local e4=e3:Clone()
-	e4:SetCode(EFFECT_SET_DEFENSE)
-	c:RegisterEffect(e4)
-	local e5=e4:Clone()
-	e5:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_BEASTWARRIOR))
-	c:RegisterEffect(e5)
-	local e6=e3:Clone()
-	e6:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_BEASTWARRIOR))
-	c:RegisterEffect(e6)
+end
+function s.reccon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local bc=c:GetBattleTarget()
+	return c:IsRelateToBattle() and bc:IsLocation(LOCATION_GRAVE) and bc:IsMonster()
+end
+function s.rectg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local c=e:GetHandler()
+	local bc=c:GetBattleTarget()
+	local rec=bc:GetDefense()
+	if rec<0 then rec=0 end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(rec)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,rec)
+end
+function s.recop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
+end
+function s.val(e,c)
+	local tp=e:GetHandlerPlayer()
+	local lep=Duel.GetLP(tp)
+	return (math.floor(lep/1000))*100
 end
