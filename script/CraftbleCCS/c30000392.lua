@@ -1,47 +1,65 @@
---ロイヤルナイツ
---Royal Knight
 local s,id=GetID()
 function s.initial_effect(c)
-	--recover
+	c:EnableReviveLimit()
+	--Special Summon itself from the hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_RECOVER)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetCode(EVENT_BATTLE_DESTROYING)
-	e1:SetCondition(s.reccon)
-	e1:SetTarget(s.rectg)
-	e1:SetOperation(s.recop)
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.spcon)
+	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
+	--Attribute
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_UPDATE_ATTACK)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetCode(EFFECT_ADD_ATTRIBUTE)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetValue(s.val)
+	e2:SetValue(ATTRIBUTE_EARTH|ATTRIBUTE_WIND|ATTRIBUTE_FIRE|ATTRIBUTE_WATER)
 	c:RegisterEffect(e2)
+	--Boost
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_UPDATE_ATTACK)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetValue(s.atkval)
+	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_UPDATE_DEFENSE)
+	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetValue(s.defval)
+	c:RegisterEffect(e4)
 end
-function s.reccon(e,tp,eg,ep,ev,re,r,rp)
+s.listed_names={84916669,99414168}
+function s.spconfilter(c)
+	return c:IsCode(84916669)
+end
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.spconfilter,tp,LOCATION_REMOVED,0,1,nil)
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local bc=c:GetBattleTarget()
-	return c:IsRelateToBattle() and bc:IsLocation(LOCATION_GRAVE) and bc:IsMonster()
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,false,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
 end
-function s.rectg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local bc=c:GetBattleTarget()
-	local rec=bc:GetDefense()
-	if rec<0 then rec=0 end
-	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(rec)
-	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,rec)
+	if c:IsRelateToEffect(e) then
+		if Duel.SpecialSummon(c,SUMMON_TYPE_RITUAL,tp,tp,false,false,POS_FACEUP) then c:CompleteProcedure() end
+	end
 end
-function s.recop(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	Duel.Recover(p,d,REASON_EFFECT)
+function s.atkval(e,c)
+	local tp=c:GetControler()
+	return Duel.GetMatchingGroupCount(Card.IsCode,c:GetControler(),LOCATION_REMOVED,0,nil,84916669)*200
 end
-function s.val(e,c)
-	local tp=e:GetHandlerPlayer()
-	local lep=Duel.GetLP(tp)
-	return (math.floor(lep/1000))*100
+function s.defval(e,c)
+	local tp=c:GetControler()
+	return Duel.GetMatchingGroupCount(Card.IsCode,c:GetControler(),LOCATION_REMOVED,0,nil,84916669)*400
 end
