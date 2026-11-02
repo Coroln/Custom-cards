@@ -1,130 +1,119 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	--synchro summon
-	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),2,99)
-	c:EnableReviveLimit()
-	--cannot special summon
-	local e00=Effect.CreateEffect(c)
-	e00:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e00:SetType(EFFECT_TYPE_SINGLE)
-	e00:SetCode(EFFECT_SPSUMMON_CONDITION)
-	c:RegisterEffect(e00)
-	--immune
-	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_SINGLE)
-	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e0:SetRange(LOCATION_MZONE)
-	e0:SetCode(EFFECT_IMMUNE_EFFECT)
-	e0:SetValue(s.efilter)
-	c:RegisterEffect(e0)
-	--destroy1
+	--DARK
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_DESTROY)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetCountLimit(1,0,EFFECT_COUNT_CODE_SINGLE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetTarget(s.destg1)
-	e1:SetOperation(s.desop1)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_BATTLED)
+	e1:SetCondition(s.discon)
+	e1:SetOperation(s.disop)
 	c:RegisterEffect(e1)
-	--destroy2
+	--WIND
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_DESTROY)
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetCountLimit(1,0,EFFECT_COUNT_CODE_SINGLE)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCost(s.descost2)
-	e2:SetTarget(s.destg2)
-	e2:SetOperation(s.desop2)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_EXTRA_ATTACK)
+	e2:SetValue(1)
+	e2:SetCondition(s.atcon)
 	c:RegisterEffect(e2)
-	--handes
+	--FIRE
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,2))
-	e3:SetCategory(CATEGORY_HANDES+CATEGORY_TOGRAVE+CATEGORY_DAMAGE)
-	e3:SetType(EFFECT_TYPE_IGNITION)
-	e3:SetCountLimit(1,0,EFFECT_COUNT_CODE_SINGLE)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCost(s.descost2)
-	e3:SetTarget(s.hdtg)
-	e3:SetOperation(s.hdop)
+	e3:SetCode(EFFECT_UPDATE_ATTACK)
+	e3:SetValue(500)
+	e3:SetCondition(s.atkcon)
 	c:RegisterEffect(e3)
+	--WATER
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCode(EFFECT_CANNOT_CHANGE_CONTROL)
+	e4:SetCondition(s.ctlcon)
+	c:RegisterEffect(e4)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e5:SetCondition(s.ctlcon)
+	e5:SetValue(aux.tgoval)
+	c:RegisterEffect(e5)
+	--EARTH
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_SINGLE)
+	e6:SetCode(EFFECT_PIERCE)
+	e6:SetCondition(s.apcon)
+	c:RegisterEffect(e6)
+	--LIGHT
+	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(id,0))
+	e7:SetCategory(CATEGORY_TOGRAVE)
+	e7:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e7:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e7:SetCondition(s.alcon)
+	e7:SetTarget(s.tg)
+	e7:SetOperation(s.op)
+	c:RegisterEffect(e7)
+	--Not a DARK
+	local e8=Effect.CreateEffect(c)
+	e8:SetType(EFFECT_TYPE_SINGLE)
+	e8:SetRange(LOCATION_MZONE)
+	e8:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e8:SetCode(EFFECT_REMOVE_ATTRIBUTE)
+	e8:SetValue(ATTRIBUTE_WIND)
+	e8:SetCondition(s.racon)
+	c:RegisterEffect(e8)
 end
-function s.efilter(e,te)
-	return te:IsActiveType(TYPE_MONSTER) and te:GetHandler():IsAttribute(ATTRIBUTE_LIGHT)
+s.listed_names={84916669}
+function s.filter(c,att)
+	return c:IsFaceup() and c:IsAttribute(att)
 end
-function s.confilter(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT)
+function s.atkcon(e)
+	return Duel.IsExistingMatchingCard(s.filter,0,LOCATION_MZONE,LOCATION_MZONE,1,nil,ATTRIBUTE_FIRE)
 end
-function s.con(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.confilter,tp,0,LOCATION_MZONE,1,nil)
+function s.ctlcon(e)
+	return Duel.IsExistingMatchingCard(s.filter,0,LOCATION_MZONE,LOCATION_MZONE,1,nil,ATTRIBUTE_WATER)
 end
-function s.filter1(c)
-	return c:IsFacedown()
+function s.discon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local bc=c:GetBattleTarget()
+	return bc and bc:IsStatus(STATUS_BATTLE_DESTROYED) and not c:IsStatus(STATUS_BATTLE_DESTROYED)
+		and Duel.IsExistingMatchingCard(s.filter,0,LOCATION_MZONE,LOCATION_MZONE,1,nil,ATTRIBUTE_DARK)
 end
-function s.destg1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(1-tp) and chkc:IsOnField() and s.filter1(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter1,tp,0,LOCATION_ONFIELD,1,nil) end
-	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,s.filter1,tp,0,LOCATION_ONFIELD,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
+function s.disop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local bc=c:GetBattleTarget()
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_DISABLE)
+	e1:SetReset(RESET_EVENT|RESETS_STANDARD_EXC_GRAVE)
+	bc:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_DISABLE_EFFECT)
+	e2:SetReset(RESET_EVENT|RESETS_STANDARD_EXC_GRAVE)
+	bc:RegisterEffect(e2)
 end
-function s.desop1(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFacedown() then
-		Duel.Destroy(tc,REASON_EFFECT)
-	end
+function s.atcon(e)
+	return Duel.IsExistingMatchingCard(s.filter,0,LOCATION_MZONE,LOCATION_MZONE,1,nil,ATTRIBUTE_WIND)
 end
-function s.cfilter(c)
-	return c:IsSetCard(SET_ALLY_OF_JUSTICE) and c:IsAbleToGraveAsCost()
+function s.apcon(e)
+	return Duel.IsExistingMatchingCard(s.filter,0,LOCATION_MZONE,LOCATION_MZONE,1,nil,ATTRIBUTE_EARTH)
 end
-function s.descost2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
-	Duel.SendtoGrave(g,REASON_COST)
+function s.alcon(e)
+	return Duel.IsExistingMatchingCard(s.filter,0,LOCATION_MZONE,LOCATION_MZONE,1,nil,ATTRIBUTE_LIGHT)
 end
-function s.filter2(c)
-	return c:IsSpellTrap()
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(1000)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,1000)
 end
-function s.destg2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter2,tp,0,LOCATION_ONFIELD,1,nil) end
-	local g=Duel.GetMatchingGroup(s.filter2,tp,0,LOCATION_ONFIELD,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
+function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
 end
-function s.desop2(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.filter2,tp,0,LOCATION_ONFIELD,nil)
-	Duel.Destroy(g,REASON_EFFECT)
-end
-function s.hdcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
-	local g=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-	Duel.SendtoGrave(g,REASON_COST)
-end
-function s.hdtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_HAND)>0 end
-	Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,0,1-tp,0)
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,0,1-tp,LOCATION_HAND)
-end
-function s.hdop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
-	Duel.ConfirmCards(tp,g)
-	local sg=g:Filter(Card.IsAttribute,nil,ATTRIBUTE_LIGHT)
-	if #sg>0 then
-		local atk=0
-		Duel.SendtoGrave(sg,REASON_EFFECT)
-		local tc=sg:GetFirst()
-		for tc in aux.Next(sg) do
-			local tatk=tc:GetAttack()
-			if tatk<0 then tatk=0 end
-			atk=atk+tatk
-		end
-		Duel.BreakEffect()
-		Duel.Damage(1-tp,atk,REASON_EFFECT)
-	end
-	Duel.ShuffleHand(1-tp)
+function s.racon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_REMOVED,0,1,nil,84916669)
 end
