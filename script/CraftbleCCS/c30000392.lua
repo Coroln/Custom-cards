@@ -41,8 +41,7 @@ function s.spconfilter(c)
 	return c:IsCode(84916669)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return true
-	--return Duel.IsExistingMatchingCard(s.spconfilter,tp,LOCATION_REMOVED,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.spconfilter,tp,LOCATION_REMOVED,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
