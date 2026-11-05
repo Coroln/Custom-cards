@@ -52,6 +52,6 @@ end
 function s.cfilter1(c)
 	return c:IsFaceup() and c:IsCode(60365591)
 end
-function s.recon(e)
+function s.recon(e,tp)
 	return e:GetHandler():IsFaceup() and Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_ONFIELD,0,1,nil)
 end
