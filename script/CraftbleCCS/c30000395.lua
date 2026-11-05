@@ -1,69 +1,57 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	--Activate
+	c:EnableReviveLimit()
+	--damage
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_DAMAGE)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetCode(EVENT_BATTLE_DESTROYING)
+	e1:SetCondition(s.damcon)
+	e1:SetTarget(s.damtg)
+	e1:SetOperation(s.damop)
 	c:RegisterEffect(e1)
-	--copy
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_FZONE)
-	e2:SetCountLimit(1)
-	e2:SetOperation(s.operation)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetCode(EFFECT_ADD_TYPE)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetValue(TYPE_SPIRIT)
 	c:RegisterEffect(e2)
+	--redirect
 	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3:SetCode(EVENT_ADJUST)
-	e3:SetRange(LOCATION_FZONE)
-	e3:SetOperation(s.op)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
+	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e3:SetCondition(s.recon)
+	e3:SetValue(LOCATION_HAND)
 	c:RegisterEffect(e3)
 end
-function s.ovfilter(c,xc,tp,e)
-	return c:IsType(TYPE_FIELD) and c:IsCanBeXyzMaterial(xc,tp,REASON_EFFECT) and not c:IsImmuneToEffect(e)
-end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
+s.listed_names={60365591}
+function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if not c:IsRelateToEffect(e) then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_XMATERIAL)
-	local g=Duel.SelectMatchingCard(tp,s.ovfilter,tp,LOCATION_GRAVE,0,1,1,nil,c,tp,e)
-	if #g>0 then
-		Duel.HintSelection(g,true)
-		Duel.Overlay(c,g)
-	end
+	local bc=c:GetBattleTarget()
+	return c:IsRelateToBattle() and bc:IsLocation(LOCATION_GRAVE) and bc:IsMonster()
+		and (bc:GetBattlePosition()&POS_DEFENSE)~=0
 end
-function s.codefilter(c,code)
-	return c:IsOriginalCode(code)
-end
-function s.codefilterchk(c,sc)
-	return sc:GetFlagEffect(c:GetOriginalCode())>0
-end
-function s.op(e,tp,eg,ep,ev,re,r,rp)
+function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
 	local c=e:GetHandler()
-	local g=c:GetOverlayGroup()
-	g:Remove(s.codefilterchk,nil,e:GetHandler())
-	if c:IsFacedown() or #g<=0 then return end
-	repeat
-		local tc=g:GetFirst()
-		local code=tc:GetOriginalCode()
-		local cid=c:CopyEffect(code,RESET_EVENT+RESETS_STANDARD,1)
-		c:RegisterFlagEffect(code,RESET_EVENT+RESETS_STANDARD,0,0)
-		local e0=Effect.CreateEffect(c)
-		e0:SetCode(id)
-		e0:SetLabel(code)
-		e0:SetReset(RESET_EVENT+RESETS_STANDARD)
-		c:RegisterEffect(e0,true)
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e1:SetCode(EVENT_ADJUST)
-		e1:SetRange(LOCATION_FZONE)
-		e1:SetLabel(cid)
-		e1:SetLabelObject(e0)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetOperation(s.resetop)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		c:RegisterEffect(e1,true)
-		g:Remove(s.codefilter,nil,code)
-	until #g<=0
+	local bc=c:GetBattleTarget()
+	local dam=bc:GetBaseAttack()
+	if dam<0 then dam=0 end
+	Duel.SetTargetPlayer(1-tp)
+	Duel.SetTargetParam(dam)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dam)
+end
+function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Damage(p,d,REASON_EFFECT)
+end
+function s.cfilter1(c)
+	return c:IsFaceup() and c:IsCode(60365591)
+end
+function s.recon(e)
+	return e:GetHandler():IsFaceup() and Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_ONFIELD,0,1,nil)
 end
