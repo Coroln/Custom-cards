@@ -1,6 +1,5 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	--Send 1 monster to the GY
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_REMOVE)
@@ -19,7 +18,6 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EFFECT_IMMUNE_EFFECT)
 		e1:SetValue(function(e,te) return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:IsActivated() end)
 		e1:SetTargetRange(LOCATION_MZONE|LOCATION_REMOVED,0)
-		e1:SetTarget(function(e,c) return (c:IsCode(99414168) or c:IsCode(84916669))
+		e1:SetTarget(function(e,c) return (c:IsCode(99414168) or c:IsCode(84916669)) end)
 		Duel.RegisterEffect(e1,tp)
-	end
 end
