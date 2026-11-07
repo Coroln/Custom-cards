@@ -83,7 +83,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetProperty(EFFECT_FLAG_COPY_INHERIT)
 	e1:SetReset(RESET_EVENT|RESETS_STANDARD_DISABLE)
-	e1:SetValue(-700)
+	e1:SetValue(-500)
 	c:RegisterEffect(e1)
 end
 
