@@ -1,56 +1,74 @@
 local s,id=GetID()
 function s.initial_effect(c)
+	--deckdes
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetOperation(s.activate)
+	e1:SetDescription(aux.Stringid(15939448,0))
+	e1:SetCategory(CATEGORY_POSITION+CATEGORY_REMOVE)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCode(EVENT_SUMMON_SUCCESS)
+	e1:SetCondition(s.condition)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetCategory(CATEGORY_DESTROY)
-	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetCode(EVENT_FREE_CHAIN)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetCountLimit(1)
-	e2:SetCost(s.cost)
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.op)
+	local e2=e1:Clone()
+	e2:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e2)
+	local e3=e1:Clone()
+	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e3)
+	--no battle damage
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
+	e4:SetValue(1)
+	c:RegisterEffect(e4)
+	--Boost
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e5:SetDescription(aux.Stringid(id,0))
+	e5:SetCode(EVENT_TO_GRAVE)
+	e5:SetCondition(s.condtion)
+	e5:SetOperation(s.op)
+	c:RegisterEffect(e5)
 end
-s.listed_names={CARD_CYBER_DRAGON}
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsPosition(POS_FACEUP_ATTACK)
+end
 function s.filter(c)
-	return c:ListsCode(CARD_CYBER_DRAGON) and c:IsSpellTrap() and c:IsAbleToHand()
+	return c:IsFaceup() and c:IsRace(RACE_INSECT)
 end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
-	if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local sg=g:Select(tp,1,1,nil)
-		Duel.SendtoHand(sg,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,sg)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local ct=Duel.GetMatchingGroupCount(s.filter,tp,LOCATION_MZONE,0,nil)
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,0,1-tp,ct)
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) and c:IsPosition(POS_FACEUP_ATTACK) then
+		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
+		local ct=Duel.GetMatchingGroupCount(s.filter,tp,LOCATION_MZONE,0,nil)
+		local g=Duel.GetDecktopGroup(1-tp,ct)
+		if #g==0 then return end
+		Duel.DisableShuffleCheck()
+		Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 	end
 end
-function s.cfilter(c)
-	return c:IsFaceup() and (c:IsCode(CARD_CYBER_DRAGON) or (c:IsType(TYPE_FUSION) and c:ListsCodeAsMaterial(CARD_CYBER_DRAGON))) and c:IsAbleToGraveAsCost()
-end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SendtoGrave(g,REASON_COST)
-end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
-	if chk==0 then return true end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
+function s.condtion(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetPreviousLocation()==LOCATION_DECK
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc and tc:IsRelateToEffect(e) then
-		Duel.Destroy(tc,REASON_EFFECT)
-	end
+	local c=e:GetHandler()
+	local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_SET_BASE_DEFENSE)
+		e1:SetValue(s.vald)
+		e1:SetTarget(s.tg)
+		e1:SetTargetRange(LOCATION_MZONE,0)
+		Duel.RegisterEffect(e1,tp)
 end
+function s.tg(e,c)
+	return c:IsRace(RACE_INSECT)
+end
+function s.vald(e,c)
+return c:GetBaseDefense()+300 end

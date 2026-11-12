@@ -1,70 +1,46 @@
+--Needle Worm
 local s,id=GetID()
 function s.initial_effect(c)
-	--synchro summon
-	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),2,99)
-	c:EnableReviveLimit()
-	--cannot special summon
+	--flip
 	local e1=Effect.CreateEffect(c)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_REMOVE)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_FLIP)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-	--immune
-	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_SINGLE)
-	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e0:SetRange(LOCATION_MZONE)
-	e0:SetCode(EFFECT_IMMUNE_EFFECT)
-	e0:SetValue(s.efilter)
-	c:RegisterEffect(e0)
-	--draw
+	--discard deck
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetCategory(CATEGORY_DRAW)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetCode(EVENT_BATTLE_DESTROYED)
-	e2:SetCondition(s.condition)
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.operation)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_DECKDES)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e2:SetCode(EVENT_TO_GRAVE)
+	e2:SetCondition(s.discon)
+	e2:SetTarget(s.distg)
+	e2:SetOperation(s.disop)
 	c:RegisterEffect(e2)
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD)
-	e3:SetCode(EFFECT_DECREASE_TRIBUTE)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetTargetRange(LOCATION_HAND,0)
-	e3:SetTarget(aux.TargetBoolFunction(s.filter))
-	e3:SetValue(0x1)
-	c:RegisterEffect(e3)
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,0))
-	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
-	e4:SetRange(LOCATION_MZONE)
-	e4:SetCountLimit(1,id)
-	e4:SetTargetRange(LOCATION_HAND|LOCATION_MZONE,0)
-	e4:SetTarget(aux.TargetBoolFunction(s.filter))
-	c:RegisterEffect(e4)
-end
-function s.filter(c)
-	return c:IsSetCard(SET_ALLY_OF_JUSTICE) or c:IsCode(40155554)
-end
-function s.efilter(e,te)
-	return te:IsActiveType(TYPE_MONSTER) and te:GetHandler():IsAttribute(ATTRIBUTE_LIGHT)
-end
-function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	local dg=eg:GetFirst()
-	return #eg==1 and dg:IsLocation(LOCATION_GRAVE) and dg:IsReason(REASON_BATTLE)
-		and dg:GetBattlePosition()==POS_FACEDOWN_DEFENSE and dg:GetReasonCard()==e:GetHandler()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
-	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(1)
-	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
+	local rg=Duel.GetDecktopGroup(1-tp,5)
+	if chk==0 then return rg:FilterCount(Card.IsAbleToRemove,nil,tp,POS_FACEDOWN,REASON_EFFECT)==5 end
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,rg,3,1-tp,LOCATION_DECK)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetDecktopGroup(1-tp,5)
+	if #g==0 then return end
+	Duel.DisableShuffleCheck()
+	Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
+end
+function s.discon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_DECK)
+end
+function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(2)
+	Duel.SetOperationInfo(0,CATEGORY_DECKDES,nil,0,tp,2)
+end
+function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	Duel.Draw(p,d,REASON_EFFECT)
+	Duel.DiscardDeck(p,d,REASON_EFFECT)
 end

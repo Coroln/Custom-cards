@@ -21,7 +21,6 @@ function s.initial_effect(c)
 end
 s.listed_names={76103675}
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
 	local token=Duel.CreateToken(tp,76103675)
 	Duel.SendtoHand(token,nil,REASON_EFFECT)
 end
