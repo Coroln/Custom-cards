@@ -12,6 +12,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_TOSS_DICE_NEGATE)
 	e2:SetRange(LOCATION_SZONE)
+	e2:SetCountLimit(1,0,EFFECT_COUNT_CODE_CHAIN)
 	e2:SetCondition(s.condition)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.activate)
@@ -21,7 +22,9 @@ s.roll_dice=true
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local archfiend=0
-	local dc=Duel.TossDice(tp,1)
+	local dc=6
+	while dc==6 do
+	dc=Duel.TossDice(tp,1)
 	if dc==1 then
 	archfiend=30000304
 	elseif dc==2 then
@@ -37,43 +40,26 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 	local token=Duel.CreateToken(tp,archfiend)
 	Duel.SendtoHand(token,nil,REASON_EFFECT)
-	Duel.ConfirmCards(1-tp,token)
+	end
 end
-[[function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.IsChainNegatable(ev) then return false end
-	local ex=Duel.GetOperationInfo(ev,CATEGORY_DICE)
-	return ex and re:GetHandler():GetControler(1-tp)
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+    if not Duel.IsChainDisablable(ev) then return false end
+    local ex=Duel.GetOperationInfo(ev,CATEGORY_DICE)
+    return ex and re:GetHandler():GetControler(1-tp) and re:GetHandler()~=e:GetHandler()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
-end]]
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-		Duel.Hint(HINT_CARD,0,id)
-		local cd=Duel.GetDiceResult()
-		if cd~=0 then
-			local dc=Duel.TossDice(tp,1)
-			--local cd=Duel.TossDice(1-tp,1)
-			if dc>=cd then
-				Duel.NegateEffect(ev)
-			end
-		end
-	end
+    if chk==0 then return true end
+    Duel.SetPossibleOperationInfo(0,CATEGORY_DISABLE,Group.FromCards(re:GetHandler()),1,1-tp,re:GetHandler():GetLocation())
 end
-[[function c39454112.diceop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.SelectYesNo(tp,aux.Stringid(39454112,0)) then
-		Duel.Hint(HINT_CARD,0,39454112)
-		local dc={Duel.GetDiceResult()}
-		local ac=1
-		if ev>1 then
-			local t={}
-			for i=1,ev do t[i]=i end
-			Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(39454112,1))
-			ac=Duel.AnnounceNumber(tp,table.unpack(t))
-		end
-		if dc[ac]==1 or dc[ac]==3 or dc[ac]==5 then dc[ac]=6
-		else dc[ac]=1 end
-		Duel.SetDiceResult(table.unpack(dc))
-	end
-end]]
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
+    if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+        Duel.Hint(HINT_CARD,0,id)
+        local cd=Duel.GetDiceResult()
+        if cd~=0 then
+            local dc=Duel.TossDice(tp,1)
+            if dc>=cd then
+                Duel.NegateEffect(ev)
+            end
+        end
+    end
+end
