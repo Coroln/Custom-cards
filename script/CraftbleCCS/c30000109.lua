@@ -28,7 +28,7 @@ function s.initial_effect(c)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCountLimit(1)
 	e3:SetCondition(s.condition)
-	e3:SetOperation(s.operation)
+	e3:SetOperation(s.operation2)
 	c:RegisterEffect(e3)
 end
 s.listed_names={23299957}
@@ -58,7 +58,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.HintSelection(g)
-		Duel.ChangePosition(tc,0,0,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK,true)
+		Duel.ChangePosition(tc,0,0,POS_FACEUP,POS_FACEUP,true)
 	end
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
@@ -66,6 +66,6 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local d=Duel.GetAttackTarget()
 	return not c:IsDisabled() and c:IsGeminiStatus() and d and d:IsControler(tp) and d:IsFaceup() and d:ListsCode(23299957)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
+function s.operation2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateAttack()
 end

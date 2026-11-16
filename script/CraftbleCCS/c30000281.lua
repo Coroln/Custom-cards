@@ -51,12 +51,12 @@ function s.dinop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterEffect(e2)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsAttackPos() end
+	if chk==0 then return e:GetHandler():IsFaceup() end
 	Duel.SetOperationInfo(0,CATEGORY_POSITION,e:GetHandler(),1,0,0)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and c:IsPosition(POS_FACEUP_ATTACK) then
+	if c:IsRelateToEffect(e) and c:IsFaceup() then
 		Duel.ChangePosition(c,POS_FACEDOWN_DEFENSE)
 	end
 end
