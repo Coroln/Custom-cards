@@ -58,6 +58,7 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoGrave(g,REASON_COST)
 	elseif op==2 then
 		Duel.Destroy(c,REASON_COST)
+	end
 end
 function s.cfilter(c)
 	return c:IsCode(36623431) and c:IsAbleToGraveAsCost()
