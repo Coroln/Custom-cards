@@ -26,10 +26,15 @@ function s.postg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_POSITION,g,#g,tp,POS_FACEDOWN_DEFENSE)
 	Duel.SetPossibleOperationInfo(0,CATEGORY_TOGRAVE,nil,1,1-tp,LOCATION_ONFIELD)
 end
-function s.setfilter(c,tp)
-	return (c:IsSpellTrap() and c:IsSSetable(false,1-tp)) or (c:IsMonster() and c:IsCanTurnSet())
+function s.setmfilter(c,tp)
+	return c:IsMonster() and c:IsCanTurnSet()
+end
+function s.setsfilter(c,tp)
+	return c:IsSpellTrap() and c:IsSSetable(false,1-tp)
 end
 function s.posop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.setfilter,tp,0,LOCATION_ONFIELD,nil,tp)
-	if #g==0 or Duel.ChangePosition(g,POS_FACEDOWN)==0 then return end
+	local gm=Duel.GetMatchingGroup(s.setmfilter,tp,0,LOCATION_ONFIELD,nil,tp)
+	local gs=Duel.GetMatchingGroup(s.setsfilter,tp,0,LOCATION_ONFIELD,nil,tp)
+	Duel.ChangePosition(gm,POS_FACEDOWN_ATTACK,0,POS_FACEDOWN_DEFENSE,0)
+	Duel.ChangePosition(gs,POS_FACEDOWN)
 end
