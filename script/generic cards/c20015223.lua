@@ -18,7 +18,7 @@ function s.spfilter(c,e,tp)
 	return c:IsMonster() and (c:IsLevel(5) or c:IsLevel(6)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.rfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.rfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,nil,e,tp)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	--Tribute 1 monster to make opponent choose effect
