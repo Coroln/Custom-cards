@@ -1,10 +1,9 @@
 --BurnTRAP The Moving Fortress
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,2,2}},{{s.tfilter2,4,4}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,2,2}},{{s.tfilter2,4,4}})
 	c:EnableReviveLimit()
 	--spsummon condition
 	local e0=Effect.CreateEffect(c)
