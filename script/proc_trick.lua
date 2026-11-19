@@ -175,3 +175,7 @@ end
 function Card.IsCanBeTrickMaterial(c)
 	return c:IsCanBeMaterial(SUMMON_TYPE_TRICK)
 end
+
+function Card.IsTrick(c)
+	return c:IsType(TYPE_TRICK)
+end

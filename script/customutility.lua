@@ -244,7 +244,3 @@ function Auxiliary.UsedAsMaterialCondition(c, tpe, f)
         return (not f or f(rc, e, tp, eg, ep, ev, re, r, rp)) and (r & (tpe + REASON_MATERIAL)) > 0
     end
 end
-
-function Card.IsTrick(c)
-	return c:IsType(TYPE_TRICK)
-end
