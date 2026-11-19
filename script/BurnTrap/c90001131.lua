@@ -1,10 +1,9 @@
 --BurnTRAP Galaxy Coder
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,1,1}},{{s.tfilter2,2,2}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,1,1}},{{s.tfilter2,2,2}})
 	c:EnableReviveLimit()
 	--search
 	local e1=Effect.CreateEffect(c)
@@ -12,7 +11,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e1:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
+	e1:SetCondition(function(e) return e:GetHandler():IsSummonType(SUMMON_TYPE_TRICK) end)
 	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)

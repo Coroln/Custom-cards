@@ -1,16 +1,15 @@
 --BurnTRAP Cavary
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,99}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,99}})
 	c:EnableReviveLimit()
 	--Set its original ATK/DEF
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e0:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e0:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
+	e0:SetCondition(function(e) return e:GetHandler():IsSummonType(SUMMON_TYPE_TRICK) end)
 	e0:SetOperation(s.sucop)
 	c:RegisterEffect(e0)
 	--material count check
