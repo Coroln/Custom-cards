@@ -2,6 +2,7 @@ Duel.LoadScript("custom_constants.lua")
 Duel.LoadScript("proc_trick.lua")
 Duel.LoadScript("card_util.lua")
 Duel.LoadScript("group_util.lua")
+Duel.LoadScript("customutility2.lua")
 
 Card.IsCanBeXyzMaterial = (function()
     local oldfunc = Card.IsCanBeXyzMaterial

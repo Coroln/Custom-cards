@@ -1,5 +1,5 @@
 Duel.LoadScript("customutility.lua")
-Duel.LoadScript("customutility2.lua")
+
 if not Trick then
 	Trick={}
 end
