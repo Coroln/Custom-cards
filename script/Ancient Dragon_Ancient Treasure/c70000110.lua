@@ -1,6 +1,5 @@
 --Forgotten Ancient Treasure
 --Script by Coroln
-Duel.LoadScript("customutility2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetUniqueOnField(1,1,aux.AncientUniqueFilter(c),LOCATION_SZONE)
