@@ -1,12 +1,15 @@
 local s,id=GetID()
 function s.initial_effect(c)
+	--fusion material
 	c:EnableReviveLimit()
-	--cannot special summon
-	local e1=Effect.CreateEffect(c)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
-	c:RegisterEffect(e1)
+	Fusion.AddProcMixRep(c,false,false,43237273,81913510)
+	--spsummon condition
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e0:SetValue(aux.fuslimit)
+	c:RegisterEffect(e0)
 	--copy
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
@@ -18,13 +21,6 @@ function s.initial_effect(c)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
-	--add code
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e4:SetCode(EFFECT_ADD_CODE)
-	e4:SetValue(17732278)
-	c:RegisterEffect(e4)
 end
 function s.filter(c,tp)
 	return (c:IsSetCard(SET_NEO_SPACIAN) or c:IsMonster()) and c:IsFaceup()
