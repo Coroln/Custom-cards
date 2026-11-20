@@ -1,6 +1,5 @@
 --The Primordial Sun
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)

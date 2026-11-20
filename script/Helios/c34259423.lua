@@ -1,11 +1,10 @@
 --Helios - The Primordial Deity
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.filter,2,2}},{{s.filter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.filter,2,2}},{{s.filter2,1,1}})
 	c:EnableReviveLimit()
 	-- Must first be Trick Summoned
 	local e0=Effect.CreateEffect(c)

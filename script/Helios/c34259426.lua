@@ -1,11 +1,10 @@
 --The Primordial Angel
 --Script
-Duel.LoadScript("proc_trick2.lua")
 Duel.LoadScript ("c420.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.filter,1,1}},{{s.filter2,2,2}})
+	Trick.AddProcedure(c,nil,{{s.filter,1,1}},{{s.filter2,2,2}})
 	c:EnableReviveLimit()
 	-- Must first be Trick Summoned
 	local e0=Effect.CreateEffect(c)
@@ -37,7 +36,7 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e3:SetProperty(EFFECT_FLAG_DELAY)
 	e3:SetCountLimit(1,id)
-	e3:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
+	e3:SetCondition(function(e) return e:GetHandler():IsSummonType(SUMMON_TYPE_TRICK) end)
 	e3:SetTarget(s.target)
 	e3:SetOperation(s.activate)
 	c:RegisterEffect(e3)
