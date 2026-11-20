@@ -1,11 +1,10 @@
 --Chrono-Shifters: Temporal Herald
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 c:EnableCounterPermit(0x100A)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.filter,1,1}},{{s.filter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.filter,1,1}},{{s.filter2,1,1}})
 	c:EnableReviveLimit()
 	--position
 	local e1=Effect.CreateEffect(c)
