@@ -1,10 +1,9 @@
 --Mirage-Eyes Restrict
 --Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	Trick.AddProcedure(c,nil,nil,{{aux.TRUE,2,2}},{{aux.TRUE,1,1}})
+	Trick.AddProcedure(c,nil,{{aux.TRUE,2,2}},{{aux.TRUE,1,1}})
 	--battle indestructable
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)

@@ -1,9 +1,8 @@
 --Flower Cardian with Raise Moon
 --Coroln
 local s,id=GetID()
-Duel.LoadScript("proc_trick2.lua")
 function s.initial_effect(c)
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
 	c:EnableReviveLimit()
 	--If this card is Trick Summoned from the hand: You can draw 1 card, also you cannot Special Summon from the Extra Deck for the rest of this turn, except LIGHT Xyz Monsters. You cannot add cards from the Deck to the hand the turn you activate this effect, except by drawing them
 	local e2a=Effect.CreateEffect(c)
@@ -12,7 +11,7 @@ function s.initial_effect(c)
 	e2a:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2a:SetProperty(EFFECT_FLAG_DELAY)
 	e2a:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2a:SetCondition(function(e,tp,eg,ep,ev,re,r,rp) return e:GetHandler():IsSummonLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
+	e2a:SetCondition(function(e,tp,eg,ep,ev,re,r,rp) return e:GetHandler():IsSummonType(SUMMON_TYPE_TRICK) end)
 	e2a:SetCost(s.drcost)
 	e2a:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk) if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1) end)
 	e2a:SetOperation(s.drop)

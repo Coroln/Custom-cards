@@ -1,9 +1,8 @@
 --Hidden HERO Darkest Wingman
 --Coroln
 local s,id=GetID()
-Duel.LoadScript("proc_trick2.lua")
 function s.initial_effect(c)
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
 	c:EnableReviveLimit()
 	--atk gain
 	local e2=Effect.CreateEffect(c)
@@ -51,7 +50,7 @@ s.listed_series={0x8}
 --Trick Summon
 --Monster filter
 function s.tfilter(c)
-	return c:IsSetCard(0x8) and not c:IsTrick()
+	return c:IsSetCard(0x8) and not c:IsType(TYPE_TRICK)
 end
 --Trap filter
 function s.tfilter2(c)

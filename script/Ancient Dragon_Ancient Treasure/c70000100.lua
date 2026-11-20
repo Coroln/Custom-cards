@@ -1,10 +1,9 @@
 --Ancient Dragon Taurus
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.matfilter,1,1}},{{s.matfilter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.matfilter,1,1}},{{s.matfilter2,1,1}})
 	c:EnableReviveLimit()
 	--pendulum summon
 	Pendulum.AddProcedure(c)

@@ -1,7 +1,6 @@
 --Ancient Treasure Sword of Prophecy
 --Script by Coroln
 Duel.LoadScript("customutility2.lua")
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetUniqueOnField(1,1,aux.AncientUniqueFilter(c),LOCATION_SZONE)

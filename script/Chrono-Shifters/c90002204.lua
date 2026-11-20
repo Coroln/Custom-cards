@@ -1,6 +1,5 @@
 --Chrono-Shifters: Paradox Seer
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(0x100A,LOCATION_PZONE+LOCATION_MZONE)
@@ -46,7 +45,7 @@ s.counter_place_list={0x100A}
 s.listed_names={id}
 --special summon
 function s.spfilter(c,e,tp)
-	return c:IsRace(RACE_CELESTIALWARRIOR) and (c:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK) or c:IsTrick()) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
+	return c:IsRace(RACE_CELESTIALWARRIOR) and c:IsType(TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK+TYPE_TRICK) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and s.spfilter(chkc,e,tp) end

@@ -1,9 +1,8 @@
 --UB - Buzzwole
 --Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
 	c:EnableReviveLimit()
 	--Move itself to 1 of your unused MMZ
 	local e0=Effect.CreateEffect(c)
