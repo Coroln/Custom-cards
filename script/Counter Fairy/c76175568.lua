@@ -1,20 +1,10 @@
 --Fairy of the Forest
 --Script by Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.filter,1,1}},{{s.filter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.filter,1,1}},{{s.filter2,1,1}})
 	c:EnableReviveLimit()
-    --move zone
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e1:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CANNOT_NEGATE+EFFECT_FLAG_CANNOT_DISABLE)
-	e1:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not e:GetHandler():IsReason(REASON_EFFECT) end)
-	e1:SetOperation(s.tkop)
-	c:RegisterEffect(e1)
     --Search
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -59,13 +49,6 @@ end
 --Trap filter
 function s.filter2(c)
 	return c:IsTrap() and c:IsType(TYPE_COUNTER)
-end
---test
-function s.tkop(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
-	local seq=math.log(Duel.SelectDisableField(tp,1,LOCATION_MZONE,0,0),2)
-	Duel.MoveSequence(c,seq)
 end
 --search
 function s.thcon(e)
