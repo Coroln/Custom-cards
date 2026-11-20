@@ -1,10 +1,9 @@
 --Hidden HERO Tidal Reactor
 --Coroln
-Duel.LoadScript("proc_trick2.lua")
 local s,id=GetID()
 function s.initial_effect(c)
 	--Trick Summon
-	Trick.AddProcedure(c,nil,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
+	Trick.AddProcedure(c,nil,{{s.tfilter,1,1}},{{s.tfilter2,1,1}})
 	c:EnableReviveLimit()
 	--send to grave
 	local e1=Effect.CreateEffect(c)
