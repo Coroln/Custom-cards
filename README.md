@@ -39,6 +39,10 @@ now when you start/restart EdoPro it should download all the cards in this repo.
 
 also when you want to play with your friends online, all of you need to add these cards and need to use Hamachi or similar programs that simulate a LAN connection.
 
+# Trick Monster
+if you want to play the Summoning Mechanic called Trick Summon and want to use Trick Monsters you need to use the following EDOPro Client and OCGCore.
+just follow the instructions on linked Repo: https://github.com/Card-Creation-Squad/ccspro-client
+
 # Discord
 when you need a place to find friends to play with join my discord server. It was originally intended as my YouTube community discord but I upload so rarely that it makes more sense for this
 
