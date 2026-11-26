@@ -10,6 +10,15 @@ function s.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_NEGATE)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCategory(CATEGORY_NEGATE)
+	e2:SetCategory(CATEGORY_DISABLE)
+	e2:SetCondition(s.condition2)
+	e2:SetOperation(s.operation2)
+	c:RegisterEffect(e2)
 end
 s.toss_coin=true
 function s.spchkfilter(c,e,sp,tg_p)
@@ -27,5 +36,18 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local res=Duel.TossCoin(tp,1)
 	if res==COIN_HEADS then
 		Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP)
+	end
+end
+function s.tgfilter(c,tp)
+	return c:IsControler(tp) and c:IsFaceup() and c:IsRace(RACE_MACHINE) and c:IsMonster()
+end
+function s.condition2(e,tp,eg,ep,ev,re,r,rp)
+	if not s.condition1(e,tp) or not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then return false end
+	local tg=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
+	return tg and tg:IsExists(s.tgfilter,1,nil,tp) and Duel.IsChainDisablable(ev)
+end
+function s.operation2(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.CountHeads(Duel.TossCoin(tp,1))==1 then
+	Duel.NegateEffect(ev)
 	end
 end
